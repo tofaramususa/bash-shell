@@ -1,0 +1,11 @@
+1. Function to check pipes
+2. Function to check for empty string , check if pipe is at the start or end and if there is pipe after -- check Error token pipe
+3. l need a malloc function that assigns memory but also handles allocation failures and segfault by checking if NULL
+4. l need malloc functions for every type --> for int, for array too
+5. Count the number of commands we have but we need to check for pipe errors first
+6. Use MACROS to define commonly used values like quotation marks
+7. We do the checks then we start checking for every commnad after we split it
+
+l need to adjust my function
+
+https://zzzcode.ai/answer-question?id=5010c25f-a194-478d-b6fa-73b236f7537d

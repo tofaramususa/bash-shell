@@ -1,0 +1,6 @@
+readline --> to read the command_line
+getcwd -->get current working directory
+dup --> creates a new file descriptor that duplicates an existing file descriptor
+rl_on_new_line --> not sure
+rl_replace_line --> not sure
+rl_redisplay --> 

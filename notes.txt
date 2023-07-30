@@ -1,0 +1,182 @@
+the execve we give it a path, then list of args
+
+We need to find the redirection and 
+
+Split based on pipes then based on quotes and then based 
+
+Create a function that checks if the quotes balance out
+
+Check if redirection or pipe is at the beginning or not then Split
+
+Check for quotations before anything else, then we split based on quoations, Need to check if the quotations balance each other out
+
+Create a redirection struct with type and output as well. Then we need an redirection type struct with the different types. When we take note of the redirection we take it out of the string as well as the filename
+
+We create an arguments array, then we have a struct for each argument
+
+So its like simple command and compound commands. number of redirections is inside. simple command, it points to a struct with redirections and 
+
+We have a struct for the number of commands, number of pipes as well and the environment variables
+
+Modify for environment variables then we need to h
+
+The parsing process involves breaking down the input command into its components, identifying the command 
+name, arguments, redirection symbols, pipes, and handling special cases like quoting and environment variable expansion.
+
+Before we split the pipe we need to make sure there are no pipes next to it or redirections or something
+
+the structs we have are --> for command commands which points to array of simple commands and also contains
+simple commands has pointer to redirection file and also the number of redirections
+
+For redirections also need to check the filename, to make sure its a string and does not contain any funny characters
+
+Make a list of possible errors:
+syntax errors;
+pipe errors;
+environment expansion errors;
+redirection errors; --> 
+Detecting cases where multiple conflicting redirections are specified within a single command.
+Missing filenames 
+Quotes errors
+
+l think l need to create a token struct to assign type to every type
+
+Can l split a 2d array 2d array.
+
+Need to split on the redirection
+Errors: During this process, the shell should also check for errors, 
+		such as missing file names or invalid syntax. For example, if the token were "word>", without the file name, it would be considered an error.
+
+Grammar Rules:
+<command_line> ::= <pipeline> | <pipeline> ';' <command_line>
+<pipeline> ::= <command> | <command> '|' <pipeline>
+<command> ::= <simple_command> | <simple_command> <redirection>
+<simple_command> ::= <command_name> <arguments>
+<command_name> ::= <word>
+<arguments> ::= <word> | <word> <arguments>
+<redirection> ::= <input_redirection> | <output_redirection>
+<input_redirection> ::= '<' <filename>
+<output_redirection> ::= '>' <filename> | '>>' <filename>
+<filename> ::= <word>
+<word> ::= <string> | <variable> | <command_substitution>
+<string> ::= <char> | <char> <string>
+<variable> ::= '$' <word>
+<command_substitution> ::= '$(' <command_line> ')' | '`' <command_line> '`'
+<char> ::= any character (excluding special characters and whitespace)
+
+// Token types
+typedef enum {
+    TOKEN_WORD,
+    TOKEN_SINGLE_QUOTE,
+    TOKEN_DOUBLE_QUOTE,
+    TOKEN_PIPE,
+    TOKEN_INPUT_REDIRECTION,
+    TOKEN_OUTPUT_REDIRECTION,
+    TOKEN_APPEND_REDIRECTION
+} TokenType;
+
+typedef struct {
+    TokenType type;
+    char* value;
+} Token;
+
+typedef struct {
+    char* command_name;
+    char** arguments;
+    int num_arguments;
+} CommandNode;
+
+// Redirection type: Represents a redirection operation
+typedef struct {
+    char* operation;  // "<", ">", ">>", "<<", etc.
+    char* filename;   // The file name associated with the redirection
+} RedirectionNode;
+
+// Compound command type: Represents a compound command, e.g., subshell
+typedef struct {
+    struct AstNode* child;
+} CompoundCommandNode;
+
+// Pipeline type: Represents a pipeline of commands connected by pipes
+typedef struct {
+    struct AstNode** commands;
+    int num_commands;
+} PipelineNode;
+
+// Abstract Syntax Tree Node type: Represents a generic node in the AST
+typedef struct AstNode {
+    int type;  // Type of node: 1 for Command, 2 for Redirection, 3 for Compound, 4 for Pipeline
+    union {
+        CommandNode command;
+        RedirectionNode redirection;
+        CompoundCommandNode compound;
+        PipelineNode pipeline;
+    } data;
+} AstNode;
+
+Possible token struct:
+typedef enum {
+    TOKEN_COMMAND,
+    TOKEN_ARGUMENT,
+    TOKEN_PIPE
+} TokenType;
+
+typedef struct {
+    TokenType type;
+    char* value;
+} Token;
+
+what if its like this ls -ls | | then what?
+
+
+// bool hasInvalidSyntax(const char* command) {
+//     int len = strlen(command);
+//     int quoteCount = 0;
+    
+//     for (int i = 0; i < len; i++) {
+//         if (command[i] == '"') {
+//             quoteCount++;
+//         }
+        
+//         if (quoteCount % 2 != 0) {
+//             // Mismatched quotes found
+//             return true;
+//         }
+        
+//         // Check for unsupported characters (e.g., ';', '|', '<', '>')
+//         if (command[i] == ';' || command[i] == '|' || command[i] == '<' || command[i] == '>') {
+//             return true;
+//         }
+//     }
+    
+//     // Check for unbalanced quotes at the end of the command
+//     if (quoteCount % 2 != 0) {
+//         return true;
+//     }
+    
+//     return false;
+// }
+
+    // while (tokenString != NULL) {
+    //     tokens = (Token**)realloc(tokens, (numTokens + 1) * sizeof(Token*));
+    //     tokens[numTokens] = (Token*)malloc(sizeof(Token));
+
+    //     if (strcmp(tokenString, "|") == 0) {
+    //         tokens[numTokens]->type = TOKEN_PIPE;
+    //     } else if (strcmp(tokenString, "<") == 0) {
+    //         tokens[numTokens]->type = TOKEN_REDIRECTION_INPUT;
+    //     } else if (strcmp(tokenString, ">") == 0) {
+    //         tokens[numTokens]->type = TOKEN_REDIRECTION_OUTPUT;
+    //     } else if (strcmp(tokenString, ">>") == 0) {
+    //         tokens[numTokens]->type = TOKEN_REDIRECTION_APPEND_OUTPUT;
+    //     } else if (tokenString[0] == '\'' || tokenString[0] == '\"') {
+    //         // Handling quoted arguments
+    //         tokens[numTokens]->type = TOKEN_ARGUMENT;
+    //         tokens[numTokens]->value = strdup(tokenString + 1);
+    //         if (tokenString[strlen(tokenString) - 1] == '\'' || tokenString[strlen(tokenString) - 1] == '\"') {
+    //             tokenString[strlen(tokenString) - 1] = '\0';
+    //         }
+    //     } else {
+    //         tokens[numTokens]->type = TOKEN_ARGUMENT;
+    //         tokens[numTokens]->value = strdup(tokenString);
+    //     }
