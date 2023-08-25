@@ -21,7 +21,7 @@ void	first_process_util(t_shell *proc, t_command *av, char **envp) //for the fir
 
 	if (av[0].cmd && proc->check > 0)
 		check_built_ins_and_exexute(proc, av, envp);
-	tmp = parsing(proc, envp, av[0].cmd); //function to search for command name
+	tmp = get_command(proc, envp, av[0].cmd); //function to search for command name
 	if (av[0].cmd && tmp && av[0].cmd[0]) //check if there is command and its not a NULL terminator then execute
 	{
 		execve(tmp, av[0].arg, envp);
@@ -35,7 +35,7 @@ void	last_process_util(t_shell *proc, t_command *av, char **envp) //call the exe
 {
 	char	*tmp;
 
-	tmp = parsing(proc, envp, av[av->cmd_len - 1].cmd); //check for command name
+	tmp = get_command(proc, envp, av[av->cmd_len - 1].cmd); //check for command name
 	if (av[av->cmd_len - 1].cmd && tmp && av[av->cmd_len - 1].cmd[0])
 	{
 		execve(tmp, av[av->cmd_len - 1].arg, envp);

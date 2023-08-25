@@ -19,15 +19,13 @@ bool	start_execution(t_shell *bash) //function to execute and free everything
 	}
 	if (check_and_update_heredoc(bash->s_commands, bash) == 1) //there is somekind or error here
 	{
-		free_redirection(bash->s_commands); //free all the redirections for every command
-		ultimate_free(NULL, bash->s_commands); //free all the functions
+		garbage_collector(bash); //free all the functions
 		return (true);
 	}
 	signal(SIGINT, SIG_IGN); //reset signal
 	signal(SIGINT, sig_handler); //
 	error_status = pipex(bash->total_scommands, bash->s_commands, bash); //here is were the execution happens
-	free_redirection(bash->s_commands); //free all redirections
-	ultimate_free(NULL, bash->s_commands); //change this to my free_shell function
+    garbage_collector(bash);
 	unlink(".tmp"); //remove the tmp file
 	return (false);
 }
@@ -45,7 +43,7 @@ bool parse(t_shell bash)
     }
 	bash.tokenlist = ft_tokenise(final_result);
 	bash.s_commands = create_scmnd_array(&bash.tokenlist);
-    bash.total_scommands = array_len(bash. s_commands) + 1;
+    bash.total_scommands = array_len(bash.s_commands) + 1;
     return (true);
 }
 

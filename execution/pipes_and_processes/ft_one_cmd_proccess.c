@@ -78,7 +78,7 @@ void	one_cmd_process(t_shell *proc, t_command *av, char **envp)
 		proc->check = ft_check_builtin(av->cmd); //check for  builtin and return a value to identify it
 		if (proc->check > 0)
 			check_built_ins_and_exexute_one_cmd(proc, av, envp);
-		tmp = parsing(proc, envp, av->cmd); //write a function to check for the command if accessible and executable
+		tmp = get_command(proc, envp, av->cmd); //write a function to check for the command if accessible and executable
 		check_and_execute(proc, av, envp, tmp); //check for command and execute
 	}
 }
@@ -128,4 +128,53 @@ int	pipex_one_cmd(t_command *av, t_shell *proc, char **envp) //takes the simple 
 	else
 		return (set_signal_exe(av, proc, envp));
 	return (0);
+}
+
+
+static char *check_for_access(t_shell *proc, char **envp, char **path_split)
+{
+	char *path;
+	char *result;
+
+	result = NULL;
+	while (path_split[++proc->x] && (search_for_path(envp) == 1))
+	{
+		path = ft_strjoin(path_split[proc->x], "/");
+		result = ft_strjoin(path, s);
+		if (access(result, 0) == 0)
+		{
+			free_str(path);
+			return (result);
+
+		}
+		free_str(path);
+		free_str(result);
+	}
+	free_str(path);
+	return(result);
+}
+
+char	*get_command(t_shell *proc, char **envp, char *s) //function to search for command name if found then write NULL
+{
+	char **path_split;
+	char *result;
+
+	proc->x = -1;
+	if (!s)
+		return (NULL);
+	if (ft_strnstr(s, "/", ft_strlen(s)) || \
+	ft_strcmp(s, ".") == 0 || ft_strcmp(s, "..") == 0 || s[0] == '\0') //to check if its a directory or not
+		return (s);
+	if (search_for_path(envp) == 0)
+		return (NULL);
+	while (envp[++proc->x])
+	{
+		if (ft_strncmp(envp[proc->x], "PATH=", 5) == 0)
+			break ;
+	}
+	path_split = ft_split(envp[proc->x] + 5, ':');
+	proc->x = -1;
+	result = check_for_access(proc, envp, path_split);
+	free_array(path_split);
+	return (result);
 }

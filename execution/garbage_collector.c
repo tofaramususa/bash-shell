@@ -23,8 +23,6 @@ void	free_env_list(t_list *head)
 	}
 	head = NULL;
 }
-
-
 //function to free redirections list which means calling filename/ free_str
 void free_redirs_list(t_redir *redirlist)
 {
@@ -70,16 +68,12 @@ void garbage_collector(t_shell *bash)
 {
     if(bash)
     {
-        //call function to free s_commands;
-        free_scommand(bash->s_commands);
         //call function to free env_vars;
         free_array(bash->env_vars);
+        //call function to free s_commands;
+        free_scommand(bash->s_commands);
         //call function to free env_list;
         free_env_list(bash->env_list);
-        // call function to free pwd maybe;
-
-        //call function to close file descriptors if open;
-
         //call function to free line;
         free_str(bash->line);
         //call function to free token;

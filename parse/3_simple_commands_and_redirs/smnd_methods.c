@@ -21,7 +21,7 @@ t_command create_scmnd_node(t_token *start, t_token *end)
     if (!command)
         return(NULL);
     command.redir = NULL;
-    command.path = NULL;
+    command.cmd = NULL;
     command.args = NULL;
     command.command = NULL;
     fill_scmnd(&command, start, end);
@@ -69,6 +69,7 @@ void fill_scmnd(t_command *scommand, t_token *start, t_token *end)
             current_token = current_token->next;
         }
     }
+    scommand->cmd = scommand->args[0];
 }
 
 // We add a simplecommand to the list of simple commands, like lstaddtoback;

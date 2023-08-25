@@ -27,7 +27,7 @@ static void	atoi_utl_with_exit(char *str, int x, t_shell *proc)
 		if (copy > res)
 		{
 			ft_putstr_fd(": numeric argument required\n", 2);
-			garbage_collector(proc)
+			garbage_collector(proc);
 			exit(255);
 		}
 	}

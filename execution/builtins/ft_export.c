@@ -58,21 +58,21 @@ int	ft_export_print_linked(t_command *pipe, t_shell *prc)
 	sort_list(*prc->head);
 	re_index(*prc->head);
 	prc->flag = 0;
-	prc->t_lst = *prc->head;
+	prc->temp_list = *prc->head;
 	prc->x = 0;
 	if (pipe->args[1])
 		prc->x = ft_export_to_linked(pipe, prc);
 	else
 	{
-		prc->t_lst = *prc->head;
-		while (prc->t_lst)
+		prc->temp_list = *prc->head;
+		while (prc->temp_list)
 		{
-			if (ft_strchr(prc->t_lst->key, '='))
+			if (ft_strchr(prc->temp_list->key, '='))
 				printf("declare -x %s\"%s\"\n", \
-				prc->t_lst->key, prc->t_lst->value);
+				prc->temp_list->key, prc->temp_list->value);
 			else
-				printf("declare -x %s\n", prc->t_lst->key);
-			prc->t_lst = prc->t_lst->next;
+				printf("declare -x %s\n", prc->temp_list->key);
+			prc->temp_list = prc->temp_list->next;
 		}
 	}
 	free_one_exec(prc, pipe);

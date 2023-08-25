@@ -15,7 +15,7 @@
  * search: scan the environment variable for the PATH fro 2d array
  * @envp: the environment variable
 */
-int	search(char **envp)
+int	search_for_path(char **envp)
 {
 	int	x;
 

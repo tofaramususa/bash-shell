@@ -44,7 +44,7 @@ void	close_pipes(t_shell *proc)
 	int	x;
 
 	x = -1;
-	while (++x < proc->total_pipe)
+	while (++x < proc->total_pipes)
 	{
 		close(proc->fd[x][0]);
 		close(proc->fd[x][1]);
@@ -114,29 +114,27 @@ int	pipex_three_cmd(t_command *av, t_shell *proc, char **envp)
  * @proc: a struture which contains the command and redirection
  * @envp: the environment variable
 */
-int	pipex(int ac, t_command *scommand, t_shell *bash_ptr)
+int	pipex(int ac, t_command *scommand, t_shell *bash)
 {
-	t_shell	bash;
 	int		counter;
 	char	**envp;
 	int		ret;
 
 	ret = 0;
-	bash = *bash_ptr;
-	envp = linked_to_array(*bash.env_list);//needs fixing //convert the env to an array for use in the env variable
-	bash.middle_scommand = ac - 2;
-	bash.total_pipes = ac - 1;
-	bash.counter = 0;
+	bash->env_vars = linked_to_array(bash->env_list);//needs fixing //convert the env to an array for use in the env variable
+	bash->middle_scommand = ac - 2;
+	bash->total_pipes = ac - 1;
+	bash->counter = 0;
 	counter = -1;
 	if (ac > 1)
 		while (++counter < ac - 1)
-			pipe(bash.fd[counter]);
+			pipe(bash->fd[counter]);
 	if (ac == 1)
-		ret = pipex_one_cmd(scommand, &bash, envp);
+		ret = pipex_one_cmd(scommand, bash, bash->env_vars);
 	else if (ac == 2)
-		ret = pipex_two_cmd(scommand, &bash, envp);
+		ret = pipex_two_cmd(scommand, bash, bash->env_vars);
 	else if (ac > 2)
-		ret = pipex_three_cmd(scommand, &bash, envp);
+		ret = pipex_three_cmd(scommand, bash, bash->env_vars);
 	else
 		printf("Error : no command input\n");
 	free_array(envp); //function to free the envp

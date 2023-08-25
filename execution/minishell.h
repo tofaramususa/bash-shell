@@ -1,4 +1,5 @@
 
+
 /*Quotes Struct*/
 typedef struct s_quote
 {
@@ -41,7 +42,6 @@ typedef struct s_command
     int  cmd_len;
     int redir_length;
     int args_len;
-    char *path;
     char **args;
     int total_redirs;
     t_redir *redirs;
@@ -66,6 +66,7 @@ typedef struct s_shell
     int fork_id //id1
     char *line;
     t_token *tokenlist;
+    t_list temp_list;
     int x;
 
 } t_shell;
