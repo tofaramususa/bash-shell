@@ -69,7 +69,8 @@ void fill_scmnd(t_command *scommand, t_token *start, t_token *end)
             current_token = current_token->next;
         }
     }
-    scommand->cmd = scommand->args[0];
+    if(scommand->args)
+        scommand->cmd = scommand->args[0];
 }
 
 // We add a simplecommand to the list of simple commands, like lstaddtoback;
