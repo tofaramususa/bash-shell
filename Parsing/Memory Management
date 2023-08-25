@@ -1,4 +1,0 @@
-Need to handle NULLMake sure pointers are properly initialized before use
-Check return values of allocation functions to ensure success
-Free memory only once
-Avoid buffer overflows when writing to pointers
