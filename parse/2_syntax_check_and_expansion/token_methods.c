@@ -83,8 +83,8 @@ void free_token_list(t_token *tokenlist)
 		while (current_node)
 		{
 			next_node = current_node->next;
-			freeandnullify(current_node->value);
-			freeandnullify(current_node);
+			safefree(current_node->value);
+			safefree(current_node);
 			current_node = next_node;
 		}
 	}

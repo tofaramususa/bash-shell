@@ -89,7 +89,7 @@ void	middle_proc_execute(t_shell *proc, t_command *av, char **envp, int counter)
 	{
 		proc->scommand_index = counter;
 		execve(tmp, av[counter].args, envp);
-		freeandnullify(tmp); //freeandnullify
+		safefree(tmp); //safefree
 		free_func_one_cmd(av, proc, envp);
 	}
 	else

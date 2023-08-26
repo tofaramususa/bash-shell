@@ -26,9 +26,9 @@
 // 		size++;
 // 	while (i < size)
 // 		if (args[i])
-// 			freeandnullify(args[i++]);
+// 			safefree(args[i++]);
 // 	if (args)
-// 		freeandnullify(args);
+// 		safefree(args);
 // }
 
 /**

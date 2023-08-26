@@ -29,14 +29,14 @@ static int	ft_cd_util(t_command *pipe, char *pwd, t_shell *proc)
 		{
 			tmp = ft_strjoin("OLDPWD=", pwd);
 			chek_exp_a_rplc(*proc->env_list, tmp);
-			freeandnullify(tmp);
+			safefree(tmp);
 		}
 		pwd = getcwd(proc->pwd, 1024);
 		tmp = ft_strjoin("PWD=", pwd);
 		if (pwd)
 		{
 			proc->x = chek_exp_a_rplc(*proc->env_list, tmp);
-			return (freeandnullify(tmp), proc->x);
+			return (safefree(tmp), proc->x);
 		}
 		ft_putstr_fd("cd: error retrieving current directory: getcwd: \
 		cannot access parent directories: No such file or directory\n", 2);
@@ -64,14 +64,14 @@ static	int	ft_cd_util_3(char *pwd, t_shell *proc)
 		tmp = ft_strjoin("OLDPWD=", pwd);
 		chek_exp_a_rplc(*proc->env_list, tmp);
 		if (tmp)
-			freeandnullify(tmp);
+			safefree(tmp);
 	}
 	pwd = getcwd(proc->pwd, 1024);
 	if (pwd)
 	{
 		tmp = ft_strjoin("PWD=", pwd);
 		proc->x = chek_exp_a_rplc(*proc->env_list, tmp);
-		return (freeandnullify(tmp), proc->x);
+		return (safefree(tmp), proc->x);
 	}
 	return (1);
 }
@@ -99,7 +99,7 @@ static	int	ft_cd_util_2(char *pwd, t_shell *proc)
 			write(2, tmp, ft_strlen(tmp));
 			perror(" ");
 		}
-		return (freeandnullify(tmp), 1);
+		return (safefree(tmp), 1);
 	}
 	return (0);
 }

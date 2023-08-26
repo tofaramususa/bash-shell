@@ -14,7 +14,7 @@ bool	start_execution(t_shell *bash) //function to execute and free everything
 {
 	if (bash->total_scommands >= 220) //calculate command length
 	{
-		ft_putstr_fd("Sorry too many command\n", 2); //change this
+		ft_putstr_fd("Sorry too many commands\n", 2); //change this
 		exit(1);
 	}
 	if (check_and_update_heredoc(bash->s_commands, bash) == 1) //there is somekind or error here
@@ -69,7 +69,10 @@ int main(int ac, char **av, char **envp)
     while(1)
     {
         init_signals(); //handle the signals
-        bash.line = readline ("[TheBash]$")
+        if(error_status == 0)
+            bash.line = readline ("🏀\x1b[38;5;122m[TheBash]$ \x1b[0m")
+        else
+            bash.line = readline ("🗑️ \x1b[38;5;122m[TheBash]$ \x1b[0m")
         if(parse(bash))
         {
             start_execution(&bash)

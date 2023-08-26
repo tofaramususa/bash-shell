@@ -1,6 +1,6 @@
 
 //function to free string:
-void freeandnullify(void *ptr)
+void safefree(void *ptr)
 {
     if (ptr)
     {
@@ -20,15 +20,15 @@ void	free_env_list(t_list *head)
         while (current != NULL)
         {
             next = current->next;
-            freeandnullify(current->key);
-            freeandnullify(current->value);
-            freeandnullify(current);
+            safefree(current->key);
+            safefree(current->value);
+            safefree(current);
             current = next;
         }
     }
     head = NULL;
 }
-//function to free redirections list which means calling filename/ freeandnullify
+//function to free redirections list which means calling filename/ safefree
 void free_redirs_list(t_redir *redirlist)
 {
     t_redir *current_node;
@@ -40,15 +40,15 @@ void free_redirs_list(t_redir *redirlist)
         while (current_node)
         {
             next_node = current_node->next;
-            freeandnullify(filename);
-            freeandnullify(current_node);
+            safefree(filename);
+            safefree(current_node);
             current_node = next_node;
         }
     }
     redirlist = NULL;
 }
 //function to free_simple commands which simple commands
-// freeandnullify command and path, free_array for args, call free redirs
+// safefree command and path, free_array for args, call free redirs
 void free_scommand(t_command *s_commands)
 {
     int i;
@@ -58,8 +58,8 @@ void free_scommand(t_command *s_commands)
     {
         while(s_commands[++i])
         {
-            freeandnullify(s_commands[i]->cmd);
-            freeandnullify(s_commands[i]->path);
+            safefree(s_commands[i]->cmd);
+            safefree(s_commands[i]->path);
             free_array(s_commands[i]->args);
             free_redirs_list(s_commands[i]->redirs);
         }
@@ -84,7 +84,7 @@ void garbage_collector(t_shell *bash)
         //call function to free env_list;
         free_env_list(bash->env_list);
         //call function to free line;
-        freeandnullify(bash->line);
+        safefree(bash->line);
         //call function to free token;
         free_token_list(bash->tokenlist);
     }

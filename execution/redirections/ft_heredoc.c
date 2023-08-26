@@ -21,19 +21,19 @@ int	replace_heredocs_util(t_command *av, t_redir *redir, t_heredoc_var *var)
 {
 	if (var->tmp == NULL)
 	{
-		freeandnullify(var->delimiter);
+		safefree(var->delimiter);
 		error_status = 0;
 		close(var->file1);
 		return (1);
 	}
 	else if (ft_strcmp(var->tmp, var->delimiter) == 0)
 	{
-		freeandnullify(var->delimiter); //free string
-		freeandnullify(redir->filename); //free string which is a filename
+		safefree(var->delimiter); //free string
+		safefree(redir->filename); //free string which is a filename
 		redir->filename = ft_strdup(".tmp"); //give it a new name
 		redir->type = INPUT; //change it to a input sign
 		close(var->file1);
-		freeandnullify(var->tmp);
+		safefree(var->tmp);
 		return (2);
 	}
 	return (0);
@@ -69,9 +69,9 @@ int	replace_heredocs(t_command *s_commands, t_redir *redir, t_shell *bash)
 			return (1);
 		if (var.ret == 2)
 			break ;
-		freeandnullify(var.delimiter);
+		safefree(var.delimiter);
 		write(var.file1, var.tmp, ft_strlen(var.tmp)); //write the line to file1
-		freeandnullify(var.tmp);
+		safefree(var.tmp);
 	}
 	return (0);
 }

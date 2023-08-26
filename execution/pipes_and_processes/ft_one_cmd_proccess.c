@@ -143,14 +143,14 @@ static char *check_for_access(t_shell *proc, char **envp, char **path_split)
 		result = ft_strjoin(path, s);
 		if (access(result, 0) == 0)
 		{
-			freeandnullify(path);
+			safefree(path);
 			return (result);
 
 		}
-		freeandnullify(path);
-		freeandnullify(result);
+		safefree(path);
+		safefree(result);
 	}
-	freeandnullify(path);
+	safefree(path);
 	return(result);
 }
 

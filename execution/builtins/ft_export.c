@@ -103,9 +103,9 @@ int	ft_unset_check_and_unset(t_list **main_head, char **args)
 			else
 				var.tmp_ex = ft_strdup(args[var.x]);
 			if (ft_strcmp(var.tmp_list->key, var.tmp_ex) == 0)
-				return (freeandnullify(var.tmp_ex), \
+				return (safefree(var.tmp_ex), \
 				remove_element(main_head, var.tmp_list->index));
-			freeandnullify(var.tmp_ex);
+			safefree(var.tmp_ex);
 			var.tmp_list = var.tmp_list->next;
 		}
 	}

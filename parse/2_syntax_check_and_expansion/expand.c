@@ -20,17 +20,18 @@ static char *get_env_var(t_shell *bash, char *str, int start)
 	char *search_var; //the variable to search for
 	char *env_var; //the value we return
 	
+    env_var = NULL;
 	search_var = ft_substr(str, start + 1, get_search_var_end(str, start) - start); //we say plus one because we dont want $ in our search variable
     // printf("search_var: %s\n", search_var);
     if (search_var && search_var[0] == '?' && search_var[1] == '\0') //aka is $?
 		env_var = ft_itoa(error_status);
-	else if (search_var[0] = "$" && search_var[1] == '\0')
-		env_var = ft_itoa(getpid()); //get process id  
+	// else if (search_var[0] = "$" && search_var[1] == '\0') //test this
+	// 	env_var = ""; //get process id  
 	else
 		env_var = ft_getenv(bash->env_list, search_var); //use the getenv to get return value
     if(env_var == NULL) //if not found return empty string
         return ("");
-    freeandnullify(search_var); //it was allocated at the start
+    safefree(search_var); //it was allocated at the start
 	return(env_var); //return the env_var we have
 }
 
@@ -80,9 +81,9 @@ char	*final_expanded_str(t_shell *bash, char *str) //function to get the final e
 	while (needs_expansion(final_str) == true) //we need to be checking if the current final string needs to be expanded further
 	{
 		expand_temp = new_expanded_str(final_str); //function to replace $ with env variables
-		freeandnullify(final_str); //we need to replace the final_str with new returned one
+		safefree(final_str); //we need to replace the final_str with new returned one
 		final_str = ft_strdup(expand_temp); //put the most recent expanded str to final_str
-		freeandnullify(expand_temp);
+		safefree(expand_temp);
 	}
 	return(final_str);
 }

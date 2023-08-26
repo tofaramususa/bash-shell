@@ -70,11 +70,11 @@ char	*strjoin_new_var(char *temp_str, char *expanded_str, int count)
 	{
 		temp = ft_strjoin(expanded_str, temp_str);
 		if (temp)
-			freeandnullify(expanded_str);
+			safefree(expanded_str);
 	}
 	else
 		temp = ft_strdup(temp_str);
 	if (temp)
-		freeandnullify(temp_str);
+		safefree(temp_str);
 	return (temp);
 }

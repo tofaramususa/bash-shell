@@ -68,7 +68,7 @@ void	free_array(char **array)
 	if (array)
 	{
 		while (array[++i])
-			freeandnullify(array[i]);
-		freeandnullify(array);
+			safefree(array[i]);
+		safefree(array);
 	}
 }

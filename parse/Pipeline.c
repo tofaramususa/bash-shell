@@ -22,7 +22,7 @@ bool check_line(char *str)
 	i = -1;
     if (check_unmatched_quotes(str) == true)
 	{
-		freeandnullify(str);
+		safefree(str);
         return (printf("unbalanced quotes"), false);	
 	}
 	while(str[++i])
@@ -32,7 +32,7 @@ bool check_line(char *str)
 	}
 	if (str[i] == '\0')
 	{
-		freeandnullify(str);
+		safefree(str);
 		return (printf("No commands inputted"), false);
 	}
 	return(true);
