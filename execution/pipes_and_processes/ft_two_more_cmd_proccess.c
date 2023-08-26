@@ -58,14 +58,14 @@ int	first_process(t_shell *proc, t_command *av, char **envp)
 	if (proc->process_id == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		if (av[0].red_len > 0)
+		if (av[0].total_redirs > 0)
 			red_first_proc(&av[0], &proc->flag, proc);
 		if (proc->flag == 0)
 			dup2(proc->fd[0][1], STDOUT_FILENO);
 		close_pipes(proc);
 		if (av[0].cmd == NULL)
 		{
-			comb_free(av, proc);
+			garbage_collector(proc);
 			exit(0);
 		}
 		proc->check = ft_check_builtin(av[0].cmd);
@@ -84,11 +84,11 @@ void	middle_proc_execute(t_shell *proc, t_command *av, char **envp, int counter)
 {
 	char	*tmp;
 
-	tmp = parsing_middle(proc, envp, av[counter].cmd);
+	tmp = get_command(proc, envp, av[counter].cmd); //possible area of error;
 	if (av[counter].cmd && tmp && av[counter].cmd[0])
 	{
 		proc->scommand_index = counter;
-		execve(tmp, av[counter].arg, envp);
+		execve(tmp, av[counter].args, envp);
 		free_str(tmp); //free_str
 		free_func_one_cmd(av, proc, envp);
 	}
@@ -112,7 +112,7 @@ void	middl_process(t_shell *proc, t_command *av, char **envp, int counter)
 		terminate("fork", proc, av);
 	if (proc->process_id == 0)
 	{
-		if (av[counter].red_len > 0)
+		if (av[counter].total_redirs > 0)
 			red_middle(av, &proc->flag_out, &proc->flag_in, proc);
 		if (proc->flag_out == 0)
 			dup2(proc->fd[proc->counter + 1][1], STDOUT_FILENO);
@@ -121,7 +121,7 @@ void	middl_process(t_shell *proc, t_command *av, char **envp, int counter)
 		close_pipes(proc);
 		if (av[counter].cmd == NULL)
 		{
-			comb_free(av, proc);
+			garbage_collector(proc);
 			exit(0);
 		}
 		proc->check = ft_check_builtin(av[counter].cmd);
@@ -141,19 +141,19 @@ int	last_process(t_shell *proc, t_command *av, char **envp)
 {
 	proc->scommand_index = av->cmd_len - 1;
 	proc->flag = 0;
-	proc->process_id1 = fork(); /fork id
+	proc->process_id1 = fork(); //fork id
 	if (proc->process_id1 < 0)
 		terminate("fork", proc, av); //free everything and print error
 	if (proc->process_id1 == 0)
 	{
-		if (av[av->cmd_len - 1].red_len > 0)
+		if (av[av->cmd_len - 1].total_redirs > 0)
 			red_last_proc(av, &proc->flag, proc);
 		if (proc->flag == 0)
 			dup2(proc->fd[proc->counter][0], STDIN_FILENO);
 		close_pipes(proc);
 		if (av[av->cmd_len - 1].cmd == NULL) //means no commands
 		{
-			comb_free(av, proc);
+			garbage_collector(proc);
 			exit(0);
 		}
 		proc->check = ft_check_builtin(av[av->cmd_len - 1].cmd); //check for builtins

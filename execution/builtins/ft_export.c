@@ -28,9 +28,7 @@ void	ft_env_print_linked(t_shell *proc, t_command *av)
 			printf("%s%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
-	free_array(proc->envp);
-	free_redirection(av);
-	ultimate_free(proc, av);
+	garbage_collector(proc);
 	exit(0);
 }
 
@@ -75,7 +73,8 @@ int	ft_export_print_linked(t_command *pipe, t_shell *prc)
 			prc->temp_list = prc->temp_list->next;
 		}
 	}
-	free_one_exec(prc, pipe);
+	if (pipe->cmd_len > 1)
+		garbage_collector(prc);
 	return (prc->x);
 }
 
@@ -128,6 +127,7 @@ int	ft_unset(t_command *pipe, t_shell *proc)
 	if (pipe->args[1])
 		while (pipe->args[++x])
 			res = ft_unset_check_and_unset(proc->env_list, &pipe->args[x]);
-	free_one_exec(proc, pipe);
+	if (pipe->cmd_len > 1)
+		garbage_collector(prc);
 	return (res);
 }

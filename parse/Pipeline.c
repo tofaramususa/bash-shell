@@ -66,11 +66,11 @@ char	**ft_split_on_delims(char *str)
 	return (free_array(temp_tokens), final_tokens);
 }
 //3. Create a token list from the array, free the array, check for syntax, if error then free array, then perform expansion and quote removal
-t_token *ft_tokenise(char **tokens)
+t_token *ft_tokenise(t_shell *bash, char **tokens)
 {
 	t_token *tokenlist;
 
-	tokens = expand_array(tokens);
+	tokens = expand_array(bash, tokens);
 	// print_array(tokens);
 	tokenlist = create_token_list(tokens);
 	//l may need a function to remove empty string tokens
@@ -78,9 +78,8 @@ t_token *ft_tokenise(char **tokens)
 		//do something
 	if(token_syntax_check(tokenlist) == false) //X2
 	{
-		// exit(0); 
-		// call free tokenlist;
-		// change exit status;
+		error_status = 127;
+		return (NULL);
 	}
 	// quote removal on each token
 	free_array(tokens);

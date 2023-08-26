@@ -85,7 +85,7 @@ int	pipex_three_cmd(t_command *av, t_shell *proc, char **envp)
 	proc->counter = 0;
 	signal(SIGINT, SIG_IGN);
 	first_process(proc, av, envp);
-	while (proc->counter < proc->middle_cmd)
+	while (proc->counter < proc->middle_scommand)
 	{
 		middl_process(proc, av, envp, proc->counter + 1);
 		proc->counter++;

@@ -41,7 +41,9 @@ bool parse(t_shell bash)
 	{
         return (false);	
     }
-	bash.tokenlist = ft_tokenise(final_result);
+	bash.tokenlist = ft_tokenise(&bash, final_result);
+    if (!bash.tokenlist)
+        return(false);
 	bash.s_commands = create_scmnd_array(&bash.tokenlist);
     bash.total_scommands = array_len(bash.s_commands) + 1;
     return (true);

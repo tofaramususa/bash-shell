@@ -45,7 +45,7 @@ void	check_and_execute(t_shell *proc, t_command *av, char **envp, char *tmp)
 {
 	if (av->cmd && tmp && av->cmd[0])
 	{
-		execve(tmp, av->arg, envp);
+		execve(tmp, av->args, envp);
 		free_func_one_cmd(av, proc, envp);
 	}
 	else
@@ -68,11 +68,11 @@ void	one_cmd_process(t_shell *proc, t_command *av, char **envp)
 		terminate("fork", proc, av);
 	if (proc->process_id == 0)
 	{
-		if (av->red_len > 0)
+		if (av->total_redirs > 0)
 			red_one_cmd(av, proc); //perform redirections before trying to execute
 		if (av->cmd == NULL)
 		{
-			comb_free(av, proc); //free everything
+			garbage_collector(proc); //free everything
 			exit(0);
 		}
 		proc->check = ft_check_builtin(av->cmd); //check for  builtin and return a value to identify it
@@ -92,8 +92,8 @@ void	one_cmd_process(t_shell *proc, t_command *av, char **envp)
 int	set_signal_exe(t_command *av, t_shell *proc, char **envp)
 {
 	signal(SIGINT, SIG_IGN);
-	signal(SIGINT, child_signal_handler);
-	signal(SIGQUIT, child_signal_handler);
+	signal(SIGINT, child_sig_handler);
+	signal(SIGQUIT, child_sig_handler);
 	one_cmd_process(proc, av, envp); 
 	waitpid(-1, &proc->error_no, 0); //wait for the proess to finish
 	if (WIFEXITED(proc->error_no))

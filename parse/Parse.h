@@ -86,18 +86,18 @@ void set_quote_flag(t_quote *value, char c);
 char	**ft_space(char *s);
 char	**ft_strtok(char *s);
 char	**ft_split_on_delims(char *str);
-t_token *ft_tokenise(char **tokens);
+t_token *ft_tokenise(t_shell *bash, char **tokens);
 t_token *create_token_list(char **tokens);
 void free_token_list(t_token **tokenlist);
 
 /*Syntax Check and Expansion*/
 bool token_syntax_check(t_token *headToken);
-char	*final_expanded_str(char *str);
+char	*final_expanded_str(t_shell *bash, char *str);
 bool needs_expansion(char *str);
 int get_search_var_end(char *str, int start);
 int	get_end_index_expan(char *str, int start);
 char *strjoin_new_var(char *temp_str, char *expanded_str, int count);
-char **expand_array(char **str);
+char **expand_array(t_shell *bash, char **str);
 
 /*Simple Commands and Redirections*/
 t_command create_scmnd_node(t_token *start, t_token *end);

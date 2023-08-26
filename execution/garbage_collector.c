@@ -66,7 +66,7 @@ void free_scommand(t_command *s_commands)
 
 void garbage_collector(t_shell *bash)
 {
-    if(bash)
+      if(bash)
     {
         //call function to free env_vars;
         free_array(bash->env_vars);

@@ -44,7 +44,7 @@ int	replace_heredocs_util(t_command *av, t_redir *redir, t_heredoc_var *var)
  * @av:
  * @proc:
 */
-int	replace_heredocs(t_command *s_commands, t_redir *redir, t_shell bash)
+int	replace_heredocs(t_command *s_commands, t_redir *redir, t_shell *bash)
 {
 	t_heredoc_var	var;
 
@@ -59,7 +59,7 @@ int	replace_heredocs(t_command *s_commands, t_redir *redir, t_shell bash)
 			return (close(var.file1), 1);
 		if(!array_strchr(redir->filename, '"') || !array_strchr(redir->filename, '\'')) //means in quotes
 		{
-			var.tmp = new_expanded_str(var.tmp);
+			var.tmp = final_expanded_str(bash, var.tmp);
 		}
 		else
 			redir->filename = remove_quotes(redir->filename);	

@@ -43,23 +43,18 @@ void	ft_echo(t_command *pipe, t_shell *proc, char **envp)
 	if (pipe[proc->scommand_index].args_len == 1)
 	{
 		printf("\n");
-		free_array(envp);
-		free_redirection(pipe);
-		ultimate_free(proc, pipe);
+		garbage_collector(proc);
 	}
-	else if (check_nns(pipe[proc->scommand_index].arg[1]) == 0)
+	else if (check_nns(pipe[proc->scommand_index].args[1]) == 0)
 	{
 		ft_print_echo(&pipe[proc->scommand_index], 1);
-		free_array(envp);
-		ultimate_free(proc, pipe);
+		garbage_collector(proc);
 	}
 	else
 	{
 		ft_print_echo(&pipe[proc->scommand_index], 0);
 		printf("\n");
-		free_redirection(pipe);
-		free_array(envp);
-		ultimate_free(proc, pipe);
+		garbage_collector(proc);
 	}
 	exit(0);
 }
@@ -73,16 +68,14 @@ void	ft_pwd(t_shell *data, t_command *pipe, char **envp)
 	char	*pwd;
 
 	pwd = getcwd(res, 4096);
-	free_redirection(pipe);
-	free_array(envp);
 	if (!pwd)
 	{
 		ft_putstr_fd("Error: sorry dir is deleted or incorrect!\n", 2);
-		ultimate_free(data, pipe);
+		garbage_collector(data);
 		exit(1);
 	}
 	printf("%s\n", pwd);
-	ultimate_free(data, pipe);
+	garbage_collector(data);
 	exit(0);
 }
 
@@ -112,12 +105,12 @@ int	scan_exit_codes(t_command *pipe)
 void	ft_exit(t_command *pipe, t_shell *proc)
 {
 	proc->x = 0;
-	if (pipe[proc->scommand_index].arg[1] == NULL) //exit only takes one argument
+	if (pipe[proc->scommand_index].args[1] == NULL) //exit only takes one argument
 	{
-		comb_free(pipe, proc); //free the redirections, shell and simple commands;
+		garbage_collector(proc)//free the redirections, shell and simple commands;
 		exit(error_status); //exit
 	}
-	if (pipe[proc->scommand_index].arg[2]) //exit only takes one argument
+	if (pipe[proc->scommand_index].args[2]) //exit only takes one argument
 	{
 		write(2, pipe[proc->scommand_index].cmd, ft_strlen(pipe[proc->scommand_index].cmd));
 		ft_putstr_fd(": too many arguments\n", 2);
@@ -127,11 +120,11 @@ void	ft_exit(t_command *pipe, t_shell *proc)
 	{
 		write(2, pipe[proc->scommand_index].cmd, ft_strlen(pipe[proc->scommand_index].cmd));
 		ft_putstr_fd(": numeric argument required\n", 2);
-		comb_free(pipe, proc);
+		garbage_collector(proc);
 		exit(255);
 	}
-	if (pipe[proc->scommand_index].arg[1]) //not sure
-		proc->x = (unsigned char)ft_exit_helper(pipe[proc->scommand_index].arg[1], pipe, proc);
-	comb_free(pipe, proc);
+	if (pipe[proc->scommand_index].args[1]) //not sure
+		proc->x = (unsigned char)ft_exit_helper(pipe[proc->scommand_index].args[1], pipe, proc);
+	garbage_collector(proc);
 	exit(proc->x);
 }

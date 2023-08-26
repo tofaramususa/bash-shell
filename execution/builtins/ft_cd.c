@@ -114,15 +114,13 @@ int	ft_cd(t_command *pipe, t_shell *proc)
 
 	pwd = getcwd(proc->pwd, 1024); //get directory
 	proc->x = 0; //this is temporary exit status
-	if (pipe[proc->scommand_index].arg[1])
+	if (pipe[proc->scommand_index].args[1])
 		proc->x = ft_cd_util(&pipe[proc->scommand_index], pwd, proc); //check if theres argument after cd
-	else if (pipe[proc->scommand_index].arg[1] == NULL)
+	else if (pipe[proc->scommand_index].args[1] == NULL)
 		proc->x = ft_cd_util_2(pwd, proc); //if nothing then go to home directory
 	if (pipe->cmd_len > 1) //if more than 1 command free everything
 	{
-		free_array(proc->envp);
-		free_redirection(pipe);
-		ultimate_free(proc, pipe);
+		garbage_collector(proc);
 	}
 	return (proc->x); // then return exit status
 }

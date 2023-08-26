@@ -30,7 +30,7 @@ void	sig_handler(int num)
 	}
 }
 
-void	child_signal_handler(int num)
+void	child_sig_handler(int num)
 {
 	if (num == SIGINT)
 	{
@@ -47,10 +47,9 @@ void	child_signal_handler(int num)
 void	do_operation(t_shell *proc, t_command *av)
 {
 	proc->dont = 1;
-	if (av->red_len > 0)
+	if (av->total_redirs > 0)
 		red_one_cmd(av, proc);
 }
-
 
 void init_signal(void)
 {

@@ -40,31 +40,3 @@ int	check_nns(char *str)
 			return (1);
 	return (0);
 }
-
-void	free_one_exec(t_shell *proc, t_command *pipe)
-{
-	if (pipe->cmd_len > 1)
-	{
-		free_array(proc->envp);
-		free_redirection(pipe);
-		ultimate_free(proc, pipe);
-	}
-}
-
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	while (*s1 && *s2 && (*s1 == *s2))
-	{
-		s1++;
-		s2++;
-	}
-	return ((int)*s1 - *s2);
-}
-
-int	check_red_name(char *str)
-{
-	if ((ft_strcmp(str, ">") == 0 || ft_strcmp(str, "<") == 0 \
-	|| ft_strcmp(str, ">>") == 0 || ft_strcmp(str, "<<") == 0))
-		return (1);
-	return (0);
-}

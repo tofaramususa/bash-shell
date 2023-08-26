@@ -40,7 +40,6 @@ typedef struct s_command
 {
 	char *cmd;
     int  cmd_len;
-    int redir_length;
     int args_len;
     char **args;
     int total_redirs;
@@ -63,10 +62,15 @@ typedef struct s_shell
     int middle_scommand;
     int scommand_index;
     int counter;
-    int fork_id //id1
+    int process_id //id1
+    int process_id1
     char *line;
     t_token *tokenlist;
     t_list temp_list;
+    int flag;
+    int flag_out;
+    int flag_in;
+    int check;
     int x;
 
 } t_shell;
