@@ -44,6 +44,6 @@ char *remove_quotes(char *str)
         new_str[j++] = str[i];
 	}
 	new_str[j] = '\0';
-	free_str(str); //need to put this for replace_heredocs don't change
+	freeandnullify(str); //need to put this for replace_heredocs don't change
 	return(new_str);
 }

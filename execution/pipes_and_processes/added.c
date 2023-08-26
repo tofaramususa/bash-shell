@@ -15,21 +15,21 @@
  * free_array: a function that free 2d array
  * @args: 2d array to be freed
 */
-void	free_array(char **args)
-{
-	int	size;
-	int	i;
+// void	free_array(char **args)
+// {
+// 	int	size;
+// 	int	i;
 
-	i = 0;
-	size = 0;
-	while (args[size])
-		size++;
-	while (i < size)
-		if (args[i])
-			free_str(args[i++]);
-	if (args)
-		free_str(args);
-}
+// 	i = 0;
+// 	size = 0;
+// 	while (args[size])
+// 		size++;
+// 	while (i < size)
+// 		if (args[i])
+// 			freeandnullify(args[i++]);
+// 	if (args)
+// 		freeandnullify(args);
+// }
 
 /**
  * exit_with_code: a function that exit with the status

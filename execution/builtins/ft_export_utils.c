@@ -45,8 +45,8 @@ int	chek_exp_a_rplc_util(t_exp_var *var, char *replace)
 				var->y = 0;
 				while (replace[var->y] && replace[var->y] != '=')
 					var->y++;
-				free_str(var->tmp_list->key);
-				free_str(var->tmp_list->value);
+				freeandnullify(var->tmp_list->key);
+				freeandnullify(var->tmp_list->value);
 				var->tmp_list->key = ft_substr(replace, 0, var->y + 1);
 				var->tmp_list->value = ft_substr(replace, var->y + 1, \
 				ft_strlen(replace) - var->y);

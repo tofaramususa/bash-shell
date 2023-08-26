@@ -1,10 +1,12 @@
 
 //function to free string:
-void free_str(void *str)
+void freeandnullify(void *ptr)
 {
-    if(str)
-        free(str);
-    str = NULL;
+    if (ptr)
+    {
+        free(ptr);
+        ptr = NULL;
+    }
 }
 
 //function to free t_list list which is in libft envrionement variables and free_array env
@@ -12,48 +14,55 @@ void	free_env_list(t_list *head)
 {
 	t_list	*current;
 	t_list	*next;
-	current = head;
-	while (current != NULL)
-	{
-		next = current->next;
-		free_str(current->key);
-		free_str(current->value);
-		free_str(current);
-		current = next;
-	}
-	head = NULL;
+    if (head)
+    {
+        current = head;
+        while (current != NULL)
+        {
+            next = current->next;
+            freeandnullify(current->key);
+            freeandnullify(current->value);
+            freeandnullify(current);
+            current = next;
+        }
+    }
+    head = NULL;
 }
-//function to free redirections list which means calling filename/ free_str
+//function to free redirections list which means calling filename/ freeandnullify
 void free_redirs_list(t_redir *redirlist)
 {
     t_redir *current_node;
     t_redir *next_node;
 
-    current_node = redirlist;
-    if (tokenlist)
+    if (redirlist)
     {
+        current_node = redirlist;
         while (current_node)
         {
             next_node = current_node->next;
-            free_str(filename);
+            freeandnullify(filename);
+            freeandnullify(current_node);
             current_node = next_node;
         }
-        *redirlist = NULL;
     }
+    redirlist = NULL;
 }
 //function to free_simple commands which simple commands
-// free_str command and path, free_array for args, call free redirs
+// freeandnullify command and path, free_array for args, call free redirs
 void free_scommand(t_command *s_commands)
 {
     int i;
 
     i = -1;
-    while(s_commands[++i])
+    if(s_commands)
     {
-        free_str(s_commands[i]->cmd);
-        free_str(s_commands[i]->path);
-        free_array(s_commands[i]->args);
-        free_redirs_list(s_commands[i]->redirs);
+        while(s_commands[++i])
+        {
+            freeandnullify(s_commands[i]->cmd);
+            freeandnullify(s_commands[i]->path);
+            free_array(s_commands[i]->args);
+            free_redirs_list(s_commands[i]->redirs);
+        }
     }
     s_commands = NULL;
 }
@@ -75,7 +84,7 @@ void garbage_collector(t_shell *bash)
         //call function to free env_list;
         free_env_list(bash->env_list);
         //call function to free line;
-        free_str(bash->line);
+        freeandnullify(bash->line);
         //call function to free token;
         free_token_list(bash->tokenlist);
     }

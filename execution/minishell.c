@@ -35,6 +35,11 @@ bool parse(t_shell bash)
 {
 	// char *word = "$PAT";
     char **final_result;
+    if (!check_line(bash.line))
+    {
+        error_status = 0;
+        return (false);
+    }
     add_history(bash.line);
     final_result = ft_split_on_delims(bash.line);
     if (!final_result)
@@ -60,26 +65,16 @@ int main(int ac, char **av, char **envp)
     signal(SIGQUIT, SIG_IGN);
     if(envp[0] == NULL)
         exit(printf("Error: No environment variables found"));
-    ft_array_to_linked_list(envp) //convert envp to an array 
+    bash.env_list = ft_array_to_linked_list(envp) //convert envp to an array 
     while(1)
     {
         init_signals(); //handle the signals
         bash.line = readline ("[TheBash]$")
-        if (!check_line(bash.line))
-        {
-            error_status = 0;
-            continue ;
-        }
         if(parse(bash))
         {
             start_execution(&bash)
         }
         garbage_collector(&bash);
-
-        //parse the line
-//at the end of the parsing stage we have only allocated memory for the simple commands, 
-//take note we have not assigned the command line
-        //execute the line
     }
 }
 

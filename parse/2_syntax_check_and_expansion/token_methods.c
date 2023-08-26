@@ -62,11 +62,12 @@ static t_token	*new_token_node(char *arg)
 	t_token	*node;
 
 	node = (t_token *) malloc(sizeof(t_token));
-	if (!node)
-		return (node = NULL);
-	node->value = ft_strdup(arg);
-	node->type = assign_token_type(arg);
-	node->next = NULL;
+	if (node)
+	{
+		node->value = ft_strdup(arg);
+		node->type = assign_token_type(arg);
+		node->next = NULL;
+	}
 	return (node);
 }
 
@@ -79,14 +80,15 @@ void free_token_list(t_token *tokenlist)
     current_node = tokenist;
 	if(tokenlist)
 	{
-		while (current_node && current_node != NULL)
+		while (current_node)
 		{
 			next_node = current_node->next;
-			free_str(current_node->value);
+			freeandnullify(current_node->value);
+			freeandnullify(current_node);
 			current_node = next_node;
 		}
-		*tokenlist = NULL;
 	}
+	tokenlist = NULL;
 }
 
 //essentially main function to turn every word and operator to a token

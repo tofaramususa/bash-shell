@@ -22,7 +22,7 @@ bool check_line(char *str)
 	i = -1;
     if (check_unmatched_quotes(str) == true)
 	{
-		free_str(str);
+		freeandnullify(str);
         return (printf("unbalanced quotes"), false);	
 	}
 	while(str[++i])
@@ -32,7 +32,7 @@ bool check_line(char *str)
 	}
 	if (str[i] == '\0')
 	{
-		free_str(str);
+		freeandnullify(str);
 		return (printf("No commands inputted"), false);
 	}
 	return(true);
@@ -79,6 +79,7 @@ t_token *ft_tokenise(t_shell *bash, char **tokens)
 	if(token_syntax_check(tokenlist) == false) //X2
 	{
 		error_status = 127;
+		free_array(tokens);
 		return (NULL);
 	}
 	// quote removal on each token
