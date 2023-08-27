@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../Includes/minishell.h"
 
 /**
  * sig_handler: a function to handle signal calls
@@ -51,7 +51,7 @@ void	do_operation(t_shell *proc, t_command *av)
 		red_one_cmd(av, proc);
 }
 
-void init_signal(void)
+void init_signals(void)
 {
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);

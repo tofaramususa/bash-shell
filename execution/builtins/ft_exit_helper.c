@@ -10,18 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
-static void	atoi_utl_with_exit(char *str, int x, t_shell *proc)
+static void atoi_utl_with_exit(char *str, int x, t_shell *proc)
 {
-	unsigned long long	res;
-	unsigned long long	copy;
+	unsigned long long copy;
+	unsigned long long res;
 
-	copy = 0;
 	res = 0;
 	while (str[x] >= '0' && str[x] <= '9')
 	{
 		copy = res;
+		copy += 0; // Perform a no-op operation with copy
 		res = (res * 10) + (str[x++] - '0');
 		if (copy > res)
 		{
@@ -32,7 +32,7 @@ static void	atoi_utl_with_exit(char *str, int x, t_shell *proc)
 	}
 }
 
-int	ft_exit_helper(const char *str, t_command *pipe, t_shell *proc)
+int	ft_exit_helper(const char *str, t_shell *proc)
 {
 	int					x;
 	int					sign;

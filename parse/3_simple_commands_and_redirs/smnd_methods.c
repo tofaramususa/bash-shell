@@ -10,21 +10,37 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
+
+static int count_redirs(t_redir *redirs)
+{
+	t_redir *temp;
+	int total;
+
+	total = 0;
+	temp = redirs
+	while (temp)
+		total++ ;
+	return (total);
+}
 // in our tokens list we know the start and stop of our simple command now we parse it to the tokens into our simple commands
-t_command	create_scmnd_node(t_token *start, t_token *end)
+t_command	*create_scmnd_node(t_token *start, t_token *end)
 {
 	t_command	*command;
 
-	command = malloc(sizeof(t_command));
+	command = malloc(sizeof(t_command *));
 	if (!command)
 		return (NULL);
-	command.redir = NULL;
-	command.cmd = NULL;
-	command.args = NULL;
-	command.command = NULL;
+	command->cmd = NULL;
+	command->redirs = NULL;
+	command->args = NULL;
 	fill_scmnd(&command, start, end);
+	if (command->args[0])
+		command->cmd = command->args[0];
+	command->args_len = ft_array_len(command->args);
+	command->total_redirs = count_redirs(command->redirs);
+
 	return (command);
 }
 
@@ -79,31 +95,3 @@ void	fill_scmnd(t_command *scommand, t_token *start, t_token *end)
 	if (scommand->args)
 		scommand->cmd = scommand->args[0];
 }
-
-// We add a simplecommand to the list of simple commands, like lstaddtoback;
-// static t_command *get_to_last(t_command *node)
-// {
-// 	t_command	*to_last;
-
-// 	to_last = node;
-// 	while (to_last != NULL && to_last->next != NULL)
-// 		to_last = to_last->next;
-// 	return (to_last);
-// }
-
-// void	add_to_scmnd_list(t_command **cmndList, t_command *newCommand)
-// {
-// 	t_command	*to_last;
-
-// 	if (*cmndList)
-// 	{
-// 		to_last = get_to_last(*cmndList);
-			//we cannot use the actual ftlstlast but create own version
-// 		to_last->next = newCommand;
-// 		newCommand->next = NULL;
-// 	}
-// 	else
-// 		*cmndList = newCommand;
-// }
-
-// need to create a function to free the simple commands create

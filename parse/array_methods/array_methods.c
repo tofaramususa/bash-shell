@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
 char **dup_array(char **src)
 {
@@ -37,8 +35,8 @@ int ft_array_len(char **str)
 
     str_rows = 0;
 
-    // if (!str)
-    //   return (NULL);
+    if (!str)
+      return (0);
     while (str[str_rows] != NULL)
         str_rows++;
     return(str_rows);

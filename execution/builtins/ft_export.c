@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
 /**
  * ft_env_print_linked: is a function that simply prints the env
@@ -39,7 +39,7 @@ int	ft_export_to_linked(t_command *pipe, t_shell *prc)
 		if (ft_validate_exprot(pipe->args[prc->x]) == 1)
 			print_and_set_flag(pipe, prc);
 		else
-			chek_exp_a_rplc(*prc->head, pipe->args[prc->x]);
+			check_and_replace(*prc->head, pipe->args[prc->x]);
 	}
 	return (prc->flag);
 }

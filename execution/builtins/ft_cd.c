@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
 /**
  * ft_cd_util: check if current pwd exits,, then change dir 
@@ -28,14 +28,14 @@ static int	ft_cd_util(t_command *pipe, char *pwd, t_shell *proc)
 		if (pwd)
 		{
 			tmp = ft_strjoin("OLDPWD=", pwd);
-			chek_exp_a_rplc(*proc->env_list, tmp);
+			check_and_replace(proc->env_list, tmp);
 			safefree(tmp);
 		}
 		pwd = getcwd(proc->pwd, 1024);
 		tmp = ft_strjoin("PWD=", pwd);
 		if (pwd)
 		{
-			proc->x = chek_exp_a_rplc(*proc->env_list, tmp);
+			proc->x = check_and_replace(proc->env_list, tmp);
 			return (safefree(tmp), proc->x);
 		}
 		ft_putstr_fd("cd: error retrieving current directory: getcwd: \
@@ -62,7 +62,7 @@ static	int	ft_cd_util_3(char *pwd, t_shell *proc)
 	if (pwd)
 	{
 		tmp = ft_strjoin("OLDPWD=", pwd);
-		chek_exp_a_rplc(*proc->env_list, tmp);
+		check_and_replace(proc->env_list, tmp);
 		if (tmp)
 			safefree(tmp);
 	}
@@ -70,7 +70,7 @@ static	int	ft_cd_util_3(char *pwd, t_shell *proc)
 	if (pwd)
 	{
 		tmp = ft_strjoin("PWD=", pwd);
-		proc->x = chek_exp_a_rplc(*proc->env_list, tmp);
+		proc->x = check_and_replace(proc->env_list, tmp);
 		return (safefree(tmp), proc->x);
 	}
 	return (1);
@@ -87,11 +87,11 @@ static	int	ft_cd_util_2(char *pwd, t_shell *proc)
 {
 	char	*tmp;
 
-	if (chdir(ft_getenv(*proc->env_list, "HOME")) == 0)
+	if (chdir(ft_getenv(proc->env_list, "HOME")) == 0)
 		return (ft_cd_util_3(pwd, proc));
 	else
 	{
-		tmp = ft_getenv(*proc->env_list, "HOME");
+		tmp = ft_getenv(proc->env_list, "HOME");
 		if (tmp == NULL)
 			ft_putstr_fd("cd: HOME not set\n", 2);
 		else

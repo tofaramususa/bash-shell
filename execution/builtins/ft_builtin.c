@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
 /**
  * ft_print_echo: print arguments to the terminal
@@ -38,7 +38,7 @@ void	ft_print_echo(t_command *pipe, int x)
  * ft_echo: will just take a string and print it
  * @pipe: a structure that hold the whole commands and args
 */
-void	ft_echo(t_command *pipe, t_shell *proc, char **envp)
+void	ft_echo(t_command *pipe, t_shell *proc)
 {
 	if (pipe[proc->scommand_index].args_len == 1)
 	{
@@ -62,7 +62,7 @@ void	ft_echo(t_command *pipe, t_shell *proc, char **envp)
 /**
  * ft_pwd: will print the current directory
 */
-void	ft_pwd(t_shell *data, t_command *pipe, char **envp)
+void	ft_pwd(t_shell *data)
 {
 	char	res[4096];
 	char	*pwd;
@@ -124,7 +124,7 @@ void	ft_exit(t_command *pipe, t_shell *proc)
 		exit(255);
 	}
 	if (pipe[proc->scommand_index].args[1]) //not sure
-		proc->x = (unsigned char)ft_exit_helper(pipe[proc->scommand_index].args[1], pipe, proc);
+		proc->x = (unsigned char)ft_exit_helper(pipe[proc->scommand_index].args[1], proc);
 	garbage_collector(proc);
 	exit(proc->x);
 }

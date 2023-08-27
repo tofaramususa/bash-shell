@@ -63,18 +63,19 @@ void	free_redirs_list(t_redir *redirlist)
 }
 // function to free_simple commands which simple commands
 // safefree command and path, free_array for args, call free redirs
-void	free_scommand(t_command *s_commands)
+void	free_scommand(t_command **s_commands)
 {
 	int	i;
 
-	i = -1;
+	i = 0;
 	if (s_commands)
 	{
-		while (s_commands[++i] != NULL)
+		while (s_commands[i] != NULL)
 		{
-			safefree(s_commands[i].cmd);
-			free_array(s_commands[i].args);
-			free_redirs_list(s_commands[i].redirs);
+			safefree(s_commands[i]->cmd);
+			free_array(s_commands[i]->args);
+			free_redirs_list(s_commands[i]->redirs);
+			i++;
 		}
 	}
 	s_commands = NULL;

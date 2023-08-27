@@ -1,6 +1,6 @@
 
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
 static int count_chars(char *str)
 {

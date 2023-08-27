@@ -25,14 +25,14 @@ bool	start_execution(t_shell *bash) //function to execute and free everything
 		ft_putstr_fd("Sorry too many commands\n", 2); //change this
 		exit(1);
 	}
-	if (check_and_update_heredoc(bash->s_commands, bash) == 1) //there is somekind or error here
+	if (check_and_update_heredoc(*bash->s_commands, bash) == 1) //there is somekind or error here
 	{
 		garbage_collector(bash); //free all the functions
 		return (true);
 	}
 	signal(SIGINT, SIG_IGN); //reset signal
 	signal(SIGINT, sig_handler); //
-	error_status = pipex(bash->total_scommands, bash->s_commands, bash); //here is were the execution happens
+	error_status = pipex(bash->total_scommands, *bash->s_commands, bash); //here is were the execution happens
     garbage_collector(bash);
 	unlink(".tmp"); //remove the tmp file
 	return (false);
@@ -57,8 +57,8 @@ bool parse(t_shell bash)
 	bash.tokenlist = ft_tokenise(&bash, final_result);
     if (!bash.tokenlist)
         return(false);
-	bash.s_commands = create_scmnd_array(&bash.tokenlist);
-    bash.total_scommands = array_len(bash.s_commands) + 1;
+	create_scmnd_array(bash, bash.tokenlist);
+
     return (true);
 }
 
@@ -67,13 +67,14 @@ int main(int ac, char **av, char **envp)
 {
     t_shell bash;
 
-    if (ac > 1)
+    if (ac > 1 || ft_array_len(av) > 1)
     exit(printf("To start [TheBash] enter: ./minishell"));
     error_status = 0;
     signal(SIGQUIT, SIG_IGN);
     if(envp[0] == NULL)
         exit(printf("Error: No environment variables found"));
-    bash.env_list = ft_array_to_linked_list(envp); //convert envp to an array 
+    create_envlist(&bash, envp); //convert envp to an array 
+    bash->dont = 0;
     while(1)
     {
         init_signals(); //handle the signals

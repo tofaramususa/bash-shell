@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../Includes/minishell.h"
 /*Turn a string into a list of simple commands*/
 /* One function that calls the four bottom functions */
 //1. check if string contains arguments and the quotes are balanced
@@ -87,12 +87,12 @@ t_token *ft_tokenise(t_shell *bash, char **tokens)
 	return (tokenlist);
 }
 
-int count_commands(t_token **tokenlist)
+int count_commands(t_token *tokenlist)
 {
 	int i;
 	t_token *temp;
 
-	temp = *tokenlist;
+	temp = tokenlist;
 	i = 1;
 	while (temp && temp->value != NULL)
 	{
@@ -104,18 +104,17 @@ int count_commands(t_token **tokenlist)
 }
 
 // 4. Create simple commands from the tokenlist and then free the token list at the end
-t_command *create_scmnd_array(t_token **tokenlist)
+void create_scmnd_array(t_shell bash, t_token *tokenlist)
 {
-	t_command *scmndList;
 	t_token *temp;
 	t_token *start;
 	t_token *end;
 	int i;
 
-	scmndList = (t_command *) malloc(sizeof(t_command) * (count_commands(tokenlist) + 1));
+	bash.s_commands = (t_command **) malloc(sizeof(t_command *) * (count_commands(tokenlist) + 1));
 	// if(!scmndList)
 		//do something
-	temp = *tokenlist;
+	temp = tokenlist;
 	start = NULL;
 	end = NULL;
 	i = 0;
@@ -125,8 +124,8 @@ t_command *create_scmnd_array(t_token **tokenlist)
 		end = temp;
 		while(end->next != NULL && end->next->type != PIPE)
 			end = end->next;
-		scmndList[i] = create_scmnd_node(start, end);
-		scmndList[i].cmd_len = count_commands(tokenlist) + 1;
+		bash.s_commands[i] = create_scmnd_node(start, end);
+		bash.s_commands[i]->cmd_len = count_commands(tokenlist) + 1;
 		if (end->next != NULL)
 		{
 			temp = end->next->next;
@@ -135,7 +134,7 @@ t_command *create_scmnd_array(t_token **tokenlist)
 			temp = NULL;
 		i++;
 	}
-	scmndList[i] = NULL;
+	bash.s_commands[i] = NULL;
+	bash.total_scommands = count_commands(tokenlist);
 	free_token_list(tokenlist);
-	return(scmndList);
 }

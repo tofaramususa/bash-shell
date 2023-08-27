@@ -1,4 +1,4 @@
-NAME:= libft
+NAME := libft.a
 
 SRCS := ft_atoi.c\
  ft_bzero.c\
@@ -33,16 +33,16 @@ SRCS := ft_atoi.c\
  ft_striteri.c\
  ft_itoa.c\
  ft_strtrim.c\
- ft_split.c\
- 
- BONUS := ft_lstadd_back.c\
+ ft_split.c
+
+BONUS := ft_lstadd_back.c\
  ft_lstadd_front.c\
  ft_lstclear.c\
  ft_lstdelone.c\
  ft_lstiter.c\
  ft_lstlast.c\
  ft_lstnew.c\
- ft_lstsize.c\
+ ft_lstsize.c
 
 OBJ = $(SRCS:.c=.o)
 
@@ -50,15 +50,15 @@ BONUS_OBJ = $(BONUS:.c=.o)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -Includes -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I../Includes -fsanitize=address
 
 all: $(NAME)
 
 %.o: %.c
-		$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJ) libft.h
-		$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+$(NAME): $(OBJ)
+	ar rcs $(NAME) $(OBJ)
 
 clean:
 	rm -f $(OBJ) $(BONUS_OBJ)
@@ -68,7 +68,7 @@ fclean: clean
 
 re: fclean all
 
-bonus: $(OBJ) $(BONUS_OBJ) libft.h
-	 $(CC) $(CFLAGS) $(OBJ) $(BONUS_OBJ) -o $(NAME)
+bonus: $(OBJ) $(BONUS_OBJ)
+	ar rcs $(NAME) $(OBJ) $(BONUS_OBJ)
 
-.PHONY: clean fclean all re bonus libft
+.PHONY: clean fclean all re bonus

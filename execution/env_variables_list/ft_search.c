@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 /**
  * search: scan the environment variable for the PATH fro 2d array
  * @envp: the environment variable

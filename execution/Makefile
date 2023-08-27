@@ -1,8 +1,8 @@
-NAME = execution
+NAME = execution.a
 
 SRCS = $(wildcard builtins/*.c) $(wildcard env_variables_list/*.c) $(wildcard pipes_and_processes/*.c)  $(wildcard redirections/*.c) $(wildcard *.c)
 
-CC = cc -g
+CC = cc -I/usr/local/Cellar/readline/8.1/include
 
 CFLAGS = -Wall -Werror -Wextra -Iincludes
 
@@ -14,7 +14,7 @@ all: $(NAME)
 		$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ) minishell.h libft.h
-		$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+		ar rcs $(NAME) $(OBJ)
 
 clean: 
 		rm -rf $(OBJ)

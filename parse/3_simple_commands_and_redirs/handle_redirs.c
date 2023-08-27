@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
 // Instead, each output redirection specifies a new output file, and the output is not overridden by subsequent redirections.
 //fill redirection str struct with redirection and file name;

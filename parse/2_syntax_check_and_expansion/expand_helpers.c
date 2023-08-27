@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
 bool	needs_expansion(char *str)
 {
@@ -53,8 +53,7 @@ int	get_end_index_expan(char *str, int start)
 	while (str[start])
 	{
 		set_quote_flag(&quotes, str[start]);
-		if (str[start] == '$' && !quotes.single_q && !array_strchr("\" '
-				/~%^{}:;'\0'", str[start + 1]))
+		if (str[start] == '$' && !quotes.single_q && !array_strchr("\" '/~%^{}:;'\0'", str[start + 1]))
 			break ;
 		start++;
 	}

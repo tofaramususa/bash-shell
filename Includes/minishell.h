@@ -20,6 +20,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 /*Quotes Struct*/
 typedef struct s_quote
@@ -63,7 +65,7 @@ typedef struct s_redir
 typedef struct s_command
 {
 	char			*cmd;
-	int				cmd_len;
+	int				cmd_len; //assign later
 	int				args_len;
 	char			**args;
 	int				total_redirs;
@@ -72,7 +74,7 @@ typedef struct s_command
 
 typedef struct s_shell
 {
-	t_command		*s_commands;
+	t_command		**s_commands;
 	char			**env_vars;
 	t_list			*env_list;
 	int				total_scommands;
@@ -89,7 +91,7 @@ typedef struct s_shell
 	int				process_id1;
 	char			*line;
 	t_token			*tokenlist;
-	t_list			temp_list;
+	t_list			*temp_list;
 	int				flag;
 	int				flag_out;
 	int				flag_in;
@@ -164,8 +166,8 @@ char				*strjoin_new_var(char *temp_str, char *expanded_str,
 char				**expand_array(t_shell *bash, char **str);
 
 /*Simple Commands and Redirections*/
-t_command			create_scmnd_node(t_token *start, t_token *end);
-t_command			*create_scmnd_array(t_token **tokenlist);
+t_command			*create_scmnd_node(t_token *start, t_token *end);
+void				create_scmnd_array(t_shell bash, t_token *tokenlist);
 void				fill_scmnd(t_command *scommand, t_token *start,
 						t_token *end);
 void				fill_redirs(t_command *scommand, t_token *redir,
@@ -176,5 +178,27 @@ void				free_redirs_list(t_redir *redirlist);
 void				print_array(char **str);
 
 /*EXECUTION*/
+int	pipex(int ac, t_command *scommand, t_shell *bash);
+void	garbage_collector(t_shell *bash);
+void	safefree(void *ptr);
+int	check_nns(char *str);
+
+/*BUILTINS*/
+void	ft_echo(t_command *pipe, t_shell *proc);
+int	ft_exit_helper(const char *str, t_shell *proc);
+void	ft_pwd(t_shell *data);
+
+
+/*Environment Variables Functions*/
+void	create_envlist(t_shell *proc, char **env);
+char	*ft_getenv(t_list *head, char *str);
+int	check_and_replace(t_list *head, char *replace);
+
+/*SIGNALS*/ 
+void	sig_handler(int num);
+void init_signals(void);
+
+/*REDIRECTIONS*/ 
+int	check_and_update_heredoc(t_command *s_commands, t_shell *bash);
 
 #endif

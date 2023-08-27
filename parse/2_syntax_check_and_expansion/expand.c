@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 //START AT THE BOTTOM
 // l need to add more characters that can stop path
 // "/~%^{}:; "
@@ -80,7 +80,7 @@ char	*final_expanded_str(t_shell *bash, char *str) //function to get the final e
 
 	while (needs_expansion(final_str) == true) //we need to be checking if the current final string needs to be expanded further
 	{
-		expand_temp = new_expanded_str(final_str); //function to replace $ with env variables
+		expand_temp = new_expanded_str(bash, final_str); //function to replace $ with env variables
 		safefree(final_str); //we need to replace the final_str with new returned one
 		final_str = ft_strdup(expand_temp); //put the most recent expanded str to final_str
 		safefree(expand_temp);
@@ -110,7 +110,7 @@ char **expand_array(t_shell *bash, char **str)
         }
         else
         {
-            expanded_str[i] = final_expanded_str(str[i]); //fill new array item with expanded variables
+            expanded_str[i] = final_expanded_str(bash, str[i]); //fill new array item with expanded variables
             i++;
         }
     }

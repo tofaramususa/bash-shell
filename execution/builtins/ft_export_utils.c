@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
 /**
  * count_till_equl_sign: just a function that scan and count until = sign
@@ -34,7 +34,7 @@ int	compare_until_eq(char *str1, char *str2)
 	return (1);
 }
 
-int	chek_exp_a_rplc_util(t_exp_var *var, char *replace)
+int	check_and_replace_util(t_exp_var *var, char *replace)
 {
 	while (var->tmp_list)
 	{
@@ -60,13 +60,13 @@ int	chek_exp_a_rplc_util(t_exp_var *var, char *replace)
 	return (0);
 }
 
-int	chek_exp_a_rplc(t_list *head, char *replace)
+int	check_and_replace(t_list *head, char *replace)
 {
 	t_exp_var	var;
 
 	var.tmp_list = head;
 	var.flag = 0;
-	if (chek_exp_a_rplc_util(&var, replace) == 1)
+	if (check_and_replace_util(&var, replace) == 1)
 		return (0);
 	if (var.flag == 0)
 	{

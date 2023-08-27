@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 /**
  * free_array: a function that free 2d array
  * @args: 2d array to be freed

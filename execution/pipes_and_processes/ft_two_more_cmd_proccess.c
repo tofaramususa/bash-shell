@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
 /**
  * check_built_ins_and_exexute: check if the command is one of the built ins 
@@ -27,11 +27,11 @@ void	check_built_ins_and_exexute(t_shell *proc, t_command *av, char **envp)
 	if (proc->check == 1)
 		ft_exit(av, proc);
 	else if (proc->check == 2)
-		ft_echo(av, proc, envp);
+		ft_echo(av, proc);
 	else if (proc->check == 3)
 		ret = ft_cd(av, proc);
 	else if (proc->check == 4)
-		ft_pwd(proc, av, envp);
+		ft_pwd(proc);
 	else if (proc->check == 5)
 		ft_env_print_linked(proc, av);
 	else if (proc->check == 6)

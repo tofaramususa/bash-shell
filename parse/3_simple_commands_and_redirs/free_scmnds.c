@@ -1,1 +1,0 @@
-//function to free scmnd;
