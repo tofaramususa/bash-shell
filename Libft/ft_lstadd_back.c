@@ -6,13 +6,13 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 04:31:42 by tmususa           #+#    #+#             */
-/*   Updated: 2023/01/29 10:20:10 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/27 15:16:01 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_lstadd_back(t_list **lst, t_list *add)
 {
 	t_list	*to_last;
 

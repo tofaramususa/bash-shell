@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yonamog2 <yonamog2@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 12:52:10 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/02/14 20:05:36 by yonamog2         ###   ########.fr       */
+/*   Updated: 2023/08/27 15:16:19 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	ft_exit(t_command *pipe, t_shell *proc)
 	proc->x = 0;
 	if (pipe[proc->scommand_index].args[1] == NULL) //exit only takes one argument
 	{
-		garbage_collector(proc)//free the redirections, shell and simple commands;
+		garbage_collector(proc);//free the redirections, shell and simple commands;
 		exit(error_status); //exit
 	}
 	if (pipe[proc->scommand_index].args[2]) //exit only takes one argument

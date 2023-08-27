@@ -6,11 +6,11 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 16:59:07 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/16 19:33:24 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/27 14:30:14 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Parse.h"
+#include "minishell.h"
 /*Turn a string into a list of simple commands*/
 /* One function that calls the four bottom functions */
 //1. check if string contains arguments and the quotes are balanced

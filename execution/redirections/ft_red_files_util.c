@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_red_files_util.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yonamog2 <yonamog2@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 12:48:29 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/02/20 15:46:15 by yonamog2         ###   ########.fr       */
+/*   Updated: 2023/08/27 15:50:48 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	red_infile(t_command *av, t_redir *redir, t_shell *proc)
  * @av: the structure containing the cmds and redirections
  * @x: the index of the redirection
 */
-int	red_append_mode(t_command *av, t_redir redir, t_shell *proc)
+int	red_append_mode(t_command *av, t_redir *redir, t_shell *proc)
 {
 	int	file1;
 

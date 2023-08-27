@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_create_env_list.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yonamog2 <yonamog2@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 11:55:07 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/02/19 14:28:03 by yonamog2         ###   ########.fr       */
+/*   Updated: 2023/08/27 17:08:37 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	create_envlist(t_shell *proc, char **env)
 	}
 	check_and_set(&var, head, proc);
 	proc->env_list = malloc(sizeof(t_list *));
-	*proc->env_list = head;
+	proc->env_list = head;
 	sort_list(*proc->env_list);
 	re_index(*proc->env_list);
 }

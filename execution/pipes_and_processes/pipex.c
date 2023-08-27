@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yonamog2 <yonamog2@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 12:21:08 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/02/15 18:05:16 by yonamog2         ###   ########.fr       */
+/*   Updated: 2023/08/27 14:02:56 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	pipex(int ac, t_command *scommand, t_shell *bash)
 	int		ret;
 
 	ret = 0;
-	bash->env_vars = linked_to_array(bash->env_list);//needs fixing //convert the env to an array for use in the env variable
+	bash->env_vars = linked_to_array(bash->env_list); //needs fixing //convert the env to an array for use in the env variable
 	bash->middle_scommand = ac - 2;
 	bash->total_pipes = ac - 1;
 	bash->counter = 0;

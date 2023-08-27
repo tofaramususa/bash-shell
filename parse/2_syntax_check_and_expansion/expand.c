@@ -6,11 +6,11 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:05:52 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/13 21:04:19 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/27 17:09:16 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Parse.h"
+#include "minishell.h"
 //START AT THE BOTTOM
 // l need to add more characters that can stop path
 // "/~%^{}:; "

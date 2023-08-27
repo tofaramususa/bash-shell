@@ -6,11 +6,11 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:05:52 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/13 21:02:58 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/27 17:09:16 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Parse.h"
+#include "minishell.h"
 
 bool	needs_expansion(char *str)
 {
@@ -23,8 +23,8 @@ bool	needs_expansion(char *str)
 	while (str[start] != '\0')
 	{
 		set_quote_flag(&quotes, str[start]);
-		if (str[start] == '$' && !quotes.single_q && !array_strchr("\" '/~%^{}:; '\0'",
-				str[start + 1]))
+		if (str[start] == '$' && !quotes.single_q
+			&& !array_strchr("\" '/~%^{}:; '\0'", str[start + 1]))
 			return (true);
 		start++;
 	}
@@ -53,8 +53,8 @@ int	get_end_index_expan(char *str, int start)
 	while (str[start])
 	{
 		set_quote_flag(&quotes, str[start]);
-		if (str[start] == '$' && !quotes.single_q && !array_strchr("\" ' /~%^{}:;'\0'",
-				str[start + 1]))
+		if (str[start] == '$' && !quotes.single_q && !array_strchr("\" '
+				/~%^{}:;'\0'", str[start + 1]))
 			break ;
 		start++;
 	}

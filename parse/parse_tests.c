@@ -6,11 +6,11 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 16:28:13 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/16 16:07:34 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/27 17:09:16 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Parse.h"
+#include "minishell.h"
 
 void print_array(char **str)
 {
@@ -45,24 +45,19 @@ void print_tokens(t_token *tokens)
 
 void print_redir_list(t_command *scommand)
 {
-    t_redir *out = scommand->outfile;
-    t_redir *in = scommand->infile;
+    t_redir *out = scommand->redir;
 
-	printf("\nAll OUTFILES:\n");
+	printf("\nAll REDIRS:\n");
     while (out) {
         if (out->type == OUTPUT)
             printf("OUTPUT TO-> \"%s\"\n", out->filename);
         else if (out->type == APPEND)
             printf("APPEND TO-> \"%s\"\n", out->filename);
+        if (out->type == INPUT)
+            printf("INPUT FROM-> \"%s\"\n", out->filename);
+        else if (out->type == HEREDOC)
+            printf("HEREDOC EOF-> \"%s\"\n", out->filename);
         out = out->next;
-    }
-	printf("\nAll INFILES:\n");
-    while (in) {
-        if (in->type == INPUT)
-            printf("INPUT FROM-> \"%s\"\n", in->filename);
-        else if (in->type == HEREDOC)
-            printf("HEREDOC EOF-> \"%s\"\n", in->filename);
-        in = in->next;
     }
 }
 

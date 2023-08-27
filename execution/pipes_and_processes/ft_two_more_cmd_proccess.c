@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_two_more_cmd_proccess.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yonamog2 <yonamog2@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 13:07:19 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/02/15 17:49:54 by yonamog2         ###   ########.fr       */
+/*   Updated: 2023/08/27 15:29:04 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	first_process(t_shell *proc, t_command *av, char **envp)
 {
 	proc->scommand_index = 0;
 	proc->flag = 0;
-	proc->envp = envp;
+	proc->env_vars = envp;
 	proc->process_id = fork();
 	if (proc->process_id < 0)
 		terminate("fork", proc, av);

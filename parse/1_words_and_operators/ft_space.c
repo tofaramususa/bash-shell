@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Parse.h"
+#include "minishell.h"
 
 static int	get_end_index_sp(char *s, char *delimiters, int start)
 {

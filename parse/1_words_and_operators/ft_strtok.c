@@ -6,11 +6,11 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:30:23 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/13 21:02:39 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/27 17:09:16 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Parse.h"
+#include "minishell.h"
 
 int	get_end_index(char *s, char *delimiters, int start)
 {

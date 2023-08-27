@@ -6,11 +6,11 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:48:25 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/16 19:35:31 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/27 17:27:11 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Parse.h"
+#include "minishell.h"
 
 static t_token *get_to_last(t_token *lst)
 {
@@ -77,7 +77,7 @@ void free_token_list(t_token *tokenlist)
     t_token *current_node;
     t_token *next_node;
 
-    current_node = tokenist;
+    current_node = tokenlist;
 	if(tokenlist)
 	{
 		while (current_node)

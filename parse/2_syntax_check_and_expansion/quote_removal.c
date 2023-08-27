@@ -1,6 +1,6 @@
 
 
-#include "../Parse.h"
+#include "minishell.h"
 
 static int count_chars(char *str)
 {

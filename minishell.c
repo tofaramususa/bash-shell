@@ -1,10 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/27 14:34:02 by tmususa           #+#    #+#             */
+/*   Updated: 2023/08/27 15:14:47 by tmususa          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "minishell.c"
-
+#include "minishell.h"
 
 //write functions to start signals and write signal handlers
-
-
 
 //the start of the execution:
 /**
@@ -60,22 +68,22 @@ int main(int ac, char **av, char **envp)
     t_shell bash;
 
     if (ac > 1)
-    exit(printf("To start [TheBash] enter: ./minishell"), 35);
+    exit(printf("To start [TheBash] enter: ./minishell"));
     error_status = 0;
     signal(SIGQUIT, SIG_IGN);
     if(envp[0] == NULL)
         exit(printf("Error: No environment variables found"));
-    bash.env_list = ft_array_to_linked_list(envp) //convert envp to an array 
+    bash.env_list = ft_array_to_linked_list(envp); //convert envp to an array 
     while(1)
     {
         init_signals(); //handle the signals
         if(error_status == 0)
-            bash.line = readline ("🏀\x1b[38;5;122m[TheBash]$ \x1b[0m")
+            bash.line = readline ("🏀\x1b[38;5;122m[TheBash]$ \x1b[0m");
         else
-            bash.line = readline ("🗑️ \x1b[38;5;122m[TheBash]$ \x1b[0m")
+            bash.line = readline ("🗑️ \x1b[38;5;122m[TheBash]$ \x1b[0m");
         if(parse(bash))
         {
-            start_execution(&bash)
+            start_execution(&bash);
         }
         garbage_collector(&bash);
     }

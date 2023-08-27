@@ -6,13 +6,13 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 16:54:29 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/12 18:23:57 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/27 17:09:16 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
-#include "../Parse.h"
+#include "minishell.h"
 
 char **dup_array(char **src)
 {

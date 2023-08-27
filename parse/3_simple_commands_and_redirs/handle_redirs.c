@@ -6,11 +6,11 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:55:49 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/12 18:21:33 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/27 17:09:16 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Parse.h"
+#include "minishell.h"
 
 // Instead, each output redirection specifies a new output file, and the output is not overridden by subsequent redirections.
 //fill redirection str struct with redirection and file name;

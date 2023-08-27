@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   added.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaratae <dkaratae@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 07:03:17 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/02/17 16:19:50 by dkaratae         ###   ########.fr       */
+/*   Updated: 2023/08/27 15:28:12 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,6 @@ void	cmd_not_found(t_command *av, t_shell *proc, int counter)
 {
 	write(2, av[counter].cmd, ft_strlen(av[counter].cmd));
 	ft_putstr_fd(": command not found\n", 2);
-	garbage_collector(bash);
+	garbage_collector(proc);
 	exit(127);
 }
