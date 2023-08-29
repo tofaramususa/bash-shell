@@ -1,6 +1,6 @@
-NAME = parsing.a
+NAME = libparse.a
 
-SRCS = $(wildcard *.c) $(wildcard 1_words_and_operators/*.c) $(wildcard 2_syntax_check_and_expansion/*.c)  $(wildcard 3_s_commands_and_redirs/*.c) $(wildcard array_methods/*.c)
+SRCS = $(wildcard *.c) $(wildcard 1_words_and_operators/*.c) $(wildcard 2_syntax_check_and_expansion/*.c)  $(wildcard 3_simple_commands_and_redirs/*.c) $(wildcard array_methods/*.c)
 
 CC = cc -g
 

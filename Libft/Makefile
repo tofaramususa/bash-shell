@@ -33,7 +33,8 @@ SRCS := ft_atoi.c\
  ft_striteri.c\
  ft_itoa.c\
  ft_strtrim.c\
- ft_split.c
+ ft_split.c\
+ ft_strcmp.c\
 
 BONUS := ft_lstadd_back.c\
  ft_lstadd_front.c\
@@ -50,15 +51,15 @@ BONUS_OBJ = $(BONUS:.c=.o)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -I../Includes -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I../Includes
 
 all: $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJ)
-	ar rcs $(NAME) $(OBJ)
+$(NAME): $(OBJ) $(BONUS_OBJ)
+	ar rcs $(NAME) $(OBJ) $(BONUS_OBJ)
 
 clean:
 	rm -f $(OBJ) $(BONUS_OBJ)

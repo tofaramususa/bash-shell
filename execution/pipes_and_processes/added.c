@@ -26,9 +26,9 @@
 // 		size++;
 // 	while (i < size)
 // 		if (args[i])
-// 			safefree(args[i++]);
+// 			safe_free(args[i++]);
 // 	if (args)
-// 		safefree(args);
+// 		safe_free(args);
 // }
 
 /**
@@ -66,7 +66,7 @@ void	exit_with_code(t_command *av, t_shell *proc)
  * free_func_one_cmd: a function that free 2d array
  * @args: 2d array to be freed
 */
-void	free_func_one_cmd(t_command *av, t_shell *proc, char **envp) //function to free everything
+void	free_func_one_cmd(t_command *av, t_shell *proc) //function to free everything
 {
 	if (av[proc->scommand_index].cmd && av[proc->scommand_index].cmd[0] != '\0')
 	{
@@ -83,7 +83,7 @@ void	free_func_one_cmd(t_command *av, t_shell *proc, char **envp) //function to 
 */
 //very important function that we call our free_shell to do a kind of garbage collection were we go through every data structure and free everything;
 
-void	terminate(char *display, t_shell *bash, t_command *s_commands) //m is the error name, then free everything and exit;
+void	terminate(char *display, t_shell *bash)//m is the error name, then free everything and exit;
 {
 	if (access(display, W_OK) == -1 || access(display, R_OK) == -1)
 		perror(display);

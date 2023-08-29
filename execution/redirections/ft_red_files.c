@@ -26,11 +26,11 @@ void	red_first_proc(t_command *av, int *flag, t_shell *proc)
 	while (temp)
 	{
 		if (temp->type == OUTPUT)
-			*flag = red_output(av, temp, proc);
+			*flag = red_output(temp, proc);
 		else if (temp->type == INPUT)
-			red_infile(av, temp, proc);
+			red_infile(temp, proc);
 		else if (temp->type == APPEND)
-			*flag = red_append_mode(av, temp, proc);
+			*flag = red_append_mode(temp, proc);
 		temp = temp->next;
 	}
 }
@@ -48,11 +48,11 @@ void	red_one_cmd(t_command *av, t_shell *proc)
 	while (temp)
 	{
 		if (temp->type == OUTPUT)
-			red_output(av, temp, proc);
+			red_output(temp, proc);
 		else if (temp->type == INPUT)
-			red_infile(av, temp, proc);
+			red_infile(temp, proc);
 		else if (temp->type == APPEND)
-			red_append_mode(av, temp, proc);
+			red_append_mode(temp, proc);
 		temp = temp->next;
 	}
 }
@@ -71,11 +71,11 @@ void	red_middle(t_command *av, int *flag_out, int *flag_in, t_shell *proc)
 	while (temp)
 	{
 		if (temp->type == OUTPUT)
-			*flag_out = red_output(av, temp, proc);
+			*flag_out = red_output(temp, proc);
 		else if (temp->type == INPUT)
-			*flag_in = red_infile(av, temp, proc);
+			*flag_in = red_infile(temp, proc);
 		else if (temp->type == APPEND)
-			*flag_out = red_append_mode(av, temp, proc);
+			*flag_out = red_append_mode(temp, proc);
 		temp = temp->next;
 	}
 }
@@ -95,11 +95,11 @@ void	red_last_proc(t_command *av, int *flag, t_shell *proc)
 	{
 		proc->scommand_index = av->cmd_len - 1;
 		if (temp->type == OUTPUT)
-			red_output(av, temp, proc);
+			red_output(temp, proc);
 		else if (temp->type == INPUT)
-			*flag = red_infile(av, temp, proc);
+			*flag = red_infile(temp, proc);
 		else if (temp->type == APPEND)
-			red_append_mode(av, temp, proc);
+			red_append_mode(temp, proc);
 		temp = temp->next;
 	}
 }

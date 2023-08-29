@@ -1,6 +1,6 @@
-NAME = execution.a
+NAME = libexecution.a
 
-SRCS = $(wildcard builtins/*.c) $(wildcard env_variables_list/*.c) $(wildcard pipes_and_processes/*.c)  $(wildcard redirections/*.c) $(wildcard *.c)
+SRCS = $(wildcard *.c) $(wildcard builtins/*.c) $(wildcard env_variables_list/*.c) $(wildcard pipes_and_processes/*.c)  $(wildcard redirections/*.c) $(wildcard *.c)
 
 CC = cc -I/usr/local/Cellar/readline/8.1/include
 
@@ -13,7 +13,7 @@ all: $(NAME)
 %.o: %.c
 		$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJ) minishell.h libft.h
+$(NAME): $(OBJ)
 		ar rcs $(NAME) $(OBJ)
 
 clean: 

@@ -34,7 +34,7 @@ void	check_built_ins_and_exexute_one_cmd(t_shell *proc, t_command *av,
 	else if (proc->check == 4)
 		ft_pwd(proc);
 	else if (proc->check == 5)
-		ft_env_print_linked(proc, av);
+		ft_env_print_linked(proc);
 	else if (proc->check == 6)
 		ft_export_print_linked(av, proc);
 	else if (proc->check == 7)
@@ -47,7 +47,7 @@ void	check_and_execute(t_shell *proc, t_command *av, char **envp, char *tmp)
 	if (av->cmd && tmp && av->cmd[0])
 	{
 		execve(tmp, av->args, envp);
-		free_func_one_cmd(av, proc, envp);
+		free_func_one_cmd(av, proc);
 	}
 	else
 		cmd_not_found(av, proc, 0); // write my own version of this function
@@ -63,10 +63,9 @@ void	one_cmd_process(t_shell *proc, t_command *av, char **envp)
 {
 	char	*tmp;
 
-	proc->env_vars = envp;
 	proc->process_id = fork();
 	if (proc->process_id < 0)
-		terminate("fork", proc, av);
+		terminate("fork", proc);
 	if (proc->process_id == 0)
 	{
 		if (av->total_redirs > 0)
@@ -117,7 +116,6 @@ int	pipex_one_cmd(t_command *av, t_shell *proc, char **envp)
 // takes the simple commands, shell data, and envp variables
 {
 	proc->scommand_index = 0;
-	proc->env_vars = envp;
 	if (av[0].cmd && ft_strcmp(av[0].cmd, "cd") == 0)
 		// if cd then perform
 		return (do_operation(proc, av), ft_cd(av, proc));
@@ -151,13 +149,13 @@ static char	*check_for_access(t_shell *proc, char **envp, char **path_split, cha
 		result = ft_strjoin(path, s);
 		if (access(result, 0) == 0)
 		{
-			safefree(path);
+			safe_free(path);
 			return (result);
 		}
-		safefree(path);
-		safefree(result);
+		safe_free(path);
+		safe_free(result);
 	}
-	safefree(path);
+	safe_free(path);
 	return (result);
 }
 

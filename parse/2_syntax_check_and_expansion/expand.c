@@ -24,14 +24,14 @@ static char *get_env_var(t_shell *bash, char *str, int start)
 	search_var = ft_substr(str, start + 1, get_search_var_end(str, start) - start); //we say plus one because we dont want $ in our search variable
     // printf("search_var: %s\n", search_var);
     if (search_var && search_var[0] == '?' && search_var[1] == '\0') //aka is $?
-		env_var = ft_itoa(error_status);
+		env_var = ft_itoa(error_status); //there may be a problem here
 	// else if (search_var[0] = "$" && search_var[1] == '\0') //test this
 	// 	env_var = ""; //get process id  
 	else
 		env_var = ft_getenv(bash->env_list, search_var); //use the getenv to get return value
     if(env_var == NULL) //if not found return empty string
         return ("");
-    safefree(search_var); //it was allocated at the start
+    safe_free(search_var); //it was allocated at the start
 	return(env_var); //return the env_var we have
 }
 
@@ -81,9 +81,9 @@ char	*final_expanded_str(t_shell *bash, char *str) //function to get the final e
 	while (needs_expansion(final_str) == true) //we need to be checking if the current final string needs to be expanded further
 	{
 		expand_temp = new_expanded_str(bash, final_str); //function to replace $ with env variables
-		safefree(final_str); //we need to replace the final_str with new returned one
+		safe_free(final_str); //we need to replace the final_str with new returned one
 		final_str = ft_strdup(expand_temp); //put the most recent expanded str to final_str
-		safefree(expand_temp);
+		safe_free(expand_temp);
 	}
 	return(final_str);
 }
@@ -102,17 +102,8 @@ char **expand_array(t_shell *bash, char **str)
 		return (NULL);
 	while (i < ft_array_len(str))
     {
-        if(ft_strcmp(str[i], "<<") == 0 && str[i + 1])
-        {
-            expanded_str[i] = ft_strdup(str[i]);
-            expanded_str[i + 1] = ft_strdup(str[i + 1]);
-            i += 2;
-        }
-        else
-        {
-            expanded_str[i] = final_expanded_str(bash, str[i]); //fill new array item with expanded variables
-            i++;
-        }
+        expanded_str[i] = final_expanded_str(bash, str[i]); //fill new array item with expanded variables
+        i++;
     }
     expanded_str[i] = NULL; //end with NULL terminator
     free_array(str); //we have no use of the old str which came from part 1 so we free it

@@ -29,14 +29,14 @@ static int	ft_cd_util(t_command *pipe, char *pwd, t_shell *proc)
 		{
 			tmp = ft_strjoin("OLDPWD=", pwd);
 			check_and_replace(proc->env_list, tmp);
-			safefree(tmp);
+			safe_free(tmp);
 		}
 		pwd = getcwd(proc->pwd, 1024);
 		tmp = ft_strjoin("PWD=", pwd);
 		if (pwd)
 		{
 			proc->x = check_and_replace(proc->env_list, tmp);
-			return (safefree(tmp), proc->x);
+			return (safe_free(tmp), proc->x);
 		}
 		ft_putstr_fd("cd: error retrieving current directory: getcwd: \
 		cannot access parent directories: No such file or directory\n", 2);
@@ -64,14 +64,14 @@ static	int	ft_cd_util_3(char *pwd, t_shell *proc)
 		tmp = ft_strjoin("OLDPWD=", pwd);
 		check_and_replace(proc->env_list, tmp);
 		if (tmp)
-			safefree(tmp);
+			safe_free(tmp);
 	}
 	pwd = getcwd(proc->pwd, 1024);
 	if (pwd)
 	{
 		tmp = ft_strjoin("PWD=", pwd);
 		proc->x = check_and_replace(proc->env_list, tmp);
-		return (safefree(tmp), proc->x);
+		return (safe_free(tmp), proc->x);
 	}
 	return (1);
 }
@@ -99,7 +99,7 @@ static	int	ft_cd_util_2(char *pwd, t_shell *proc)
 			write(2, tmp, ft_strlen(tmp));
 			perror(" ");
 		}
-		return (safefree(tmp), 1);
+		return (safe_free(tmp), 1);
 	}
 	return (0);
 }

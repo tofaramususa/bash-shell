@@ -45,8 +45,8 @@ int	check_and_replace_util(t_exp_var *var, char *replace)
 				var->y = 0;
 				while (replace[var->y] && replace[var->y] != '=')
 					var->y++;
-				safefree(var->tmp_list->key);
-				safefree(var->tmp_list->value);
+				safe_free(var->tmp_list->key);
+				safe_free(var->tmp_list->value);
 				var->tmp_list->key = ft_substr(replace, 0, var->y + 1);
 				var->tmp_list->value = ft_substr(replace, var->y + 1, \
 				ft_strlen(replace) - var->y);
@@ -80,7 +80,7 @@ int	check_and_replace(t_list *head, char *replace)
 	return (0);
 }
 
-int	ft_validate_exprot(char *str)
+int	ft_validate_export(char *str)
 {
 	int	x;
 

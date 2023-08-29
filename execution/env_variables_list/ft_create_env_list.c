@@ -41,7 +41,7 @@ t_shell *proc, char **env)
 		ft_strlen(env[var->x]) - var->y);
 		ft_lstadd_back(&head, ft_lstnew(ft_substr(env[var->x], 0, var->y + 1), \
 		ft_itoa(ft_atoi(tmp_2) + 1), var->x, var->x));
-		safefree(tmp_2);
+		safe_free(tmp_2);
 		var->x++;
 		return (1);
 	}
@@ -122,6 +122,6 @@ void	create_envlist(t_shell *proc, char **env)
 	check_and_set(&var, head, proc);
 	proc->env_list = malloc(sizeof(t_list *));
 	proc->env_list = head;
-	sort_list(*proc->env_list);
-	re_index(*proc->env_list);
+	sort_list(proc->env_list);
+	re_index(proc->env_list);
 }

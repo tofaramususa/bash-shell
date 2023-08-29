@@ -13,20 +13,24 @@ all: $(NAME)
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME):
+Libft/libft.a:
 	$(MAKE) -C Libft
-	$(MAKE) -C parse
-	$(MAKE) -C execution
-	 $(OBJ) Libft/libft.a parse/parse.a execution/execution.a 
-	$(CC) -L /usr/local/Cellar/readline/8.1/lib -lreadline $(CFLAGS) $(OBJ) $(LDFLAGS) -o $(NAME)
 
+parse/parse.a:
+	$(MAKE) -C parse
+
+execution/execution.a:
+	$(MAKE) -C execution
+
+$(NAME): $(OBJ) Libft/libft.a parse/parse.a execution/execution.a 
+	$(CC) -o $(NAME) $(OBJ) $(CFLAGS) $(LDFLAGS) -lreadline
 clean: 
 	rm -rf $(OBJ)
 
 fclean: clean
-	# $(MAKE) fclean -C Libft
-	# $(MAKE) fclean -C parse
-	# $(MAKE) fclean -C execution
+	$(MAKE) fclean -C Libft
+	$(MAKE) fclean -C parse
+	$(MAKE) fclean -C execution
 	rm -f $(NAME)
 
 norm:

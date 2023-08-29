@@ -74,7 +74,7 @@ static void	first_element(t_list **head)
 
 	current = *head;
 	*head = current->next;
-	safefree(current);
+	safe_free(current);
 }
 
 /**
@@ -99,9 +99,9 @@ int	remove_element(t_list **head, int index)
 			if (current->index == index)
 			{
 				prev->next = current->next;
-				safefree(current->key);
-				safefree(current->value);
-				safefree(current);
+				safe_free(current->key);
+				safe_free(current->value);
+				safe_free(current);
 				break ;
 			}
 			prev = current;

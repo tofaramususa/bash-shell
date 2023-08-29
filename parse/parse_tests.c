@@ -17,31 +17,31 @@ void print_array(char **str)
 	int i = -1;
 	
 	while(str[++i])
-		printf("%d: %s\n", i + 1, str[i]);
+		write_to_debugfile(ft_strjoin("array_item: ", str[i]));
 }
 
-void print_tokens(t_token *tokens)
-{
-	t_token *temp;
+// void print_tokens(t_token *tokens)
+// {
+// 	t_token *temp;
 
-	temp = tokens;
-	while(temp)
-	{
-		if(temp->type == REDIR)
-		{
-			printf("REDIR: %s\n", temp->value);
-		}
-		if(temp->type == WORD)
-		{
-			printf("WORD: %s\n", temp->value);
-		}
-		if(temp->type == PIPE)
-		{
-			printf("PIPE: %s\n", temp->value);
-		}
-		temp = temp->next;
-	}
-}
+// 	temp = tokens;
+// 	while(temp)
+// 	{
+// 		if(temp->type == REDIR)
+// 		{
+// 			printf("REDIR: %s\n", temp->value);
+// 		}
+// 		if(temp->type == WORD)
+// 		{
+// 			printf("WORD: %s\n", temp->value);
+// 		}
+// 		if(temp->type == PIPE)
+// 		{
+// 			printf("PIPE: %s\n", temp->value);
+// 		}
+// 		temp = temp->next;
+// 	}
+// }
 
 void print_redir_list(t_command *scommand)
 {

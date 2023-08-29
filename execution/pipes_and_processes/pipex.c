@@ -117,10 +117,10 @@ int	pipex_three_cmd(t_command *av, t_shell *proc, char **envp)
 int	pipex(int ac, t_command *scommand, t_shell *bash)
 {
 	int		counter;
-	char	**envp;
 	int		ret;
 
 	ret = 0;
+	write_to_funcfile("pipex called");
 	bash->env_vars = linked_to_array(bash->env_list); //needs fixing //convert the env to an array for use in the env variable
 	bash->middle_scommand = ac - 2;
 	bash->total_pipes = ac - 1;
@@ -137,6 +137,5 @@ int	pipex(int ac, t_command *scommand, t_shell *bash)
 		ret = pipex_three_cmd(scommand, bash, bash->env_vars);
 	else
 		printf("Error : no command input\n");
-	free_array(envp); //function to free the envp
 	return (ret);
 }

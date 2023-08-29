@@ -63,10 +63,12 @@ void	free_array(char **array)
 	int	i;
 
 	i = -1;
+    write_to_funcfile("free_array_called");
 	if (array)
 	{
 		while (array[++i])
-			safefree(array[i]);
-		safefree(array);
+			safe_free(array[i]);
+		safe_free(array);
 	}
+    array = NULL;
 }

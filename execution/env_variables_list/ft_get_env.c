@@ -29,10 +29,10 @@ char	*ft_getenv(t_list *head, char *str)
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->key, tmp_val) == 0)
-			return (safefree(tmp_val), tmp->value);
+			return (safe_free(tmp_val), tmp->value);
 		tmp = tmp->next;
 	}
-	safefree(tmp_val);
+	safe_free(tmp_val);
 	return (NULL);
 }
 
@@ -55,7 +55,7 @@ char	*get_next_line(int fd)
 		if (*(tmp++) == '\n')
 			break ;
 	if (copy[0] == '\0')
-		return (safefree(copy), NULL);
+		return (safe_free(copy), NULL);
 	else
 		return (copy);
 }

@@ -66,6 +66,7 @@ static t_token	*new_token_node(char *arg)
 	{
 		node->value = ft_strdup(arg);
 		node->type = assign_token_type(arg);
+		node->isfreed = false;
 		node->next = NULL;
 	}
 	return (node);
@@ -74,18 +75,17 @@ static t_token	*new_token_node(char *arg)
 //free everything
 void free_token_list(t_token *tokenlist)
 {
-    t_token *current_node;
     t_token *next_node;
 
-    current_node = tokenlist;
 	if(tokenlist)
 	{
-		while (current_node)
+		while (tokenlist && tokenlist->isfreed == false)
 		{
-			next_node = current_node->next;
-			safefree(current_node->value);
-			safefree(current_node);
-			current_node = next_node;
+			next_node = tokenlist->next;
+			safe_free(tokenlist->value);
+			safe_free(tokenlist);
+			tokenlist->isfreed = true;
+			tokenlist = next_node;
 		}
 	}
 	tokenlist = NULL;

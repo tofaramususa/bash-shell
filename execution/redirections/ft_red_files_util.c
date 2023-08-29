@@ -17,14 +17,14 @@
  * @av: the structure containing the cmds and redirections
  * @x: the index of the redirection
 */
-int	red_output(t_command *av, t_redir *redir, t_shell *proc)
+int	red_output(t_redir *redir, t_shell *proc)
 {
 	int	file1;
 
 	file1 = open(redir->filename,
 			O_RDWR | O_CREAT | O_TRUNC, 0777);
 	if (file1 == -1)
-		terminate(redir->filename, proc, av);
+		terminate(redir->filename, proc);
 	if (proc->dont == 0)
 		dup2(file1, STDOUT_FILENO);
 	close(file1);
@@ -36,13 +36,13 @@ int	red_output(t_command *av, t_redir *redir, t_shell *proc)
  * @av: the structure containing the cmds and redirections
  * @x: the index of the redirection
 */
-int	red_infile(t_command *av, t_redir *redir, t_shell *proc)
+int	red_infile(t_redir *redir, t_shell *proc)
 {
 	int	file1;
 
 	file1 = open(redir->filename, O_RDONLY);
 	if (file1 == -1)
-		terminate(redir->filename, proc, av);
+		terminate(redir->filename, proc);
 	if (proc->dont == 0)
 		dup2(file1, STDIN_FILENO);
 	close(file1);
@@ -54,14 +54,14 @@ int	red_infile(t_command *av, t_redir *redir, t_shell *proc)
  * @av: the structure containing the cmds and redirections
  * @x: the index of the redirection
 */
-int	red_append_mode(t_command *av, t_redir *redir, t_shell *proc)
+int	red_append_mode(t_redir *redir, t_shell *proc)
 {
 	int	file1;
 
 	file1 = open(redir->filename, O_RDWR | \
 	O_CREAT | O_APPEND, 0777);
 	if (file1 == -1)
-		terminate(redir->filename, proc, av);
+		terminate(redir->filename, proc);
 	if (proc->dont == 0)
 		dup2(file1, STDOUT_FILENO);
 	close(file1);

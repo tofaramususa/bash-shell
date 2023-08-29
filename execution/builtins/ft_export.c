@@ -17,11 +17,11 @@
  * @proc: is a structure that contains all variables plus 
  * the head to the linked list
 */
-void	ft_env_print_linked(t_shell *proc, t_command *av)
+void	ft_env_print_linked(t_shell *proc)
 {
 	t_list	*tmp;
 
-	tmp = *proc->env_list;
+	tmp = proc->env_list;
 	while (tmp)
 	{
 		if (ft_strchr(tmp->key, '='))
@@ -36,10 +36,10 @@ int	ft_export_to_linked(t_command *pipe, t_shell *prc)
 {
 	while (pipe->args[++prc->x])
 	{
-		if (ft_validate_exprot(pipe->args[prc->x]) == 1)
+		if (ft_validate_export(pipe->args[prc->x]) == 1)
 			print_and_set_flag(pipe, prc);
 		else
-			check_and_replace(*prc->head, pipe->args[prc->x]);
+			check_and_replace(prc->env_list, pipe->args[prc->x]);
 	}
 	return (prc->flag);
 }
@@ -53,16 +53,16 @@ int	ft_export_to_linked(t_command *pipe, t_shell *prc)
 
 int	ft_export_print_linked(t_command *pipe, t_shell *prc)
 {
-	sort_list(*prc->head);
-	re_index(*prc->head);
+	sort_list(prc->env_list);
+	re_index(prc->env_list);
 	prc->flag = 0;
-	prc->temp_list = *prc->head;
+	prc->temp_list = prc->env_list;
 	prc->x = 0;
 	if (pipe->args[1])
 		prc->x = ft_export_to_linked(pipe, prc);
 	else
 	{
-		prc->temp_list = *prc->head;
+		prc->temp_list = prc->env_list;
 		while (prc->temp_list)
 		{
 			if (ft_strchr(prc->temp_list->key, '='))
@@ -103,9 +103,9 @@ int	ft_unset_check_and_unset(t_list **main_head, char **args)
 			else
 				var.tmp_ex = ft_strdup(args[var.x]);
 			if (ft_strcmp(var.tmp_list->key, var.tmp_ex) == 0)
-				return (safefree(var.tmp_ex), \
+				return (safe_free(var.tmp_ex), \
 				remove_element(main_head, var.tmp_list->index));
-			safefree(var.tmp_ex);
+			safe_free(var.tmp_ex);
 			var.tmp_list = var.tmp_list->next;
 		}
 	}
@@ -126,8 +126,8 @@ int	ft_unset(t_command *pipe, t_shell *proc)
 	res = 0;
 	if (pipe->args[1])
 		while (pipe->args[++x])
-			res = ft_unset_check_and_unset(proc->env_list, &pipe->args[x]);
+			res = ft_unset_check_and_unset(&proc->env_list, &pipe->args[x]);
 	if (pipe->cmd_len > 1)
-		garbage_collector(prc);
+		garbage_collector(proc);
 	return (res);
 }

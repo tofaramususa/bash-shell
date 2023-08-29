@@ -31,16 +31,15 @@ static bool	check_sytnax(t_token *headToken) {
     if (temp->type == REDIR &&
         temp->next->type !=
             WORD) // there has to be word after a redirection or pipe else error
-      return (printf("Parse error near %c", temp->value[0]), false);
+      return (printf("Parse error near %c\n", temp->value[0]), false);
     if ((temp->type == PIPE) && temp->next->type == PIPE)
-      return (printf("Parse error near %c", temp->value[0]), false);
+      return (printf("Parse error near %c\n", temp->value[0]), false);
     temp = temp->next;
   }
-  if (temp->next == NULL) // so we are at the end and we need to make sure the
-                          // last thing is a word
+  if (temp->next == NULL) // so we are at the end and we need to make sure the   // last thing is a word
   {
     if (temp->type != WORD)
-      return (printf("Parse error near \n"), false);
+      return (printf("Parse error near \\n\n"), false);
   }
   return (true);
 }

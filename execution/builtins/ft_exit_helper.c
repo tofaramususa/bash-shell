@@ -14,16 +14,16 @@
 
 static void atoi_utl_with_exit(char *str, int x, t_shell *proc)
 {
-	unsigned long long copy;
 	unsigned long long res;
 
 	res = 0;
+	proc->copy = 0;
 	while (str[x] >= '0' && str[x] <= '9')
 	{
-		copy = res;
-		copy += 0; // Perform a no-op operation with copy
+		proc->copy = res;
+		// copy += 0; // Perform a no-op operation with copy
 		res = (res * 10) + (str[x++] - '0');
-		if (copy > res)
+		if (proc->copy > res)
 		{
 			ft_putstr_fd(": numeric argument required\n", 2);
 			garbage_collector(proc);
@@ -37,12 +37,10 @@ int	ft_exit_helper(const char *str, t_shell *proc)
 	int					x;
 	int					sign;
 	unsigned long long	res;
-	unsigned long long	copy;
 
 	x = 0;
 	res = 0;
 	sign = 1;
-	copy = 0;
 	x++;
 	while (array_strchr("\t \v\f\r\n", str[x]))
 		x++;

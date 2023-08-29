@@ -23,6 +23,7 @@ t_list	*ft_lstnew(char *key, char *value, int index, int position)
 		node->key = key;
 		node->value = value;
 		node->index = index;
+		node->isfreed = false;
 		node->next = NULL;
 	}	
 	return (node);

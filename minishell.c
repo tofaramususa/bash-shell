@@ -20,7 +20,8 @@
 */
 bool	start_execution(t_shell *bash) //function to execute and free everything
 {
-	if (bash->total_scommands >= 220) //calculate command length
+    write_to_funcfile("start_execution_called");
+	if (bash->cmd_len >= 220) //calculate command length
 	{
 		ft_putstr_fd("Sorry too many commands\n", 2); //change this
 		exit(1);
@@ -32,62 +33,80 @@ bool	start_execution(t_shell *bash) //function to execute and free everything
 	}
 	signal(SIGINT, SIG_IGN); //reset signal
 	signal(SIGINT, sig_handler); //
-	error_status = pipex(bash->total_scommands, *bash->s_commands, bash); //here is were the execution happens
+	error_status = pipex(bash->cmd_len, *bash->s_commands, bash); //here is were the execution happens
     garbage_collector(bash);
 	unlink(".tmp"); //remove the tmp file
 	return (false);
 }
 
 // Parse function takes a str and turns it to an array of simple commands
-bool parse(t_shell bash)
+bool parse(t_shell *bash)
 {
 	// char *word = "$PAT";
+    write_to_funcfile("parse function called");
     char **final_result;
-    if (!check_line(bash.line))
+    if (!check_line(bash->line))
     {
         error_status = 0;
         return (false);
     }
-    add_history(bash.line);
-    final_result = ft_split_on_delims(bash.line);
+    add_history(bash->line);
+    final_result = ft_split_on_delims(bash->line);
+    write_to_debugfile(ft_strjoin("","ARRAY CREATED"));
+    print_array(final_result);
     if (!final_result)
 	{
         return (false);	
     }
-	bash.tokenlist = ft_tokenise(&bash, final_result);
-    if (!bash.tokenlist)
+	bash->tokenlist = ft_tokenise(bash, final_result);
+    if (!bash->tokenlist)
         return(false);
-	create_scmnd_array(bash, bash.tokenlist);
-
+    print_tokens(bash->tokenlist);
+	create_scmnd_array(bash, bash->tokenlist);
+    print_scommands(bash->s_commands);
     return (true);
+}
+
+void init_bash(t_shell *bash)
+{
+    bash->dont = 0; //convert envp to an array 
+    bash->s_commands = NULL;
+    bash->env_vars = NULL;
+    bash->isfreed = false;
 }
 
 //the int main
 int main(int ac, char **av, char **envp)
 {
-    t_shell bash;
+    t_shell *bash;
 
-    if (ac > 1 || ft_array_len(av) > 1)
-    exit(printf("To start [TheBash] enter: ./minishell"));
-    error_status = 0;
-    signal(SIGQUIT, SIG_IGN);
     if(envp[0] == NULL)
         exit(printf("Error: No environment variables found"));
-    create_envlist(&bash, envp); //convert envp to an array 
-    bash->dont = 0;
+    if (ac > 2 || ft_array_len(av) > 2)
+    exit(printf("To start [TheBash] enter: ./minishell"));
+	bash = (t_shell *) malloc(sizeof(t_shell));
+    if(!bash)
+        return(1);
+    error_status = 0;
+    signal(SIGQUIT, SIG_IGN);
+    create_envlist(bash, envp);
     while(1)
     {
+        init_bash(bash);
         init_signals(); //handle the signals
         if(error_status == 0)
-            bash.line = readline ("🏀\x1b[38;5;122m[TheBash]$ \x1b[0m");
+            bash->line = readline ("🏀\x1b[38;5;122m[TheBash]$ \x1b[0m");
         else
-            bash.line = readline ("🗑️ \x1b[38;5;122m[TheBash]$ \x1b[0m");
+            bash->line = readline ("🗑️ \x1b[38;5;122m[TheBash]$ \x1b[0m");
+        write_to_debugfile(ft_strjoin("","----------------------"));
+        write_to_debugfile(ft_strjoin("COMMAND: ", bash->line));
         if(parse(bash))
         {
-            start_execution(&bash);
+            start_execution(bash);
         }
-        garbage_collector(&bash);
     }
+    free_env_list(bash->env_list);
+    safe_free(bash);
 }
 
 //what we need to free for free_shell:

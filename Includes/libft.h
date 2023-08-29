@@ -19,12 +19,14 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <stdbool.h>
 
 typedef struct s_list
 {
 	char			*key;
 	char			*value;
 	int				index;
+	bool			isfreed;
 	struct s_list	*next;
 }					t_list;
 

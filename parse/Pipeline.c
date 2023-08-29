@@ -20,10 +20,11 @@ bool check_line(char *str)
 	int i;
 
 	i = -1;
+	if(!str)
+		return(false);
     if (check_unmatched_quotes(str) == true)
 	{
-		safefree(str);
-        return (printf("unbalanced quotes"), false);	
+        return (printf("unbalanced quotes\n"), false);	
 	}
 	while(str[++i])
 	{
@@ -32,8 +33,7 @@ bool check_line(char *str)
 	}
 	if (str[i] == '\0')
 	{
-		safefree(str);
-		return (printf("No commands inputted"), false);
+		return (false);
 	}
 	return(true);
 }
@@ -66,24 +66,24 @@ char	**ft_split_on_delims(char *str)
 	return (free_array(temp_tokens), final_tokens);
 }
 //3. Create a token list from the array, free the array, check for syntax, if error then free array, then perform expansion and quote removal
-t_token *ft_tokenise(t_shell *bash, char **tokens)
+t_token *ft_tokenise(t_shell *bash, char **str_tokens)
 {
 	t_token *tokenlist;
 
-	tokens = expand_array(bash, tokens);
+	str_tokens = expand_array(bash, str_tokens);
 	// print_array(tokens);
-	tokenlist = create_token_list(tokens);
+	tokenlist = create_token_list(str_tokens);
 	//l may need a function to remove empty string tokens
 	// if(tokenlist == NULL)
 		//do something
+	write_to_debugfile(ft_strjoin("","TOKENS CREATED:"));
 	if(token_syntax_check(tokenlist) == false) //X2
 	{
 		error_status = 127;
-		free_array(tokens);
 		return (NULL);
 	}
+	token_quote_removal(tokenlist);
 	// quote removal on each token
-	free_array(tokens);
 	return (tokenlist);
 }
 
@@ -104,14 +104,14 @@ int count_commands(t_token *tokenlist)
 }
 
 // 4. Create simple commands from the tokenlist and then free the token list at the end
-void create_scmnd_array(t_shell bash, t_token *tokenlist)
+void create_scmnd_array(t_shell *bash, t_token *tokenlist)
 {
 	t_token *temp;
 	t_token *start;
 	t_token *end;
 	int i;
 
-	bash.s_commands = (t_command **) malloc(sizeof(t_command *) * (count_commands(tokenlist) + 1));
+	bash->s_commands = (t_command **) malloc(sizeof(t_command *) * (count_commands(tokenlist) + 1));
 	// if(!scmndList)
 		//do something
 	temp = tokenlist;
@@ -124,8 +124,8 @@ void create_scmnd_array(t_shell bash, t_token *tokenlist)
 		end = temp;
 		while(end->next != NULL && end->next->type != PIPE)
 			end = end->next;
-		bash.s_commands[i] = create_scmnd_node(start, end);
-		bash.s_commands[i]->cmd_len = count_commands(tokenlist) + 1;
+		bash->s_commands[i] = create_scmnd_node(start, end);
+		bash->s_commands[i]->cmd_len = count_commands(tokenlist);
 		if (end->next != NULL)
 		{
 			temp = end->next->next;
@@ -134,7 +134,8 @@ void create_scmnd_array(t_shell bash, t_token *tokenlist)
 			temp = NULL;
 		i++;
 	}
-	bash.s_commands[i] = NULL;
-	bash.total_scommands = count_commands(tokenlist);
+	bash->s_commands[i] = NULL;
+	bash->cmd_len = count_commands(tokenlist);
 	free_token_list(tokenlist);
+		// exit(0);
 }

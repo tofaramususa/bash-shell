@@ -44,6 +44,24 @@ char *remove_quotes(char *str)
         new_str[j++] = str[i];
 	}
 	new_str[j] = '\0';
-	safefree(str); //need to put this for replace_heredocs don't change
+	safe_free(str); //need to put this for replace_heredocs don't change
 	return(new_str);
+}
+
+void token_quote_removal(t_token *tokenlist)
+{
+	t_token *temp;
+
+	temp = tokenlist;
+	while (temp)
+	{
+		if (temp->type == REDIR && ft_strcmp(temp->value, "<<") == 0 && temp->next)//if heredoc then don't remove quotes of the word next to it
+		{
+			temp = temp->next->next;
+			continue ;
+		}
+		if (temp->type == WORD)
+			temp->value = remove_quotes(temp->value);
+		temp = temp->next;
+	}
 }

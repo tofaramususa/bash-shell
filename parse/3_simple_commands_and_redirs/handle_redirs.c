@@ -66,14 +66,14 @@ void  fill_redirs(t_command *scommand, t_token *redir, t_token *filename)
         //do something
     new_redir->type = assign_redir_type(redir->value);
     new_redir->filename = ft_strdup(filename->value);
-    new_redir->heredoc_data = NULL;
+    new_redir->isfreed = false;
     new_redir->next = NULL;
     // printf("")
     if(new_redir->type == INPUT || new_redir->type == HEREDOC)
-        add_to_redir_list(&scommand->redir, new_redir);
+        add_to_redir_list(&scommand->redirs, new_redir);
     if(new_redir->type == OUTPUT || new_redir->type == APPEND)
-        add_to_redir_list(&scommand->redir, new_redir);
-
+        add_to_redir_list(&scommand->redirs, new_redir);
+ 
     //then check the type and if its outfile then check if have an outfile list already if not
     //malloc for it and add to the node
     //same for infile;  

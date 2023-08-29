@@ -24,6 +24,7 @@ void	check_built_ins_and_exexute(t_shell *proc, t_command *av, char **envp)
 	int	ret;
 
 	ret = 0;
+	(void) envp;
 	if (proc->check == 1)
 		ft_exit(av, proc);
 	else if (proc->check == 2)
@@ -33,7 +34,7 @@ void	check_built_ins_and_exexute(t_shell *proc, t_command *av, char **envp)
 	else if (proc->check == 4)
 		ft_pwd(proc);
 	else if (proc->check == 5)
-		ft_env_print_linked(proc, av);
+		ft_env_print_linked(proc);
 	else if (proc->check == 6)
 		ret = ft_export_print_linked(av, proc);
 	else if (proc->check == 7)
@@ -51,10 +52,9 @@ int	first_process(t_shell *proc, t_command *av, char **envp)
 {
 	proc->scommand_index = 0;
 	proc->flag = 0;
-	proc->env_vars = envp;
 	proc->process_id = fork();
 	if (proc->process_id < 0)
-		terminate("fork", proc, av);
+		terminate("fork", proc);
 	if (proc->process_id == 0)
 	{
 		signal(SIGINT, SIG_DFL);
@@ -89,8 +89,8 @@ void	middle_proc_execute(t_shell *proc, t_command *av, char **envp, int counter)
 	{
 		proc->scommand_index = counter;
 		execve(tmp, av[counter].args, envp);
-		safefree(tmp); //safefree
-		free_func_one_cmd(av, proc, envp);
+		safe_free(tmp); //safe_free
+		free_func_one_cmd(av, proc);
 	}
 	else
 		cmd_not_found(av, proc, counter);
@@ -109,7 +109,7 @@ void	middl_process(t_shell *proc, t_command *av, char **envp, int counter)
 	proc->flag_in = 0;
 	proc->process_id = fork();
 	if (proc->process_id < 0)
-		terminate("fork", proc, av);
+		terminate("fork", proc);
 	if (proc->process_id == 0)
 	{
 		if (av[counter].total_redirs > 0)
@@ -143,7 +143,7 @@ int	last_process(t_shell *proc, t_command *av, char **envp)
 	proc->flag = 0;
 	proc->process_id1 = fork(); //fork id
 	if (proc->process_id1 < 0)
-		terminate("fork", proc, av); //free everything and print error
+		terminate("fork", proc); //free everything and print error
 	if (proc->process_id1 == 0)
 	{
 		if (av[av->cmd_len - 1].total_redirs > 0)

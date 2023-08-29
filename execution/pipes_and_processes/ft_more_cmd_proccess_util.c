@@ -25,7 +25,7 @@ void	first_process_util(t_shell *proc, t_command *av, char **envp) //for the fir
 	if (av[0].cmd && tmp && av[0].cmd[0]) //check if there is command and its not a NULL terminator then execute
 	{
 		execve(tmp, av[0].args, envp);
-		free_func_one_cmd(av, proc, envp);
+		free_func_one_cmd(av, proc);
 	}
 	else
 		cmd_not_found(av, proc, 0); //same here check if there's something if not then free
@@ -39,7 +39,7 @@ void	last_process_util(t_shell *proc, t_command *av, char **envp) //call the exe
 	if (av[av->cmd_len - 1].cmd && tmp && av[av->cmd_len - 1].cmd[0])
 	{
 		execve(tmp, av[av->cmd_len - 1].args, envp);
-		free_func_one_cmd(av, proc, envp);
+		free_func_one_cmd(av, proc);
 	}
 	else
 		cmd_not_found(av, proc, av->cmd_len - 1); //here is the command not found function which means we need to free, put it at the end

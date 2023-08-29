@@ -19,9 +19,12 @@ static int count_redirs(t_redir *redirs)
 	int total;
 
 	total = 0;
-	temp = redirs
+	temp = redirs;
 	while (temp)
+	{
 		total++ ;
+		temp = temp->next;
+	}
 	return (total);
 }
 // in our tokens list we know the start and stop of our simple command now we parse it to the tokens into our simple commands
@@ -29,18 +32,19 @@ t_command	*create_scmnd_node(t_token *start, t_token *end)
 {
 	t_command	*command;
 
-	command = malloc(sizeof(t_command *));
+	command = (t_command *) malloc(sizeof(t_command));
 	if (!command)
 		return (NULL);
 	command->cmd = NULL;
 	command->redirs = NULL;
 	command->args = NULL;
-	fill_scmnd(&command, start, end);
+	command->isfreed = false;
+	fill_scmnd(command, start, end);
+	// exit(0);
 	if (command->args[0])
 		command->cmd = command->args[0];
 	command->args_len = ft_array_len(command->args);
 	command->total_redirs = count_redirs(command->redirs);
-
 	return (command);
 }
 
@@ -60,16 +64,15 @@ static void	add_token_to_args(t_command *scommand, t_token *current_token)
 		temp_array = (char **)malloc(sizeof(char *) * 2);
 		temp_array[0] = ft_strdup(current_token->value);
 		temp_array[1] = NULL;
-		;
 		scommand->args = append_array(scommand->args, temp_array);
 			// l need to understand something here,
-			where is the copy of ft_strdup store and how do l free it
+			// where is the copy of ft_strdup store and how do l free it
 		free_array(temp_array);
 	}
 }
 
 // else we add to args array,
-	then we take the first arg and make a copy of that for char *command;
+	// then we take the first arg and make a copy of that for char *command;
 void	fill_scmnd(t_command *scommand, t_token *start, t_token *end)
 {
 	t_token	*current_token;
