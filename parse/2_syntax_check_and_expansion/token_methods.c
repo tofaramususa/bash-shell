@@ -22,7 +22,7 @@ static t_token *get_to_last(t_token *lst)
 	return (to_last);
 }
 
-static void	add_token_node(t_token **tokenlist, t_token *tokenNode)
+void	add_token_node(t_token **tokenlist, t_token *tokenNode)
 {
 	t_token	*to_last;
 	//need to handle when either are NULL, not only the tokenlist
@@ -57,7 +57,7 @@ static token_type	assign_token_type(char *arg)
     return (type);
 }
 
-static t_token	*new_token_node(char *arg)
+t_token	*new_token_node(char *arg)
 {
 	t_token	*node;
 

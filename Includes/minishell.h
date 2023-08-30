@@ -29,6 +29,7 @@
 #include <time.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <dirent.h>
 
 /*Quotes Struct*/
 typedef struct s_quote
@@ -182,6 +183,8 @@ char				*strjoin_new_var(char *temp_str, char *expanded_str,
 						int count);
 char				**expand_array(t_shell *bash, char **str);
 bool 				filename_expansion(t_token *tokenlist, char *str_token);
+void	add_token_node(t_token **tokenlist, t_token *tokenNode);
+t_token	*new_token_node(char *arg);
 
 /*Simple Commands and Redirections*/
 t_command			*create_scmnd_node(t_token *start, t_token *end);
