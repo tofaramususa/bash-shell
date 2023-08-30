@@ -91,13 +91,13 @@ void line_prompt(t_shell *bash)
     if(g_error_status == 0)
     {
         temp_str = ft_strjoin("🏀", getcwd(bash->pwd, 1024));
-        prompt = ft_strjoin(temp_str, "\x1b[38;5;122m[THEBASH]$ \x1b[0m");
+        prompt = ft_strjoin(temp_str, "\x1b[38;5;122m [THEBASH]$ \x1b[0m");
         bash->line = readline(prompt);
     }
     else
     {
         temp_str = ft_strjoin("🗑️ ", getcwd(bash->pwd, 1024));
-        prompt = ft_strjoin(temp_str, "\x1b[38;5;122m[THEBASH]$ \x1b[0m");
+        prompt = ft_strjoin(temp_str, "\x1b[38;5;122m [THEBASH]$ \x1b[0m");
         bash->line = readline (prompt);
     }
     if(prompt)
@@ -130,9 +130,9 @@ int main(int ac, char **av, char **envp)
         {
             start_execution(bash);
         }
-        free_env_list(&bash->env_list);
         garbage_collector(&bash);
     }
+        free_env_list(&bash->env_list);
         free(bash);
 }
 

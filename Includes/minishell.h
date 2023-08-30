@@ -181,6 +181,7 @@ int					get_end_index_expan(char *str, int start);
 char				*strjoin_new_var(char *temp_str, char *expanded_str,
 						int count);
 char				**expand_array(t_shell *bash, char **str);
+bool 				filename_expansion(t_token *tokenlist, char *str_token);
 
 /*Simple Commands and Redirections*/
 t_command			*create_scmnd_node(t_token *start, t_token *end);

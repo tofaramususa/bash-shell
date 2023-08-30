@@ -101,11 +101,19 @@ void free_token_list(t_token **tokenlist)
 t_token *create_token_list(char **tokens)
 {
     t_token	*tokenlist; //pointer to the head
+	
 	int	i;
 
 	tokenlist = NULL;
 	i = -1;
-	while (tokens[++i])	
+	while (tokens[++i])
+	{
+		if(array_strchr(tokens[i], '*'))
+		{
+			if (filename_expansion(tokenlist, tokens[i]))
+				continue ;	
+		}
 		add_token_node(&tokenlist, new_token_node(tokens[i])); //this is essentially add to back and we are creating a node from every token we have
+	}
     return(tokenlist);
 }
