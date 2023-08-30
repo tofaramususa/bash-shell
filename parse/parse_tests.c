@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tests.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 16:28:13 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/27 17:09:16 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/29 16:10:28 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Includes/minishell.h"
 
-void print_array(char **str)
-{
-	int i = -1;
+// void print_array(char **str)
+// {
+// 	int i = -1;
 	
-	while(str[++i])
-		write_to_debugfile(ft_strjoin("array_item: ", str[i]));
-}
+// 	while(str[++i])
+// 		// write_to_debugfile(ft_strjoin("array_item: ", str[i]));
+// }
 
 // void print_tokens(t_token *tokens)
 // {
@@ -43,23 +43,23 @@ void print_array(char **str)
 // 	}
 // }
 
-void print_redir_list(t_command *scommand)
-{
-    t_redir *out = scommand->redirs;
+// void print_redir_list(t_command *scommand)
+// {
+//     t_redir *out = scommand->redirs;
 
-	printf("\nAll REDIRS:\n");
-    while (out) {
-        if (out->type == OUTPUT)
-            printf("OUTPUT TO-> \"%s\"\n", out->filename);
-        else if (out->type == APPEND)
-            printf("APPEND TO-> \"%s\"\n", out->filename);
-        if (out->type == INPUT)
-            printf("INPUT FROM-> \"%s\"\n", out->filename);
-        else if (out->type == HEREDOC)
-            printf("HEREDOC EOF-> \"%s\"\n", out->filename);
-        out = out->next;
-    }
-}
+// 	printf("\nAll REDIRS:\n");
+//     while (out) {
+//         if (out->type == OUTPUT)
+//             printf("OUTPUT TO-> \"%s\"\n", out->filename);
+//         else if (out->type == APPEND)
+//             printf("APPEND TO-> \"%s\"\n", out->filename);
+//         if (out->type == INPUT)
+//             printf("INPUT FROM-> \"%s\"\n", out->filename);
+//         else if (out->type == HEREDOC)
+//             printf("HEREDOC EOF-> \"%s\"\n", out->filename);
+//         out = out->next;
+//     }
+// }
 
 // int main(int ac, char **av)
 // {
@@ -91,10 +91,10 @@ void print_redir_list(t_command *scommand)
 // 		printf("                             \n");
 // 		printf("SIMPLE COMMANDS %d      \n", i + 1);
 // 		printf("-------------------\n");
-// 		if (simpleCmnds[i]->args)
+// 		if (simpleCmnds[i]->args->array)
 // 		{
 // 			printf("ARGS TO EXECUTE:\n ");
-// 			print_array(simpleCmnds[i]->args);
+// 			print_array(simpleCmnds[i]->args->array);
 // 		}
 // 		printf("REDIRECTIONS:         \n");
 // 		printf("-------------------\n");

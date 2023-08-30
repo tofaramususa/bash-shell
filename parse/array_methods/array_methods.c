@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   array_methods.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 16:54:29 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/27 17:09:16 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/30 14:50:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,39 @@ bool	array_strchr(char *s, char c)
 	return (false);
 }
 
+
 void	free_array(char **array)
 {
 	int	i;
 
-	i = -1;
-    write_to_funcfile("free_array_called");
+	i = 0;
 	if (array)
 	{
-		while (array[++i])
-			safe_free(array[i]);
-		safe_free(array);
+		while (array[i])
+			free(array[i++]);
+		free(array);
 	}
-    array = NULL;
 }
+
+void free_t_char(t_char **char_struct)
+{
+    int i = -1;
+
+    if (*char_struct)
+    {
+        if ((*char_struct)->array)
+        {
+            if ((*char_struct)->isfreed == false)
+            {
+                (*char_struct)->isfreed = true; // Mark the struct as freed
+                while ((*char_struct)->array[++i])
+                    free((*char_struct)->array[i]);
+            }
+            free((*char_struct)->array);
+            (*char_struct)->array = NULL;
+        }
+        free(*char_struct);
+        *char_struct = NULL;
+    }
+}
+
