@@ -46,6 +46,8 @@ typedef enum
 	PIPE,
 	AND,
 	OR,
+	OPEN_PAREN,
+	CLOSE_PAREN,
 }					token_type;
 
 typedef enum
@@ -91,25 +93,36 @@ typedef struct s_command
 	bool			isfreed;
 }					t_command;
 
+typedef enum
+{
+	AFTER_OPEN_PAREN,
+	IN_PAREN,
+	BEFORE_CLOSE_PAREN,
+	NOT_PAREN,
+	
+}					t_paren_type;
+
+
 typedef struct s_compound
 {
 	t_command **s_commands;
 	token_type		split_on;
+	int				cmd_len; //update this everywhere
+	int				total_pipes; //update this for each command
+	t_paren_type	paren;
 	struct s_compound *next;
 } t_compound;
 
 typedef struct s_shell
 {
-	t_compound		*s_commands;
+	t_compound		**cmpd_node; //update this everywhere
 	t_char			*env_vars;
 	t_list			*env_list;
-	int				cmd_len;
 	int				error_no;
 	char			pwd[1024];
 	int				fd[256][2];
 	int				pid1;
 	int				pid2;
-	int				total_pipes;
 	int				middle_scommand;
 	int				scommand_index;
 	int				counter;

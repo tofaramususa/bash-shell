@@ -25,3 +25,13 @@
 //do pipex 
 
 //free_compound_list
+//
+
+create_compound_array(t_token *headtoken)
+{
+    //need to have a flag to set the inparen_type
+    //we don't need to add a parens to compound list but just give type
+    //we need to split on parens
+    //then split on the && or ||
+    //then create the simple commands;
+}

@@ -89,14 +89,14 @@ t_token *ft_tokenise(t_shell *bash, char **str_tokens)
 	return (tokenlist);
 }
 
-int count_commands(t_token *tokenlist)
+int count_commands(t_token *start, t_token *end)
 {
 	int i;
 	t_token *temp;
 
-	temp = tokenlist;
+	temp = start;
 	i = 1;
-	while (temp && temp->value != NULL)
+	while (temp && temp->value != NULL && temp != end->next)
 	{
 		if(temp->type == PIPE)
 			i++;
@@ -106,39 +106,39 @@ int count_commands(t_token *tokenlist)
 }
 
 // 4. Create simple commands from the tokenlist and then free the token list at the end
-void create_scmnd_array(t_shell *bash, t_token *tokenlist)
+void create_scmnd_array(t_compound *node, t_token *start, t_token *end , t_token_type split_on)
 {
 	t_token *temp;
-	t_token *start;
-	t_token *end;
+	t_token *temp_start;
+	t_token *temp_end;
 	int i;
 
-	bash->s_commands = (t_command **) malloc(sizeof(t_command *) * (count_commands(tokenlist) + 1));
+	node->s_commands = (t_command **) malloc(sizeof(t_command *) * (count_commands(start, end) + 1));
 	// if(!scmndList)
 		//do something
-	temp = tokenlist;
-	start = NULL;
-	end = NULL;
-	i = 0;
-	while(i < count_commands(tokenlist))
+	temp = start;
+	temp_start = NULL;
+	temp_end = NULL;
+	i = -1;
+	while(++i < count_commands(start, end))
 	{
-		start = temp;
-		end = temp;
-		while(end->next != NULL && end->next->type != PIPE)
-			end = end->next;
-		bash->s_commands[i] = create_scmnd_node(start, end);
-		bash->s_commands[i]->cmd_len = count_commands(tokenlist);
-		bash->s_commands[i]->isfreed = false;
-		if (end->next != NULL)
+		temp_start = temp;
+		temp_end = temp;
+		while(temp_end->next != NULL && temp_end->next->type != PIPE)
+			temp_end = temp_end->next;
+		node->s_commands[i] = create_scmnd_node(temp_start, temp_end);
+		node->s_commands[i]->cmd_len = count_commands(start, end);
+		node->s_commands[i]->isfreed = false;
+		if (temp_end->next != NULL)
 		{
-			temp = end->next->next;
+			temp = temp_end->next->next;
 		}
 		else
 			temp = NULL;
-		i++;
 	}
-	bash->s_commands[i] = NULL;
-	bash->cmd_len = count_commands(tokenlist);
+	node->split_on = split_on;
+	node->s_commands[i] = NULL;
+	node->cmd_len = count_commands(start, end);
 	// free_token_list(tokenlist);
 		// exit(0);
 }

@@ -18,27 +18,99 @@
 /**
  * start_execution: 
 */
-    int g_error_status = 0;
+int g_error_status = 0;
 
-bool	start_execution(t_shell *bash) //function to execute and free everything
+bool	start_execution(t_shell *bash, t_compound *cpmd_node) //for each compound_node
 {
+
     // write_to_funcfile("start_execution_called");
-	if (bash->cmd_len >= 220) //calculate command length
+	if (cpmd_node->cmd_len >= 220) //calculate command length
 	{
 		ft_putstr_fd("Sorry too many commands\n", 2); //change this
-		exit(1);
+		g_error_status = 1 //this maybe problematic on exit we free everything??
+        return(false);
 	}
-	if (check_and_update_heredoc(bash->s_commands, bash) == 1) //there is somekind or error here
+	if (check_and_update_heredoc(cpmd_node->s_commands, bash) == 1) //there is somekind or error here
 	{
-		garbage_collector(&bash); //free all the functions
+        //free all the functions
 		return (true);
 	}
 	signal(SIGINT, SIG_IGN); //reset signal
 	signal(SIGINT, sig_handler); //
-	g_error_status = pipex(bash->cmd_len, bash->s_commands, bash); //here is were the execution happens
-    garbage_collector(&bash);
+	g_error_status = pipex(cpmd_node->cmd_len, cpmd_node->s_commands, bash); //here is were the execution happens
 	unlink(".tmp"); //remove the tmp file
 	return (false);
+}
+
+bool    should_execute(t_compound *node)
+{
+    if(temp->split_on == AND && g_error_status == 0)
+            return(true);
+    else if (temp->split_on == OR && g_error_status != 0)
+            return(true);
+    else
+        return(false);
+    return(false);
+}
+
+int process_parens(t_compound **nodes, int start, t_shell *bash)
+{
+    int end;
+    int counter;
+
+    end = start;
+    counter = 0;
+    while (end)
+    {
+        if (nodes[end]->paren == AFTER_OPEN_PAREN && counter == 0)
+        {
+            if(should_execute(nodes[end]))
+                start_execution(bash, nodes[end]);
+        }
+        else if(nodes[end]->paren == AFTER_OPEN_PAREN)
+        {
+            end = process_parens(nodes, end, bash);
+            continue ;
+        }
+        else
+        {
+            if (should_execute(nodes[end]))
+                start_execution(bash, nodes[end])
+            if (nodes[end]->paren == BEFORE_OPEN_PAREN)
+            {
+                end++;
+                break;
+            }
+        }
+        end++;
+        counter++;
+    }
+
+
+    return(end);
+}
+
+void    execute(t_shell *bash)
+{
+    t_compound **temp;
+    int i;
+
+    temp = bash->cmpd_node;
+    i = 0;
+
+    while(temp[i])
+    {
+        if(temp[i]->paren == AFTER_OPEN_PAREN)
+        {
+            i = process_parens(temp, i, bash);
+            continue ;
+        }
+        else if(i == 0)
+            start_execution(bash, temp[i]);
+        else if (temp[i] && should_execute(temp[i]))
+            start_execution(bash, temp[i]);
+        i++;
+    }
 }
 
 // Parse function takes a str and turns it to an array of simple commands
@@ -128,11 +200,11 @@ int main(int ac, char **av, char **envp)
         // write_to_debugfile(ft_strjoin("COMMAND: ", bash->line));
         if(parse(bash))
         {
-            start_execution(bash);
+            execute(bash);
         }
         garbage_collector(&bash);
-        free_env_list(&bash->env_list);
     }
+        free_env_list(&bash->env_list);
         free(bash);
 }
 

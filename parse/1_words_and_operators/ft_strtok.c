@@ -20,7 +20,7 @@ int	get_end_index(char *s, char *delimiters, int start)
 	quotes.double_q = false;
 	if (s[start] && array_strchr(delimiters, s[start]))
 	{
-		if (s[start + 1] && s[start] == s[start + 1])
+		if (s[start + 1] && s[start] == s[start + 1] !array_strchr("()", s[start]))
 			return (start += 2);
 		else
 			return (start + 1);
@@ -52,7 +52,7 @@ static int	total_tokens(char *s, char *delimiters)
 			i = get_end_index(s, delimiters, i);
 		else
 		{
-			if (s[i + 1] && (s[i] == s[i + 1]))
+			if (s[i + 1] && (s[i] == s[i + 1]) && !array_strchr("()", s[i]))
 				i += 2;
 			else
 				i++;
@@ -73,7 +73,7 @@ static char	**split_on_delim(char *s, char **array, char *delimiters)
 	{
 		if (s[start] && array_strchr(delimiters, s[start]))
 		{
-			if (s[start + 1] && s[start] == s[start + 1])
+			if (s[start + 1] && s[start] == s[start + 1] && !array_strchr("()", s[start]))
 				array[i++] = ft_substr(s, start, 2);
 			else
 				array[i++] = ft_substr(s, start, 1);
@@ -92,7 +92,7 @@ char	**ft_strtok(char *s)
 	char	**array;
 	char	*delimiters;
 
-	delimiters = "&<|>";
+	delimiters = "&<|>()";
 	if (!s)
 		return (NULL);
 	array = (char **)malloc(sizeof(char *) * (total_tokens(s, delimiters) + 1));
