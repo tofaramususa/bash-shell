@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 16:59:07 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/30 18:57:39 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/27 14:30:14 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	**ft_split_on_delims(char *str)
         {
             next_tokens = ft_strtok(temp_tokens[i]);
             final_tokens = append_array(final_tokens, next_tokens);
-            free_array(next_tokens);
+            free_array(next_tokens); 
         }
 	}
 	return (free_array(temp_tokens), final_tokens);
@@ -70,22 +70,20 @@ t_token *ft_tokenise(t_shell *bash, char **str_tokens)
 {
 	t_token *tokenlist;
 
-	str_tokens = expand_array(bash, str_tokens); 
+	str_tokens = expand_array(bash, str_tokens);
 	// print_array(tokens);
 	tokenlist = create_token_list(str_tokens);
 	//l may need a function to remove empty string tokens
 	// if(tokenlist == NULL)
 		//do something
-	// write_to_debugfile(ft_strjoin("","TOKENS CREATED:"));
+	write_to_debugfile(ft_strjoin("","TOKENS CREATED:"));
 	if(token_syntax_check(tokenlist) == false) //X2
 	{
-		g_error_status = 127;
-		free_array(str_tokens);
+		error_status = 127;
 		return (NULL);
 	}
 	token_quote_removal(tokenlist);
 	// quote removal on each token
-	free_array(str_tokens);
 	return (tokenlist);
 }
 
@@ -128,7 +126,6 @@ void create_scmnd_array(t_shell *bash, t_token *tokenlist)
 			end = end->next;
 		bash->s_commands[i] = create_scmnd_node(start, end);
 		bash->s_commands[i]->cmd_len = count_commands(tokenlist);
-		bash->s_commands[i]->isfreed = false;
 		if (end->next != NULL)
 		{
 			temp = end->next->next;
@@ -139,6 +136,6 @@ void create_scmnd_array(t_shell *bash, t_token *tokenlist)
 	}
 	bash->s_commands[i] = NULL;
 	bash->cmd_len = count_commands(tokenlist);
-	// free_token_list(tokenlist);
+	free_token_list(tokenlist);
 		// exit(0);
 }

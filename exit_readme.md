@@ -1,4 +1,4 @@
-// g_error_status depands of multiple things,
+// error_status depands of multiple things,
 // If the commande work, 0
 // If a commande exist and fail cause of the arg, 1
 // If a commande exist and you dont have the permission 126

@@ -1,8 +1,8 @@
-NAME = libparse.a
+NAME = libexecution.a
 
-SRCS = $(wildcard *.c) $(wildcard 1_words_and_operators/*.c) $(wildcard 2_syntax_check_and_expansion/*.c)  $(wildcard 3_simple_commands_and_redirs/*.c) $(wildcard array_methods/*.c)
+SRCS = $(wildcard *.c) $(wildcard builtins/*.c) $(wildcard env_variables_list/*.c) $(wildcard pipes_and_processes/*.c)  $(wildcard redirections/*.c) $(wildcard *.c)
 
-CC = cc -g
+CC = cc -I/usr/local/Cellar/readline/8.1/include
 
 CFLAGS = -Wall -Werror -Wextra -Iincludes
 
@@ -14,14 +14,14 @@ all: $(NAME)
 		$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
-	ar rcs $(NAME) $(OBJ)
+		ar rcs $(NAME) $(OBJ)
 
 clean: 
 		rm -rf $(OBJ)
 
 fclean: clean
 		rm -f $(NAME)
-		
+
 norm:
 		norminette *.c
 		norminette *.h

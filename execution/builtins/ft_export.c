@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yonamog2 <yonamog2@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:48:17 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/30 16:15:53 by marvin           ###   ########.fr       */
+/*   Updated: 2023/02/15 18:05:16 by yonamog2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,18 @@ void	ft_env_print_linked(t_shell *proc)
 			printf("%s%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
-	garbage_collector(&proc);
+	garbage_collector(proc);
 	exit(0);
 }
 
-int	ft_export_to_linked(t_command **pipe, t_shell *prc)
+int	ft_export_to_linked(t_command *pipe, t_shell *prc)
 {
-	while ((*pipe)->args->array[++prc->x])
+	while (pipe->args[++prc->x])
 	{
-		if (ft_validate_export((*pipe)->args->array[prc->x]) == 1)
+		if (ft_validate_export(pipe->args[prc->x]) == 1)
 			print_and_set_flag(pipe, prc);
 		else
-			check_and_replace(prc->env_list, (*pipe)->args->array[prc->x]);
+			check_and_replace(prc->env_list, pipe->args[prc->x]);
 	}
 	return (prc->flag);
 }
@@ -51,14 +51,14 @@ int	ft_export_to_linked(t_command **pipe, t_shell *prc)
  * head to the linked list
 */
 
-int	ft_export_print_linked(t_command **pipe, t_shell *prc)
+int	ft_export_print_linked(t_command *pipe, t_shell *prc)
 {
 	sort_list(prc->env_list);
 	re_index(prc->env_list);
 	prc->flag = 0;
 	prc->temp_list = prc->env_list;
 	prc->x = 0;
-	if ((*pipe)->args->array[1])
+	if (pipe->args[1])
 		prc->x = ft_export_to_linked(pipe, prc);
 	else
 	{
@@ -73,8 +73,8 @@ int	ft_export_print_linked(t_command **pipe, t_shell *prc)
 			prc->temp_list = prc->temp_list->next;
 		}
 	}
-	if ((*pipe)->cmd_len > 1)
-		garbage_collector(&prc);
+	if (pipe->cmd_len > 1)
+		garbage_collector(prc);
 	return (prc->x);
 }
 
@@ -117,17 +117,17 @@ int	ft_unset_check_and_unset(t_list **main_head, char **args)
  * @pipe: all the cmd , arg and redirections
  * @proc: the struct containing variables to use
 */
-int	ft_unset(t_command **pipe, t_shell *proc)
+int	ft_unset(t_command *pipe, t_shell *proc)
 {
 	int	x;
 	int	res;
 
 	x = 0;
 	res = 0;
-	if ((*pipe)->args->array[1])
-		while ((*pipe)->args->array[++x])
-			res = ft_unset_check_and_unset(&proc->env_list, &(*pipe)->args->array[x]);
-	if ((*pipe)->cmd_len > 1)
-		garbage_collector(&proc);
+	if (pipe->args[1])
+		while (pipe->args[++x])
+			res = ft_unset_check_and_unset(&proc->env_list, &pipe->args[x]);
+	if (pipe->cmd_len > 1)
+		garbage_collector(proc);
 	return (res);
 }

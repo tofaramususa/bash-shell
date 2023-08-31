@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_methods.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:48:25 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/30 14:02:43 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/27 17:27:11 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,28 +73,22 @@ t_token	*new_token_node(char *arg)
 }
 
 //free everything
-void free_token_list(t_token **tokenlist)
+void free_token_list(t_token *tokenlist)
 {
     t_token *next_node;
-	t_token	*current;
-	
-	current = *tokenlist;
-	// write_to_funcfile("Garbage_collector_called");
-	if(current)
+
+	if(tokenlist)
 	{
-		while(current)
+		while (tokenlist && tokenlist->isfreed == false)
 		{
-			next_node = current->next;
-			if (current && current->isfreed == false)
-			{
-				current->isfreed = true;
-				free(current->value);
-				free(current);
-			}
-			current = next_node;
+			next_node = tokenlist->next;
+			safe_free(tokenlist->value);
+			safe_free(tokenlist);
+			tokenlist->isfreed = true;
+			tokenlist = next_node;
 		}
-		*tokenlist = NULL;
 	}
+	tokenlist = NULL;
 }
 
 //essentially main function to turn every word and operator to a token
