@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yonamog2 <yonamog2@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:07:03 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/02/19 14:30:52 by yonamog2         ###   ########.fr       */
+/*   Updated: 2023/08/30 17:08:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,16 @@ char	*ft_getenv(t_list *head, char *str)
 	char	*tmp_val;
 
 	tmp = head;
-	tmp_val = ft_strjoin(str, "=");
+	if(str)
+		tmp_val = ft_strjoin(str, "=");
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->key, tmp_val) == 0)
 			return (safe_free(tmp_val), tmp->value);
 		tmp = tmp->next;
 	}
-	safe_free(tmp_val);
+	if(tmp_val)
+		safe_free(tmp_val);
 	return (NULL);
 }
 

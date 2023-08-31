@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_one_cmd_proccess.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 13:03:36 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/27 15:30:14 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/30 16:47:01 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * @av: structure of the commands
  * @envp: 2d array conataining the environment variables
  */
-void	check_built_ins_and_exexute_one_cmd(t_shell *proc, t_command *av,
+void	check_built_ins_and_exexute_one_cmd(t_shell *proc, t_command **av,
 		char **envp)
 {
 	// perform builtin in functions
@@ -42,11 +42,11 @@ void	check_built_ins_and_exexute_one_cmd(t_shell *proc, t_command *av,
 	exit(1);
 }
 
-void	check_and_execute(t_shell *proc, t_command *av, char **envp, char *tmp)
+void	check_and_execute(t_shell *proc, t_command **av, char **envp, char *tmp)
 {
-	if (av->cmd && tmp && av->cmd[0])
+	if ((*av)->cmd && tmp && (*av)->cmd[0])
 	{
-		execve(tmp, av->args, envp);
+		execve(tmp, (*av)->args->array, envp);
 		free_func_one_cmd(av, proc);
 	}
 	else
@@ -59,7 +59,7 @@ void	check_and_execute(t_shell *proc, t_command *av, char **envp, char *tmp)
  * @av: structure of the commands
  * @envp: 2d array conataining the environment variables
  */
-void	one_cmd_process(t_shell *proc, t_command *av, char **envp)
+void	one_cmd_process(t_shell *proc, t_command **av, char **envp)
 {
 	char	*tmp;
 
@@ -68,19 +68,19 @@ void	one_cmd_process(t_shell *proc, t_command *av, char **envp)
 		terminate("fork", proc);
 	if (proc->process_id == 0)
 	{
-		if (av->total_redirs > 0)
+		if ((*av)->total_redirs > 0)
 			red_one_cmd(av, proc);
 		// perform redirections before trying to execute
-		if (av->cmd == NULL)
+		if ((*av)->cmd == NULL)
 		{
-			garbage_collector(proc); // free everything
+			garbage_collector(&proc); // free everything
 			exit(0);
 		}
-		proc->check = ft_check_builtin(av->cmd);
+		proc->check = ft_check_builtin((*av)->cmd);
 		// check for  builtin and return a value to identify it
 		if (proc->check > 0)
 			check_built_ins_and_exexute_one_cmd(proc, av, envp);
-		tmp = get_command(proc, envp, av->cmd);
+		tmp = get_command(proc, envp, (*av)->cmd);
 		// write a function to check for the command if accessible and executable
 		check_and_execute(proc, av, envp, tmp); // check for command and execute
 	}
@@ -92,7 +92,7 @@ void	one_cmd_process(t_shell *proc, t_command *av, char **envp)
  * @av: structure of the commands
  * @envp: 2d array conataining the environment variables
  */
-int	set_signal_exe(t_command *av, t_shell *proc, char **envp)
+int	set_signal_exe(t_command **av, t_shell *proc, char **envp)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, child_sig_handler);
@@ -112,25 +112,25 @@ int	set_signal_exe(t_command *av, t_shell *proc, char **envp)
  * @proc: a struture which contains the command and redirection
  * @envp: the environment variable
  */
-int	pipex_one_cmd(t_command *av, t_shell *proc, char **envp)
+int	pipex_one_cmd(t_command **av, t_shell *proc, char **envp)
 // takes the simple commands, shell data, and envp variables
 {
 	proc->scommand_index = 0;
-	if (av[0].cmd && ft_strcmp(av[0].cmd, "cd") == 0)
+	if (av[0]->cmd && ft_strcmp(av[0]->cmd, "cd") == 0)
 		// if cd then perform
 		return (do_operation(proc, av), ft_cd(av, proc));
 	// we do all necessary redirections then call the builin cd function
-	else if (av[0].cmd && ft_strcmp(av[0].cmd, "exit") == 0)
+	else if (av[0]->cmd && ft_strcmp(av[0]->cmd, "exit") == 0)
 	// else if exit has been typed
 	{
 		do_operation(proc, av); // perform rediractions
 		ft_exit(av, proc);      // call exit function
 		return (1);
 	}
-	else if (av[0].cmd && ft_strcmp(av[0].cmd, "unset") == 0)
+	else if (av[0]->cmd && ft_strcmp(av[0]->cmd, "unset") == 0)
 		// perform the redir
 		return (do_operation(proc, av), ft_unset(av, proc));
-	else if (av[0].cmd && ft_strcmp(av[0].cmd, "export") == 0)
+	else if (av[0]->cmd && ft_strcmp(av[0]->cmd, "export") == 0)
 		return (do_operation(proc, av), ft_export_print_linked(av, proc));
 	else
 		return (set_signal_exe(av, proc, envp));
@@ -146,6 +146,8 @@ static char	*check_for_access(t_shell *proc, char **envp, char **path_split, cha
 	while (path_split[++proc->x] && (search_for_path(envp) == 1))
 	{
 		path = ft_strjoin(path_split[proc->x], "/");
+		if(result)
+			safe_free(result);
 		result = ft_strjoin(path, s);
 		if (access(result, 0) == 0)
 		{
@@ -153,9 +155,8 @@ static char	*check_for_access(t_shell *proc, char **envp, char **path_split, cha
 			return (result);
 		}
 		safe_free(path);
-		safe_free(result);
 	}
-	safe_free(path);
+	// safe_free(path);
 	return (result);
 }
 
@@ -168,6 +169,7 @@ char	*get_command(t_shell *proc, char **envp, char *s)
 	proc->x = -1;
 	if (!s)
 		return (NULL);
+	result = NULL;
 	if (ft_strnstr(s, "/", ft_strlen(s)) || ft_strcmp(s, ".") == 0
 		|| ft_strcmp(s, "..") == 0 || s[0] == '\0')
 		// to check if its a directory or not

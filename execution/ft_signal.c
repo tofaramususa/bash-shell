@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_signal.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yonamog2 <yonamog2@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:51:00 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/02/20 16:47:14 by yonamog2         ###   ########.fr       */
+/*   Updated: 2023/08/30 16:11:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	sig_handler(int num)
 		rl_on_new_line();
 		// rl_replace_line("", 0);
 		rl_redisplay();
-		error_status = 1;
+		g_error_status = 1;
 	}
 }
 
@@ -35,19 +35,19 @@ void	child_sig_handler(int num)
 	if (num == SIGINT)
 	{
 		ft_putstr_fd("\n", 2);
-		error_status = 130;
+		g_error_status = 130;
 	}
 	else if (num == SIGQUIT)
 	{
 		ft_putstr_fd("Quit: 3\n", 2);
-		error_status = 130;
+		g_error_status = 130;
 	}
 }
 
-void	do_operation(t_shell *proc, t_command *av)
+void	do_operation(t_shell *proc, t_command **av)
 {
 	proc->dont = 1;
-	if (av->total_redirs > 0)
+	if ((*av)->total_redirs > 0)
 		red_one_cmd(av, proc);
 }
 

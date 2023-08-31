@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:05:52 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/27 17:09:16 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/30 19:40:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,20 @@ static char *get_env_var(t_shell *bash, char *str, int start)
 	search_var = ft_substr(str, start + 1, get_search_var_end(str, start) - start); //we say plus one because we dont want $ in our search variable
     // printf("search_var: %s\n", search_var);
     if (search_var && search_var[0] == '?' && search_var[1] == '\0') //aka is $?
-		env_var = ft_itoa(error_status); //there may be a problem here
-	// else if (search_var[0] = "$" && search_var[1] == '\0') //test this
-	// 	env_var = ""; //get process id  
+    {
+		env_var = ft_itoa(g_error_status);
+    }
 	else
-		env_var = ft_getenv(bash->env_list, search_var); //use the getenv to get return value
+		env_var = ft_strdup(ft_getenv(bash->env_list, search_var)); //use the getenv to get return value
     if(env_var == NULL) //if not found return empty string
-        return ("");
-    safe_free(search_var); //it was allocated at the start
+    {
+        safe_free(search_var); //it was allocated at the start     
+        return (ft_strdup(""));
+    }
+    if(search_var)
+    {
+        safe_free(search_var); //it was allocated at the start
+    }
 	return(env_var); //return the env_var we have
 }
 
@@ -52,7 +58,7 @@ static char *new_expanded_str(t_shell *bash, char *str) //
     {
         if (str[start] == '$' && !array_strchr("\" /~%^{}:;''\0'", str[start + 1])) //$ not followed by these characters;
         {
-            temp_str = ft_strdup(get_env_var(bash, str, start)); //call get env var, we make copy because it does return an dynamically allocated value, only string literals
+            temp_str = get_env_var(bash, str, start); //call get env var, we make copy because it does return an dynamically allocated value, only string literals
             start = get_search_var_end(str, start) + 1; ////We need to add plus one because the get_end stops at the last letter of the search variable
             // printf("start: %c\n", str[start]);
         }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 12:21:08 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/27 14:02:56 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/30 16:24:12 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	close_pipes(t_shell *proc)
  * @proc: a struture which contains the command and redirection
  * @envp: the environment variable
 */
-int	pipex_two_cmd(t_command *av, t_shell *proc, char **envp)
+int	pipex_two_cmd(t_command **av, t_shell *proc, char **envp)
 {
 	signal(SIGINT, SIG_IGN);
 	proc->pid1 = first_process(proc, av, envp); //return process id, perform execution
@@ -79,7 +79,7 @@ int	pipex_two_cmd(t_command *av, t_shell *proc, char **envp)
  * @proc: a struture which contains the command and redirection
  * @envp: the environment variable
 */
-int	pipex_three_cmd(t_command *av, t_shell *proc, char **envp)
+int	pipex_three_cmd(t_command **av, t_shell *proc, char **envp)
 {
 	proc->x = 0;
 	proc->counter = 0;
@@ -94,7 +94,7 @@ int	pipex_three_cmd(t_command *av, t_shell *proc, char **envp)
 	close_pipes(proc);
 	proc->counter = -1;
 	waitpid(proc->pid2, &proc->error_no, 0);
-	while (proc->x < (av->cmd_len - 1))
+	while (proc->x < ((*av)->cmd_len - 1))
 	{
 		waitpid(-1, 0, 0);
 		proc->x++;
@@ -114,13 +114,13 @@ int	pipex_three_cmd(t_command *av, t_shell *proc, char **envp)
  * @proc: a struture which contains the command and redirection
  * @envp: the environment variable
 */
-int	pipex(int ac, t_command *scommand, t_shell *bash)
+int	pipex(int ac, t_command **scommand, t_shell *bash)
 {
 	int		counter;
 	int		ret;
 
 	ret = 0;
-	write_to_funcfile("pipex called");
+	// write_to_funcfile("pipex called");
 	bash->env_vars = linked_to_array(bash->env_list); //needs fixing //convert the env to an array for use in the env variable
 	bash->middle_scommand = ac - 2;
 	bash->total_pipes = ac - 1;
@@ -130,12 +130,22 @@ int	pipex(int ac, t_command *scommand, t_shell *bash)
 		while (++counter < ac - 1)
 			pipe(bash->fd[counter]);
 	if (ac == 1)
-		ret = pipex_one_cmd(scommand, bash, bash->env_vars);
+		ret = pipex_one_cmd(scommand, bash, bash->env_vars->array); //we no longer just terminate now
 	else if (ac == 2)
-		ret = pipex_two_cmd(scommand, bash, bash->env_vars);
+	{
+		if(scommand[1]->split_on == PIPE)
+			ret = pipex_two_cmd(scommand, bash, bash->env_vars->array);
+		if(scommand[1]->split_on == AND)
+		{
+			ret = pipex_one_cmd(scommand, bash, bash->env_vars->array); //execute one command
+			if(ret ==)
+		}
+
+	}
 	else if (ac > 2)
-		ret = pipex_three_cmd(scommand, bash, bash->env_vars);
+		ret = pipex_three_cmd(scommand, bash, bash->env_vars->array);
 	else
 		printf("Error : no command input\n");
+	//change here, we no longer just terminate and exit
 	return (ret);
 }

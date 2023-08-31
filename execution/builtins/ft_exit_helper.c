@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit_helper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 21:42:07 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/27 15:27:28 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/30 14:14:15 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void atoi_utl_with_exit(char *str, int x, t_shell *proc)
 		if (proc->copy > res)
 		{
 			ft_putstr_fd(": numeric argument required\n", 2);
-			garbage_collector(proc);
+			garbage_collector(&proc);
 			exit(255);
 		}
 	}

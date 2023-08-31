@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yonamog2 <yonamog2@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 11:51:43 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/02/19 14:28:34 by yonamog2         ###   ########.fr       */
+/*   Updated: 2023/08/30 16:16:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,10 @@ int	ft_validate_export(char *str)
 	return (1);
 }
 
-void	print_and_set_flag(t_command *pipe, t_shell *proc)
+void	print_and_set_flag(t_command **pipe, t_shell *proc)
 {
 	write(1, "`", 1);
-	write(1, pipe->args[proc->x], ft_strlen(pipe->args[proc->x]));
+	write(1, (*pipe)->args->array[proc->x], ft_strlen((*pipe)->args->array[proc->x]));
 	write(1, "'", 1);
 	ft_putstr_fd(": not a valid identifier\n", 2);
 	proc->flag = 1;

@@ -51,10 +51,14 @@ bool filename_expansion(t_token *tokenlist, char *str_token)
             safe_free(cwd);
         return(match_found);
     }
-    if ( str_token != NULL && array_strchr(str_token, '*'))
+    if ( str_token != NULL && array_strchr(str_token, '*')) 
     {
         while ((entry = readdir(dir)) != NULL)
         {
+            if(entry->d_name[0] == '.')
+            {
+                continue ;
+            }
             if (wildcard_match(str_token, entry->d_name, quotes))
             {
                 expanded_token = ft_strdup(entry->d_name);

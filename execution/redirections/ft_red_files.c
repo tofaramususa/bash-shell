@@ -17,12 +17,12 @@
  * @av: the structure that contain the specific pipe
  * @flag: the output redirection flag
 */
-void	red_first_proc(t_command *av, int *flag, t_shell *proc)
+void	red_first_proc(t_command **av, int *flag, t_shell *proc)
 {
 
 	t_redir *temp;
 
-	temp = av[0].redirs;
+	temp = av[0]->redirs;
 	while (temp)
 	{
 		if (temp->type == OUTPUT)
@@ -39,11 +39,11 @@ void	red_first_proc(t_command *av, int *flag, t_shell *proc)
  * red_one_cmd-> redirection for middle command
  * @av: the structure that contain the specific pipe
 */
-void	red_one_cmd(t_command *av, t_shell *proc)
+void	red_one_cmd(t_command **av, t_shell *proc)
 {
 	t_redir *temp;
 
-	temp = av[proc->scommand_index].redirs;
+	temp = av[proc->scommand_index]->redirs;
 
 	while (temp)
 	{
@@ -63,11 +63,11 @@ void	red_one_cmd(t_command *av, t_shell *proc)
  * @flag_in: the flag to check input redirection
 */
 
-void	red_middle(t_command *av, int *flag_out, int *flag_in, t_shell *proc)
+void	red_middle(t_command **av, int *flag_out, int *flag_in, t_shell *proc)
 {
 	t_redir *temp;
 
-	temp = av[proc->scommand_index].redirs;
+	temp = av[proc->scommand_index]->redirs;
 	while (temp)
 	{
 		if (temp->type == OUTPUT)
@@ -86,14 +86,14 @@ void	red_middle(t_command *av, int *flag_out, int *flag_in, t_shell *proc)
  * @flag: the flag to check if we redirect to a file or not
  * or itll stay in the default
 */
-void	red_last_proc(t_command *av, int *flag, t_shell *proc)
+void	red_last_proc(t_command **av, int *flag, t_shell *proc)
 {
 	t_redir *temp;
 
-	temp = av[proc->scommand_index].redirs;
+	temp = av[proc->scommand_index]->redirs;
 	while (temp)
 	{
-		proc->scommand_index = av->cmd_len - 1;
+		proc->scommand_index = (*av)->cmd_len - 1;
 		if (temp->type == OUTPUT)
 			red_output(temp, proc);
 		else if (temp->type == INPUT)

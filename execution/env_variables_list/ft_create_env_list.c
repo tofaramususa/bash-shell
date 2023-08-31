@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_create_env_list.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 11:55:07 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/27 17:08:37 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/30 13:13:12 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-void	init_vars(t_exp_var *var)
+void	init_vars(t_exp_var *var) //no memory allocation
 {
 	var->flag_pwd = 0;
 	var->x = 0;
@@ -40,7 +40,7 @@ t_shell *proc, char **env)
 		tmp_2 = ft_substr(env[var->x], var->y + 1, \
 		ft_strlen(env[var->x]) - var->y);
 		ft_lstadd_back(&head, ft_lstnew(ft_substr(env[var->x], 0, var->y + 1), \
-		ft_itoa(ft_atoi(tmp_2) + 1), var->x, var->x));
+		ft_itoa(ft_atoi(tmp_2) + 1), var->x, var->x)); 
 		safe_free(tmp_2);
 		var->x++;
 		return (1);
@@ -80,13 +80,13 @@ void	check_and_set(t_exp_var *var, t_list *head, t_shell *proc)
 	if (var->flag_shlvl == 0)
 	{
 		ft_lstadd_back(&head, ft_lstnew(ft_strdup("SHLVL="), \
-		ft_strdup("1"), var->x, var->x));
+		ft_strdup("1"), var->x, var->x)); 
 		var->x++;
 	}
 	if (var->flag_oldpwd == 0)
 	{
 		ft_lstadd_back(&head, ft_lstnew(ft_strdup("OLDPWD="), \
-		ft_strdup(""), var->x, var->x));
+		ft_strdup(""), var->x, var->x)); 
 		var->x++;
 	}
 }
@@ -99,11 +99,10 @@ void	check_and_set(t_exp_var *var, t_list *head, t_shell *proc)
 */
 void	create_envlist(t_shell *proc, char **env)
 {
-	t_list		*head;
 	t_exp_var	var;
 
 	init_vars(&var);
-	head = NULL;
+	proc->env_list = NULL;
 	while (env[var.x])
 	{
 		if (ft_strchr(env[var.x], '='))
@@ -112,16 +111,14 @@ void	create_envlist(t_shell *proc, char **env)
 			while (env[var.x][var.y] && env[var.x][var.y] != '=')
 				var.y++;
 		}
-		if (create_envlist_util(&var, head, proc, env) == 1)
+		if (create_envlist_util(&var, proc->env_list, proc, env) == 1)
 			continue ;
-		ft_lstadd_back(&head, ft_lstnew(ft_substr(env[var.x], 0, var.y + 1), \
+		ft_lstadd_back(&proc->env_list, ft_lstnew(ft_substr(env[var.x], 0, var.y + 1), \
 		ft_substr(env[var.x], var.y + 1, \
 		ft_strlen(env[var.x]) - var.y), var.x, var.x));
 		var.x++;
 	}
-	check_and_set(&var, head, proc);
-	proc->env_list = malloc(sizeof(t_list *));
-	proc->env_list = head;
+	check_and_set(&var, proc->env_list, proc);
 	sort_list(proc->env_list);
 	re_index(proc->env_list);
 }

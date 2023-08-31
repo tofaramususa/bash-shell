@@ -4,7 +4,7 @@ SRCS = $(wildcard *.c) $(wildcard 1_words_and_operators/*.c) $(wildcard 2_syntax
 
 CC = cc -g
 
-CFLAGS = -Wall -Werror -Wextra -Iincludes
+CFLAGS = -Wall -Werror -Wextra -I../Includes
 
 OBJ = $(SRCS:.c=.o)
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_two_more_cmd_proccess.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 13:07:19 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/27 15:29:04 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/30 16:23:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @av: structure of the commands
  * @envp: 2d array conataining the environment variables 
 */
-void	check_built_ins_and_exexute(t_shell *proc, t_command *av, char **envp)
+void	check_built_ins_and_exexute(t_shell *proc, t_command **av, char **envp)
 {
 	int	ret;
 
@@ -48,27 +48,27 @@ void	check_built_ins_and_exexute(t_shell *proc, t_command *av, char **envp)
  * @av: structure of the commands
  * @envp: 2d array conataining the environment variables 
 */
-int	first_process(t_shell *proc, t_command *av, char **envp)
+int	first_process(t_shell *proc, t_command **av, char **envp)
 {
 	proc->scommand_index = 0;
 	proc->flag = 0;
 	proc->process_id = fork();
 	if (proc->process_id < 0)
-		terminate("fork", proc);
+		terminate("fork", proc); //return (process_id);
 	if (proc->process_id == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		if (av[0].total_redirs > 0)
+		if (av[0]->total_redirs > 0)
 			red_first_proc(&av[0], &proc->flag, proc);
 		if (proc->flag == 0)
 			dup2(proc->fd[0][1], STDOUT_FILENO);
 		close_pipes(proc);
-		if (av[0].cmd == NULL)
+		if (av[0]->cmd == NULL)
 		{
-			garbage_collector(proc);
+			garbage_collector(&proc);
 			exit(0);
 		}
-		proc->check = ft_check_builtin(av[0].cmd);
+		proc->check = ft_check_builtin(av[0]->cmd);
 		first_process_util(proc, av, envp);
 	}
 	return (proc->process_id);
@@ -80,15 +80,15 @@ int	first_process(t_shell *proc, t_command *av, char **envp)
  * @av: structure of the commands
  * @envp: 2d array conataining the environment variables 
 */
-void	middle_proc_execute(t_shell *proc, t_command *av, char **envp, int counter)
+void	middle_proc_execute(t_shell *proc, t_command **av, char **envp, int counter)
 {
 	char	*tmp;
 
-	tmp = get_command(proc, envp, av[counter].cmd); //possible area of error;
-	if (av[counter].cmd && tmp && av[counter].cmd[0])
+	tmp = get_command(proc, envp, av[counter]->cmd); //possible area of error;
+	if (av[counter]->cmd && tmp && av[counter]->cmd[0])
 	{
 		proc->scommand_index = counter;
-		execve(tmp, av[counter].args, envp);
+		execve(tmp, av[counter]->args->array, envp);
 		safe_free(tmp); //safe_free
 		free_func_one_cmd(av, proc);
 	}
@@ -102,7 +102,7 @@ void	middle_proc_execute(t_shell *proc, t_command *av, char **envp, int counter)
  * @av: structure of the commands
  * @envp: 2d array conataining the environment variables 
 */
-void	middl_process(t_shell *proc, t_command *av, char **envp, int counter)
+void	middl_process(t_shell *proc, t_command **av, char **envp, int counter)
 {
 	proc->scommand_index = counter;
 	proc->flag_out = 0;
@@ -112,19 +112,19 @@ void	middl_process(t_shell *proc, t_command *av, char **envp, int counter)
 		terminate("fork", proc);
 	if (proc->process_id == 0)
 	{
-		if (av[counter].total_redirs > 0)
+		if (av[counter]->total_redirs > 0)
 			red_middle(av, &proc->flag_out, &proc->flag_in, proc);
 		if (proc->flag_out == 0)
 			dup2(proc->fd[proc->counter + 1][1], STDOUT_FILENO);
 		if (proc->flag_in == 0)
 			dup2(proc->fd[proc->counter][0], STDIN_FILENO);
 		close_pipes(proc);
-		if (av[counter].cmd == NULL)
+		if (av[counter]->cmd == NULL)
 		{
-			garbage_collector(proc);
+			garbage_collector(&proc);
 			exit(0);
 		}
-		proc->check = ft_check_builtin(av[counter].cmd);
+		proc->check = ft_check_builtin(av[counter]->cmd);
 		if (proc->check > 0)
 			check_built_ins_and_exexute(proc, av, envp);
 		middle_proc_execute(proc, av, envp, counter);
@@ -137,26 +137,26 @@ void	middl_process(t_shell *proc, t_command *av, char **envp, int counter)
  * @av: structure of the commands
  * @envp: 2d array conataining the environment variables 
 */
-int	last_process(t_shell *proc, t_command *av, char **envp)
+int	last_process(t_shell *proc, t_command **av, char **envp)
 {
-	proc->scommand_index = av->cmd_len - 1;
+	proc->scommand_index = (*av)->cmd_len - 1;
 	proc->flag = 0;
 	proc->process_id1 = fork(); //fork id
 	if (proc->process_id1 < 0)
 		terminate("fork", proc); //free everything and print error
 	if (proc->process_id1 == 0)
 	{
-		if (av[av->cmd_len - 1].total_redirs > 0)
+		if (av[(*av)->cmd_len - 1]->total_redirs > 0)
 			red_last_proc(av, &proc->flag, proc);
 		if (proc->flag == 0)
 			dup2(proc->fd[proc->counter][0], STDIN_FILENO);
 		close_pipes(proc);
-		if (av[av->cmd_len - 1].cmd == NULL) //means no commands
+		if (av[(*av)->cmd_len - 1]->cmd == NULL) //means no commands
 		{
-			garbage_collector(proc);
+			garbage_collector(&proc);
 			exit(0);
 		}
-		proc->check = ft_check_builtin(av[av->cmd_len - 1].cmd); //check for builtins
+		proc->check = ft_check_builtin(av[(*av)->cmd_len - 1]->cmd); //check for builtins
 		if (proc->check > 0) //if there then execute
 			check_built_ins_and_exexute(proc, av, envp);
 		last_process_util(proc, av, envp); //call execve

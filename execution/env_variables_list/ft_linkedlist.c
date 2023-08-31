@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_linkedlist.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yonamog2 <yonamog2@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:54:06 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/02/19 14:29:57 by yonamog2         ###   ########.fr       */
+/*   Updated: 2023/08/30 17:53:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,24 +115,26 @@ int	remove_element(t_list **head, int index)
  * linked_to_array: is a function that converts
  * @head: the head of the linked list
 */
-char	**linked_to_array(t_list *head)
+t_char *linked_to_array(t_list *head)
 {
 	t_list	*tmp;
-	char	**copy_env;
+	t_char *env_vars;
 	int		len;
 	int		x;
 
 	len = ft_lstsize(head);
 	tmp = head;
-	copy_env = malloc(sizeof(char *) * (len + 1));
+	env_vars = (t_char *) malloc(sizeof(t_char));
+	env_vars->array = (char **) malloc(sizeof(char *) * (len + 1));
+	env_vars->isfreed = false;
 	x = 0;
 	while (tmp)
 	{
-		copy_env[x] = ft_strjoin(tmp->key, tmp->value);
+		env_vars->array[x] = ft_strjoin(tmp->key, tmp->value);
 		tmp = tmp->next;
 		x++;
 	}
-	copy_env[x] = NULL;
+	env_vars->array[x] = NULL;
 	x = 0;
-	return (copy_env);
+	return (env_vars);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   smnd_methods.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:56:11 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/27 17:09:16 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/30 16:28:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,11 @@ t_command	*create_scmnd_node(t_token *start, t_token *end)
 	command->isfreed = false;
 	fill_scmnd(command, start, end);
 	// exit(0);
-	if (command->args[0])
-		command->cmd = command->args[0];
-	command->args_len = ft_array_len(command->args);
+	if (command->args && command->args->array[0])
+	{
+		command->cmd = ft_strdup(command->args->array[0]);
+		command->args_len = ft_array_len(command->args->array);
+	}
 	command->total_redirs = count_redirs(command->redirs);
 	return (command);
 }
@@ -54,17 +56,19 @@ static void	add_token_to_args(t_command *scommand, t_token *current_token)
 
 	if (scommand->args == NULL) // create our initial array with the first word
 	{
-		scommand->args = (char **)malloc(sizeof(char *) * 2);
+		scommand->args = (t_char *) malloc(sizeof(t_char));
+		scommand->args->array = (char **)malloc(sizeof(char *) * 2);
 			// create malloc function;;
-		scommand->args[0] = ft_strdup(current_token->value);
-		scommand->args[1] = NULL;
+		scommand->args->array[0] = ft_strdup(current_token->value);
+		scommand->args->array[1] = NULL;
+		scommand->args->isfreed = false;
 	}
 	else
 	{
 		temp_array = (char **)malloc(sizeof(char *) * 2);
 		temp_array[0] = ft_strdup(current_token->value);
 		temp_array[1] = NULL;
-		scommand->args = append_array(scommand->args, temp_array);
+		scommand->args->array = append_array(scommand->args->array, temp_array);
 			// l need to understand something here,
 			// where is the copy of ft_strdup store and how do l free it
 		free_array(temp_array);
@@ -95,6 +99,4 @@ void	fill_scmnd(t_command *scommand, t_token *start, t_token *end)
 			current_token = current_token->next;
 		}
 	}
-	if (scommand->args)
-		scommand->cmd = scommand->args[0];
 }
