@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:29:12 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/30 16:05:10 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/31 20:31:19 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,18 @@ typedef struct s_command
 	int				total_redirs; //this will need adjustment
 	t_redir			*redirs; //this will need adjust
 	bool			isfreed;
-	token_type		split_on;
 }					t_command;
+
+typedef struct s_compound
+{
+	t_command **s_commands;
+	token_type		split_on;
+	struct s_compound *next;
+} t_compound;
 
 typedef struct s_shell
 {
-	t_command		**s_commands;
+	t_compound		*s_commands;
 	t_char			*env_vars;
 	t_list			*env_list;
 	int				cmd_len;

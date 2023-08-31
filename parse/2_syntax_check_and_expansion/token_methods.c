@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_methods.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:48:25 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/30 14:02:43 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/31 20:34:02 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,12 @@ static token_type	assign_token_type(char *arg)
         type = REDIR;
     else if (ft_strcmp(arg, "|") == 0)
         type = PIPE;
+    else if(ft_strcmp(arg, "&&") == 0)
+		type = AND;
+    else if(ft_strcmp(arg, "||") == 0)
+		type = OR;
     else
-        type = WORD;
+		type = WORD;
     return (type);
 }
 

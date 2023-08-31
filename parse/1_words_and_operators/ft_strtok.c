@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:30:23 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/27 17:09:16 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/08/31 20:37:25 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	get_end_index(char *s, char *delimiters, int start)
 	quotes.double_q = false;
 	if (s[start] && array_strchr(delimiters, s[start]))
 	{
-		if (s[start + 1] && (s[start] == s[start + 1]) && s[start] != '|')
+		if (s[start + 1] && s[start] == s[start + 1])
 			return (start += 2);
 		else
 			return (start + 1);
@@ -52,7 +52,7 @@ static int	total_tokens(char *s, char *delimiters)
 			i = get_end_index(s, delimiters, i);
 		else
 		{
-			if (s[i + 1] && (s[i] == s[i + 1]) && s[i] != '|')
+			if (s[i + 1] && (s[i] == s[i + 1]))
 				i += 2;
 			else
 				i++;
@@ -73,7 +73,7 @@ static char	**split_on_delim(char *s, char **array, char *delimiters)
 	{
 		if (s[start] && array_strchr(delimiters, s[start]))
 		{
-			if (s[start + 1] && (s[start] == s[start + 1]) && s[start] != '|')
+			if (s[start + 1] && s[start] == s[start + 1])
 				array[i++] = ft_substr(s, start, 2);
 			else
 				array[i++] = ft_substr(s, start, 1);
@@ -92,7 +92,7 @@ char	**ft_strtok(char *s)
 	char	**array;
 	char	*delimiters;
 
-	delimiters = "<|>";
+	delimiters = "&<|>";
 	if (!s)
 		return (NULL);
 	array = (char **)malloc(sizeof(char *) * (total_tokens(s, delimiters) + 1));

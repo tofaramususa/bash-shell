@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:34:02 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/30 19:38:10 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/31 20:02:56 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,8 @@ int main(int ac, char **av, char **envp)
             start_execution(bash);
         }
         garbage_collector(&bash);
-    }
         free_env_list(&bash->env_list);
+    }
         free(bash);
 }
 

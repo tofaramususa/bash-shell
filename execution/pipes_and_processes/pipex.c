@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 12:21:08 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/30 16:24:12 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/31 20:16:07 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,14 +133,7 @@ int	pipex(int ac, t_command **scommand, t_shell *bash)
 		ret = pipex_one_cmd(scommand, bash, bash->env_vars->array); //we no longer just terminate now
 	else if (ac == 2)
 	{
-		if(scommand[1]->split_on == PIPE)
 			ret = pipex_two_cmd(scommand, bash, bash->env_vars->array);
-		if(scommand[1]->split_on == AND)
-		{
-			ret = pipex_one_cmd(scommand, bash, bash->env_vars->array); //execute one command
-			if(ret ==)
-		}
-
 	}
 	else if (ac > 2)
 		ret = pipex_three_cmd(scommand, bash, bash->env_vars->array);
