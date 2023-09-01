@@ -91,7 +91,7 @@ int	check_and_update_heredoc(t_command **s_commands, t_shell *bash)
 
 	index = 0;
 	// write_to_funcfile("check_and_update_heredoc_called");
-	while (index < bash->cmd_len) // for every command
+	while (index < s_commands[0]->cmd_len) // for every command
 	{
 		temp = s_commands[index]->redirs;
 		while (temp != NULL) // for every redirection
@@ -105,5 +105,6 @@ int	check_and_update_heredoc(t_command **s_commands, t_shell *bash)
 		}
 		index++;
 	}
+	// exit(0);
 	return (0);
 }

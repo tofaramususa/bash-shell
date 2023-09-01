@@ -44,7 +44,7 @@ typedef enum
 	WORD,
 	REDIR,
 	PIPE,
-	AND,
+	AND, 
 	OR,
 	OPEN_PAREN,
 	CLOSE_PAREN,
@@ -96,11 +96,10 @@ typedef struct s_command
 typedef enum
 {
 	AFTER_OPEN_PAREN,
-	IN_PAREN,
 	BEFORE_CLOSE_PAREN,
 	NOT_PAREN,
 	
-}					t_paren_type;
+}				t_paren_type;
 
 
 typedef struct s_compound
@@ -108,9 +107,7 @@ typedef struct s_compound
 	t_command **s_commands;
 	token_type		split_on;
 	int				cmd_len; //update this everywhere
-	int				total_pipes; //update this for each command
 	t_paren_type	paren;
-	struct s_compound *next;
 } t_compound;
 
 typedef struct s_shell
@@ -119,6 +116,7 @@ typedef struct s_shell
 	t_char			*env_vars;
 	t_list			*env_list;
 	int				error_no;
+	int				total_pipes; //update this for each command
 	char			pwd[1024];
 	int				fd[256][2];
 	int				pid1;
@@ -210,7 +208,7 @@ bool filename_expansion(t_token *tokenlist, char *str_token);
 
 /*Simple Commands and Redirections*/
 t_command			*create_scmnd_node(t_token *start, t_token *end);
-void				create_scmnd_array(t_shell *bash, t_token *tokenlist);
+t_compound *create_compound_node(t_token *start, t_token *end);
 void				fill_scmnd(t_command *scommand, t_token *start,
 						t_token *end);
 void				fill_redirs(t_command *scommand, t_token *redir,
@@ -278,7 +276,6 @@ int	red_output(t_redir *redir, t_shell *proc);
 int	red_infile(t_redir *redir, t_shell *proc);
 int	red_append_mode(t_redir *redir, t_shell *proc);
 
-
 /*PROCESSES*/
 void	first_process_util(t_shell *proc, t_command **av, char **envp);
 void	last_process_util(t_shell *proc, t_command **av, char **envp);
@@ -286,10 +283,17 @@ void	middl_process(t_shell *proc, t_command **av, char **envp, int counter);
 int	last_process(t_shell *proc, t_command **av, char **envp);
 int	first_process(t_shell *proc, t_command **av, char **envp);
 int	pipex_one_cmd(t_command **av, t_shell *proc, char **envp);
+
 /*FREE FUNCTIONS*/
 void	free_func_one_cmd(t_command **av, t_shell *proc);
 void	terminate(char *display, t_shell *bash);
 void	close_pipes(t_shell *proc);
 void	free_env_list(t_list **head);
+
+/*BONUS*/
+void create_compound_array(t_shell *bash, t_token *headtoken);
+void    execute(t_shell *bash);
+int process_parens(t_compound **nodes, int start, t_shell *bash);
+
 
 #endif

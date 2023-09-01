@@ -56,6 +56,10 @@ static token_type	assign_token_type(char *arg)
 		type = AND;
     else if(ft_strcmp(arg, "||") == 0)
 		type = OR;
+    else if(ft_strcmp(arg, "(") == 0)
+		type = OPEN_PAREN;
+    else if(ft_strcmp(arg, ")") == 0)
+		type = CLOSE_PAREN;
     else
 		type = WORD;
     return (type);

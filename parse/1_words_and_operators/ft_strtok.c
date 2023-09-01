@@ -20,7 +20,7 @@ int	get_end_index(char *s, char *delimiters, int start)
 	quotes.double_q = false;
 	if (s[start] && array_strchr(delimiters, s[start]))
 	{
-		if (s[start + 1] && s[start] == s[start + 1] !array_strchr("()", s[start]))
+		if (s[start + 1] && s[start] == s[start + 1] && !array_strchr("()", s[start]))
 			return (start += 2);
 		else
 			return (start + 1);

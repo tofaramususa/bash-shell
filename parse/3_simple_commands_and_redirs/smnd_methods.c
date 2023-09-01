@@ -95,7 +95,8 @@ void	fill_scmnd(t_command *scommand, t_token *start, t_token *end)
 		while (current_token && (current_token != end->next
 				&& current_token->type != REDIR))
 		{
-			add_token_to_args(scommand, current_token);
+			if(ft_strcmp(")", current_token->value) != 0)
+				add_token_to_args(scommand, current_token);
 			current_token = current_token->next;
 		}
 	}

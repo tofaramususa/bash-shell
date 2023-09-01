@@ -20,14 +20,13 @@
 */
 int g_error_status = 0;
 
-bool	start_execution(t_shell *bash, t_compound *cpmd_node) //for each compound_node
+bool	start_execution(t_compound *cpmd_node, t_shell *bash) //for each compound_node
 {
-
     // write_to_funcfile("start_execution_called");
 	if (cpmd_node->cmd_len >= 220) //calculate command length
 	{
 		ft_putstr_fd("Sorry too many commands\n", 2); //change this
-		g_error_status = 1 //this maybe problematic on exit we free everything??
+		g_error_status = 1; //this maybe problematic on exit we free everything??
         return(false);
 	}
 	if (check_and_update_heredoc(cpmd_node->s_commands, bash) == 1) //there is somekind or error here
@@ -44,13 +43,13 @@ bool	start_execution(t_shell *bash, t_compound *cpmd_node) //for each compound_n
 
 bool    should_execute(t_compound *node)
 {
-    if(temp->split_on == AND && g_error_status == 0)
-            return(true);
-    else if (temp->split_on == OR && g_error_status != 0)
-            return(true);
+    if(node->split_on == AND && g_error_status != 0)
+            return(false);
+    else if (node->split_on == OR && g_error_status == 0)
+            return(false);
     else
-        return(false);
-    return(false);
+        return(true);
+    return(true);
 }
 
 int process_parens(t_compound **nodes, int start, t_shell *bash)
@@ -60,12 +59,12 @@ int process_parens(t_compound **nodes, int start, t_shell *bash)
 
     end = start;
     counter = 0;
-    while (end)
+    while (nodes[end])
     {
         if (nodes[end]->paren == AFTER_OPEN_PAREN && counter == 0)
         {
             if(should_execute(nodes[end]))
-                start_execution(bash, nodes[end]);
+               start_execution(nodes[end], bash); // printf("Executing command: %s\n", nodes[end]->s_commands[0]->args->array[0]); // //replace with print values;
         }
         else if(nodes[end]->paren == AFTER_OPEN_PAREN)
         {
@@ -75,8 +74,8 @@ int process_parens(t_compound **nodes, int start, t_shell *bash)
         else
         {
             if (should_execute(nodes[end]))
-                start_execution(bash, nodes[end])
-            if (nodes[end]->paren == BEFORE_OPEN_PAREN)
+                start_execution(nodes[end], bash); //printf("Executing command: %s\n", nodes[end]->s_commands[0]->args->array[0]); //start_execution(nodes[end], bash) //start with print values;
+            if (nodes[end]->paren == BEFORE_CLOSE_PAREN)
             {
                 end++;
                 break;
@@ -86,31 +85,30 @@ int process_parens(t_compound **nodes, int start, t_shell *bash)
         counter++;
     }
 
-
     return(end);
 }
 
 void    execute(t_shell *bash)
 {
-    t_compound **temp;
     int i;
 
-    temp = bash->cmpd_node;
     i = 0;
-
-    while(temp[i])
+    while(bash && bash->cmpd_node && bash->cmpd_node[i])
     {
-        if(temp[i]->paren == AFTER_OPEN_PAREN)
+        if(bash->cmpd_node[i]->paren == AFTER_OPEN_PAREN)
         {
-            i = process_parens(temp, i, bash);
+            // exit(0);
+            i = process_parens(bash->cmpd_node, i, bash);
             continue ;
         }
         else if(i == 0)
-            start_execution(bash, temp[i]);
-        else if (temp[i] && should_execute(temp[i]))
-            start_execution(bash, temp[i]);
+            start_execution(bash->cmpd_node[i], bash); //printf("Executing command: %s\n", bash->cmpd_node[i]->s_commands[0]->args->array[0]); //start_execution(temp[i], bash); //start with print values;
+        else if (should_execute(bash->cmpd_node[i]))
+            start_execution(bash->cmpd_node[i], bash); //printf("Executing command: %s\n", bash->cmpd_node[i]->s_commands[0]->args->array[0]);//start_execution(temp[i], bash); //start with print values; 
         i++;
     }
+    garbage_collector(&bash);
+
 }
 
 // Parse function takes a str and turns it to an array of simple commands
@@ -131,11 +129,13 @@ bool parse(t_shell *bash)
 	{
         return (false);
     }
+        // exit(0);
 	bash->tokenlist = ft_tokenise(bash, final_result); //memory allocation here;
     if (!bash->tokenlist)
         return(false);
     // print_tokens(bash->tokenlist);
-	create_scmnd_array(bash, bash->tokenlist); //here we have the tokenlist left
+	create_compound_array(bash, bash->tokenlist); //here we have the tokenlist left
+    // exit(0);
     // print_scommands(bash->s_commands);
     // garbage_collector(&bash); //at this point we have allocated tokenlist and scmnd_array
     // free_env_list(&bash->env_list);
@@ -145,7 +145,7 @@ bool parse(t_shell *bash)
 void init_bash(t_shell *bash) //set different values;
 {
     bash->dont = 0; //convert envp to an array 
-    bash->s_commands = NULL;
+    bash->cmpd_node = NULL;
     bash->env_vars = NULL;
     bash->temp_list = NULL;
     bash->line = NULL;
@@ -200,6 +200,7 @@ int main(int ac, char **av, char **envp)
         // write_to_debugfile(ft_strjoin("COMMAND: ", bash->line));
         if(parse(bash))
         {
+            // exit(0);
             execute(bash);
         }
         garbage_collector(&bash);

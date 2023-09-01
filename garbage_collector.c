@@ -71,31 +71,31 @@ void	free_redirs_list(t_redir **redirlist)
 }
 // function to free_simple commands which simple commands
 // safe_free command and path, free_array for args, call free redirs
-static void	free_scommand(t_command ***s_commands)
-{
-	int	i;
+// static void	free_scommand(t_command ***s_commands)
+// {
+// 	int	i;
 
-	i = 0;
-	// write_to_funcfile("free_scommand_called");
-	if (s_commands && *s_commands)
-	{
-		while ((*s_commands)[i])
-		{
-			if ((*s_commands)[i]->isfreed == false)
-			{
-				(*s_commands)[i]->isfreed = true;
-				free((*s_commands)[i]->cmd);
-				free_t_char(&(*s_commands)[i]->args);
-				free_redirs_list(&(*s_commands)[i]->redirs);
-				free((*s_commands)[i]);
-			}
-			i++;
-		}
-		free(*s_commands);
-		*s_commands = NULL;
-	}
+// 	i = 0;
+// 	// write_to_funcfile("free_scommand_called");
+// 	if (s_commands && *s_commands)
+// 	{
+// 		while ((*s_commands)[i])
+// 		{
+// 			if ((*s_commands)[i]->isfreed == false)
+// 			{
+// 				(*s_commands)[i]->isfreed = true;
+// 				free((*s_commands)[i]->cmd);
+// 				free_t_char(&(*s_commands)[i]->args);
+// 				free_redirs_list(&(*s_commands)[i]->redirs);
+// 				free((*s_commands)[i]);
+// 			}
+// 			i++;
+// 		}
+// 		free(*s_commands);
+// 		*s_commands = NULL;
+// 	}
 	
-}
+// }
 
 // function to free the shell which calls environment array and environment linked list,
 	// function to free s_commands,
@@ -114,8 +114,8 @@ void garbage_collector(t_shell **bash)
 			(*bash)->isfreed = true;
 			if((*bash)->env_vars)
             	free_t_char(&((*bash)->env_vars));
-			if((*bash)->s_commands)
-            	free_scommand(&((*bash)->s_commands));
+			// if((*bash)->s_commands)
+            // 	free_scommand(&((*bash)->s_commands));
 			if((*bash)->line)
             	safe_free((*bash)->line);
 			if((*bash)->tokenlist)

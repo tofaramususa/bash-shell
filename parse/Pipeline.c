@@ -106,39 +106,42 @@ int count_commands(t_token *start, t_token *end)
 }
 
 // 4. Create simple commands from the tokenlist and then free the token list at the end
-void create_scmnd_array(t_compound *node, t_token *start, t_token *end , t_token_type split_on)
+t_compound *create_compound_node(t_token *start, t_token *end)
 {
 	t_token *temp;
-	t_token *temp_start;
+	// t_token *temp_start;
 	t_token *temp_end;
+	t_compound *node;
 	int i;
-
+	node = (t_compound *) malloc(sizeof(t_compound));
+	if(!node)
+		exit(printf("memory allocation failure"));
 	node->s_commands = (t_command **) malloc(sizeof(t_command *) * (count_commands(start, end) + 1));
+	if(!node)
+		exit(printf("memory allocation failure"));
+	// exit(0);
 	// if(!scmndList)
 		//do something
 	temp = start;
-	temp_start = NULL;
-	temp_end = NULL;
 	i = -1;
 	while(++i < count_commands(start, end))
 	{
-		temp_start = temp;
 		temp_end = temp;
-		while(temp_end->next != NULL && temp_end->next->type != PIPE)
+		while(temp_end->next != NULL && temp_end->next != end->next && temp_end->next->type != PIPE)
 			temp_end = temp_end->next;
-		node->s_commands[i] = create_scmnd_node(temp_start, temp_end);
+		node->s_commands[i] = create_scmnd_node(temp, temp_end);
 		node->s_commands[i]->cmd_len = count_commands(start, end);
 		node->s_commands[i]->isfreed = false;
-		if (temp_end->next != NULL)
+		if (temp_end->next != NULL && temp_end->next != end->next)
 		{
 			temp = temp_end->next->next;
 		}
 		else
 			temp = NULL;
 	}
-	node->split_on = split_on;
 	node->s_commands[i] = NULL;
 	node->cmd_len = count_commands(start, end);
 	// free_token_list(tokenlist);
 		// exit(0);
+	return(node);
 }
