@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:05:52 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/29 18:54:37 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/02 20:04:32 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int	get_end_index_expan(char *str, int start)
 	while (str[start])
 	{
 		set_quote_flag(&quotes, str[start]);
-		if (str[start] == '$' && !quotes.single_q && !array_strchr("\" '/~%^{}:;'\0'", str[start + 1]))
+		if (str[start] == '$' && !quotes.single_q
+			&& !array_strchr("\" '/~%^{}:;'\0'", str[start + 1]))
 			break ;
 		start++;
 	}

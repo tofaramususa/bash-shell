@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:30:23 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/31 20:37:25 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/02 20:04:21 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	get_end_index(char *s, char *delimiters, int start)
 	quotes.double_q = false;
 	if (s[start] && array_strchr(delimiters, s[start]))
 	{
-		if (s[start + 1] && s[start] == s[start + 1] && !array_strchr("()", s[start]))
+		if (s[start + 1] && s[start] == s[start + 1] && !array_strchr("()",
+				s[start]))
 			return (start += 2);
 		else
 			return (start + 1);
@@ -73,7 +74,8 @@ static char	**split_on_delim(char *s, char **array, char *delimiters)
 	{
 		if (s[start] && array_strchr(delimiters, s[start]))
 		{
-			if (s[start + 1] && s[start] == s[start + 1] && !array_strchr("()", s[start]))
+			if (s[start + 1] && s[start] == s[start + 1] && !array_strchr("()",
+					s[start]))
 				array[i++] = ft_substr(s, start, 2);
 			else
 				array[i++] = ft_substr(s, start, 1);

@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 23:08:46 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/29 15:31:00 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/02 20:03:35 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include <stdbool.h>
 # include <stddef.h>
 # include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include <stdbool.h>
 
 typedef struct s_list
 {
@@ -77,8 +77,6 @@ size_t				ft_strlcat(char *dst, const char *src, size_t dstsize);
 size_t				ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 t_list				*ft_lstlast(t_list *lst);
-t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
-						void (*del)(void *));
-t_list	*ft_lstnew(char *key, char *value, int index, int position);
+t_list				*ft_lstnew(char *key, char *value, int index, int position);
 
 #endif

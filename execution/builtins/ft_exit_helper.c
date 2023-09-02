@@ -3,25 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit_helper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 21:42:07 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/30 14:14:15 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/02 19:56:01 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-static void atoi_utl_with_exit(char *str, int x, t_shell *proc)
+static void	atoi_utl_with_exit(char *str, int x, t_shell *proc)
 {
-	unsigned long long res;
+	unsigned long long	res;
 
 	res = 0;
 	proc->copy = 0;
 	while (str[x] >= '0' && str[x] <= '9')
 	{
 		proc->copy = res;
-		// copy += 0; // Perform a no-op operation with copy
 		res = (res * 10) + (str[x++] - '0');
 		if (proc->copy > res)
 		{

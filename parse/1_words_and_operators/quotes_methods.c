@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:19:29 by tmususa           #+#    #+#             */
-/*   Updated: 2023/08/27 17:09:16 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/02 20:40:59 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,11 @@ void	set_quote_flag(t_quote *value, char c)
 		value->single_q = !value->single_q;
 	else if (c == '"' && value->single_q == false)
 		value->double_q = !value->double_q;
+}
+
+void	safe_free(void *ptr)
+{
+	if (ptr)
+		free(ptr);
+	ptr = NULL;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:48:17 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/30 16:15:53 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/02 19:55:55 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 /**
  * ft_env_print_linked: is a function that simply prints the env
- * @proc: is a structure that contains all variables plus 
+ * @proc: is a structure that contains all variables plus
  * the head to the linked list
-*/
+ */
 void	ft_env_print_linked(t_shell *proc)
 {
 	t_list	*tmp;
@@ -47,9 +47,9 @@ int	ft_export_to_linked(t_command **pipe, t_shell *prc)
  * ft_export_print_linked: is a function that does export like bash
  * it basically take the linked list and print it in sorted order
  * @sort_list: is a function that sort linked list
- * @proc: is a structure that contains all variables plus the 
+ * @proc: is a structure that contains all variables plus the
  * head to the linked list
-*/
+ */
 
 int	ft_export_print_linked(t_command **pipe, t_shell *prc)
 {
@@ -66,8 +66,8 @@ int	ft_export_print_linked(t_command **pipe, t_shell *prc)
 		while (prc->temp_list)
 		{
 			if (ft_strchr(prc->temp_list->key, '='))
-				printf("declare -x %s\"%s\"\n", \
-				prc->temp_list->key, prc->temp_list->value);
+				printf("declare -x %s\"%s\"\n", prc->temp_list->key,
+					prc->temp_list->value);
 			else
 				printf("declare -x %s\n", prc->temp_list->key);
 			prc->temp_list = prc->temp_list->next;
@@ -79,11 +79,11 @@ int	ft_export_print_linked(t_command **pipe, t_shell *prc)
 }
 
 /**
- * ft_unset_check_and_unset: check if the identifier 
+ * ft_unset_check_and_unset: check if the identifier
  * is valid and remove it from the linked list
  * @main_head: the head of the linked lsit
  * @args: array of var names to be removed
-*/
+ */
 int	ft_unset_check_and_unset(t_list **main_head, char **args)
 {
 	t_exp_var	var;
@@ -93,8 +93,8 @@ int	ft_unset_check_and_unset(t_list **main_head, char **args)
 	while (args[++var.x])
 	{
 		if (ft_strchr(args[var.x], '='))
-			return (write(2, args[var.x], ft_strlen(args[var.x])), \
-			ft_putstr_fd(" : not a valid identifier\n", 2), 1);
+			return (write(2, args[var.x], ft_strlen(args[var.x])),
+				ft_putstr_fd(" : not a valid identifier\n", 2), 1);
 		var.tmp_list = *main_head;
 		while (var.tmp_list)
 		{
@@ -103,8 +103,8 @@ int	ft_unset_check_and_unset(t_list **main_head, char **args)
 			else
 				var.tmp_ex = ft_strdup(args[var.x]);
 			if (ft_strcmp(var.tmp_list->key, var.tmp_ex) == 0)
-				return (safe_free(var.tmp_ex), \
-				remove_element(main_head, var.tmp_list->index));
+				return (safe_free(var.tmp_ex), remove_element(main_head,
+						var.tmp_list->index));
 			safe_free(var.tmp_ex);
 			var.tmp_list = var.tmp_list->next;
 		}
@@ -113,10 +113,10 @@ int	ft_unset_check_and_unset(t_list **main_head, char **args)
 }
 
 /**
- * ft_unset: validate and remove an element from list 
+ * ft_unset: validate and remove an element from list
  * @pipe: all the cmd , arg and redirections
  * @proc: the struct containing variables to use
-*/
+ */
 int	ft_unset(t_command **pipe, t_shell *proc)
 {
 	int	x;
@@ -126,7 +126,8 @@ int	ft_unset(t_command **pipe, t_shell *proc)
 	res = 0;
 	if ((*pipe)->args->array[1])
 		while ((*pipe)->args->array[++x])
-			res = ft_unset_check_and_unset(&proc->env_list, &(*pipe)->args->array[x]);
+			res = ft_unset_check_and_unset(&proc->env_list,
+				&(*pipe)->args->array[x]);
 	if ((*pipe)->cmd_len > 1)
 		garbage_collector(&proc);
 	return (res);

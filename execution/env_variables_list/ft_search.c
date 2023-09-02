@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_search.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yonamog2 <yonamog2@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:51:25 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/02/20 16:36:38 by yonamog2         ###   ########.fr       */
+/*   Updated: 2023/09/02 19:57:40 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
+
 /**
  * search: scan the environment variable for the PATH fro 2d array
  * @envp: the environment variable
-*/
+ */
 int	search_for_path(char **envp)
 {
 	int	x;

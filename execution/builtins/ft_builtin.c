@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 12:52:10 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/31 00:52:27 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/02 19:56:59 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * ft_print_echo: print arguments to the terminal
  * @pipe: the structure containint the commands, redirections and args
  * @x: the indexing for the ags
-*/
+ */
 void	ft_print_echo(t_command **pipe, int x)
 {
 	int	flag;
@@ -24,7 +24,8 @@ void	ft_print_echo(t_command **pipe, int x)
 	flag = 0;
 	while (++x < (*pipe)->args_len)
 	{
-		if ((check_nns((*pipe)->args->array[x]) == 0 && flag == 0) || !(*pipe)->args->array[x])
+		if ((check_nns((*pipe)->args->array[x]) == 0 && flag == 0)
+			|| !(*pipe)->args->array[x])
 			continue ;
 		if ((*pipe)->args->array[x + 1] == NULL)
 			printf("%s ", (*pipe)->args->array[x]);
@@ -37,7 +38,7 @@ void	ft_print_echo(t_command **pipe, int x)
 /**
  * ft_echo: will just take a string and print it
  * @pipe: a structure that hold the whole commands and args
-*/
+ */
 void	ft_echo(t_command **pipe, t_shell *proc)
 {
 	if (pipe[proc->scommand_index]->args_len == 1)
@@ -61,7 +62,7 @@ void	ft_echo(t_command **pipe, t_shell *proc)
 
 /**
  * ft_pwd: will print the current directory
-*/
+ */
 void	ft_pwd(t_shell *data)
 {
 	char	res[4096];
@@ -82,7 +83,7 @@ void	ft_pwd(t_shell *data)
 /**
  * scan_exit_codes: just scan the sargs of exit,
  * @pipe: the structure containin the whole command, args and redirections
-*/
+ */
 int	scan_exit_codes(t_command **pipe)
 {
 	int	j;
@@ -90,7 +91,8 @@ int	scan_exit_codes(t_command **pipe)
 	j = -1;
 	while ((*pipe)->args->array[1][++j])
 	{
-		if (j == 0 && ((*pipe)->args->array[1][j] == '+' || (*pipe)->args->array[1][j] == '-'))
+		if (j == 0 && ((*pipe)->args->array[1][j] == '+'
+				|| (*pipe)->args->array[1][j] == '-'))
 			continue ;
 		if (ft_isdigit((*pipe)->args->array[1][j]) == 0)
 			return (1);
@@ -101,30 +103,33 @@ int	scan_exit_codes(t_command **pipe)
 /**
  * ft_exit: will print the current directory
  * @pipe: the struct that contains the whold command and instructions
-*/
+ */
 void	ft_exit(t_command **pipe, t_shell *proc)
 {
 	proc->x = 0;
-	if (pipe[proc->scommand_index]->args->array[1] == NULL) //exit only takes one argument
+	if (pipe[proc->scommand_index]->args->array[1] == NULL)
 	{
-		garbage_collector(&proc);//free the redirections, shell and simple commands;
-		exit(g_error_status); //exit
+		garbage_collector(&proc);
+		exit(g_error_status);
 	}
-	if (pipe[proc->scommand_index]->args->array[2]) //exit only takes one argument
+	if (pipe[proc->scommand_index]->args->array[2])
 	{
-		write(2, pipe[proc->scommand_index]->cmd, ft_strlen(pipe[proc->scommand_index]->cmd));
+		write(2, pipe[proc->scommand_index]->cmd,
+			ft_strlen(pipe[proc->scommand_index]->cmd));
 		ft_putstr_fd(": too many arguments\n", 2);
 		return ;
 	}
-	if (scan_exit_codes(&pipe[proc->scommand_index]) == 1) //check for exit codes
+	if (scan_exit_codes(&pipe[proc->scommand_index]) == 1)
 	{
-		write(2, pipe[proc->scommand_index]->cmd, ft_strlen(pipe[proc->scommand_index]->cmd));
+		write(2, pipe[proc->scommand_index]->cmd,
+			ft_strlen(pipe[proc->scommand_index]->cmd));
 		ft_putstr_fd(": numeric argument required\n", 2);
 		garbage_collector(&proc);
 		exit(255);
 	}
-	if (pipe[proc->scommand_index]->args->array[1]) //not sure
-		proc->x = (unsigned char)ft_exit_helper(pipe[proc->scommand_index]->args->array[1], proc);
+	if (pipe[proc->scommand_index]->args->array[1])
+		proc->x = (unsigned char)ft_exit_helper(pipe[proc->scommand_index]->args->array[1],
+			proc);
 	garbage_collector(&proc);
 	exit(proc->x);
 }

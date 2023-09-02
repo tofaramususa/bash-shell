@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_one_cmd_proccess.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 13:03:36 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/30 16:47:01 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/02 21:54:07 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 void	check_built_ins_and_exexute_one_cmd(t_shell *proc, t_command **av,
 		char **envp)
 {
-	// perform builtin in functions
 	(void)envp;
 	if (proc->check == 1)
 		ft_exit(av, proc);
@@ -50,7 +49,7 @@ void	check_and_execute(t_shell *proc, t_command **av, char **envp, char *tmp)
 		free_func_one_cmd(av, proc);
 	}
 	else
-		cmd_not_found(av, proc, 0); // write my own version of this function
+		cmd_not_found(av, proc, 0);
 }
 
 /**
@@ -70,19 +69,16 @@ void	one_cmd_process(t_shell *proc, t_command **av, char **envp)
 	{
 		if ((*av)->total_redirs > 0)
 			red_one_cmd(av, proc);
-		// perform redirections before trying to execute
 		if ((*av)->cmd == NULL)
 		{
-			garbage_collector(&proc); // free everything
+			garbage_collector(&proc);
 			exit(0);
 		}
 		proc->check = ft_check_builtin((*av)->cmd);
-		// check for  builtin and return a value to identify it
 		if (proc->check > 0)
 			check_built_ins_and_exexute_one_cmd(proc, av, envp);
 		tmp = get_command(proc, envp, (*av)->cmd);
-		// write a function to check for the command if accessible and executable
-		check_and_execute(proc, av, envp, tmp); // check for command and execute
+		check_and_execute(proc, av, envp, tmp);
 	}
 }
 
@@ -98,7 +94,7 @@ int	set_signal_exe(t_command **av, t_shell *proc, char **envp)
 	signal(SIGINT, child_sig_handler);
 	signal(SIGQUIT, child_sig_handler);
 	one_cmd_process(proc, av, envp);
-	waitpid(-1, &proc->error_no, 0); // wait for the proess to finish
+	waitpid(-1, &proc->error_no, 0);
 	if (WIFEXITED(proc->error_no))
 		return (WEXITSTATUS(proc->error_no));
 	else if (WIFSIGNALED(proc->error_no))
@@ -113,22 +109,17 @@ int	set_signal_exe(t_command **av, t_shell *proc, char **envp)
  * @envp: the environment variable
  */
 int	pipex_one_cmd(t_command **av, t_shell *proc, char **envp)
-// takes the simple commands, shell data, and envp variables
 {
 	proc->scommand_index = 0;
 	if (av[0]->cmd && ft_strcmp(av[0]->cmd, "cd") == 0)
-		// if cd then perform
 		return (do_operation(proc, av), ft_cd(av, proc));
-	// we do all necessary redirections then call the builin cd function
 	else if (av[0]->cmd && ft_strcmp(av[0]->cmd, "exit") == 0)
-	// else if exit has been typed
 	{
-		do_operation(proc, av); // perform rediractions
-		ft_exit(av, proc);      // call exit function
+		do_operation(proc, av);
+		ft_exit(av, proc);
 		return (1);
 	}
 	else if (av[0]->cmd && ft_strcmp(av[0]->cmd, "unset") == 0)
-		// perform the redir
 		return (do_operation(proc, av), ft_unset(av, proc));
 	else if (av[0]->cmd && ft_strcmp(av[0]->cmd, "export") == 0)
 		return (do_operation(proc, av), ft_export_print_linked(av, proc));
@@ -137,7 +128,8 @@ int	pipex_one_cmd(t_command **av, t_shell *proc, char **envp)
 	return (0);
 }
 
-static char	*check_for_access(t_shell *proc, char **envp, char **path_split, char *s)
+static char	*check_for_access(t_shell *proc, char **envp, char **path_split,
+		char *s)
 {
 	char	*path;
 	char	*result;
@@ -146,22 +138,20 @@ static char	*check_for_access(t_shell *proc, char **envp, char **path_split, cha
 	while (path_split[++proc->x] && (search_for_path(envp) == 1))
 	{
 		path = ft_strjoin(path_split[proc->x], "/");
-		if(result)
-			safe_free(result);
 		result = ft_strjoin(path, s);
 		if (access(result, 0) == 0)
 		{
 			safe_free(path);
 			return (result);
 		}
+		safe_free(result);
 		safe_free(path);
 	}
-	// safe_free(path);
-	return (result);
+	return (NULL);
 }
 
 char	*get_command(t_shell *proc, char **envp, char *s)
-// function to search for command name if found then write NULL
+
 {
 	char **path_split;
 	char *result;
@@ -172,7 +162,6 @@ char	*get_command(t_shell *proc, char **envp, char *s)
 	result = NULL;
 	if (ft_strnstr(s, "/", ft_strlen(s)) || ft_strcmp(s, ".") == 0
 		|| ft_strcmp(s, "..") == 0 || s[0] == '\0')
-		// to check if its a directory or not
 		return (s);
 	if (search_for_path(envp) == 0)
 		return (NULL);

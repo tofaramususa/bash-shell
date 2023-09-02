@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:42:18 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/30 16:24:31 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/02 22:17:36 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ int	replace_heredocs_util(t_redir *redir, t_heredoc_var *var)
 	}
 	else if (ft_strcmp(var->tmp, var->delimiter) == 0)
 	{
-		safe_free(var->delimiter);            // free string
-		safe_free(redir->filename);           // free string which is a filename
-		redir->filename = ft_strdup(".tmp"); // give it a new name
-		redir->type = INPUT;                 // change it to a input sign
+		safe_free(var->delimiter);
+		safe_free(redir->filename);
+		redir->filename = ft_strdup(".tmp");
+		redir->type = INPUT;
 		close(var->file1);
 		safe_free(var->tmp);
 		return (2);
@@ -58,14 +58,12 @@ int	replace_heredocs(t_redir *redir, t_shell *bash)
 		if (var.tmp == NULL)
 			return (close(var.file1), 1);
 		if (!array_strchr(redir->filename, '"')
-				|| !array_strchr(redir->filename, '\'')) // means in quotes
+				|| !array_strchr(redir->filename, '\''))
 		{
 			var.tmp = final_expanded_str(bash, var.tmp);
 		}
-		else
-			redir->filename = remove_quotes(redir->filename);
+		redir->filename = remove_quotes(redir->filename);
 		var.delimiter = ft_strjoin(redir->filename, "\n");
-			// we assign the delimiter name to delimiter
 		var.ret = replace_heredocs_util(redir, &var);
 		if (var.ret == 1)
 			return (1);
@@ -73,7 +71,6 @@ int	replace_heredocs(t_redir *redir, t_shell *bash)
 			break ;
 		safe_free(var.delimiter);
 		write(var.file1, var.tmp, ft_strlen(var.tmp));
-			// write the line to file1
 		safe_free(var.tmp);
 	}
 	return (0);
@@ -90,13 +87,12 @@ int	check_and_update_heredoc(t_command **s_commands, t_shell *bash)
 	t_redir	*temp;
 
 	index = 0;
-	// write_to_funcfile("check_and_update_heredoc_called");
-	while (index < s_commands[0]->cmd_len) // for every command
+	while (index < s_commands[0]->cmd_len)
 	{
 		temp = s_commands[index]->redirs;
-		while (temp != NULL) // for every redirection
+		while (temp != NULL)
 		{
-			if (temp->type == HEREDOC)                            
+			if (temp->type == HEREDOC)
 			{
 				if (replace_heredocs(temp, bash) == 1)
 					return (1);
@@ -105,6 +101,5 @@ int	check_and_update_heredoc(t_command **s_commands, t_shell *bash)
 		}
 		index++;
 	}
-	// exit(0);
 	return (0);
 }

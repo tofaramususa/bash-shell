@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 11:45:06 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/30 16:37:49 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/02 21:36:19 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
 /**
- * ft_cd_util: check if current pwd exits,, then change dir 
+ * ft_cd_util: check if current pwd exits,, then change dir
  * and replace env, accordingly
  * @pipe: a struct containing the whole command
- * @pwd: string of the current pwd 
+ * @pwd: string of the current pwd
  * @proc: structure containing the whole variables
-*/
+ */
 static int	ft_cd_util(t_command **pipe, char *pwd, t_shell *proc)
 {
 	char	*tmp;
@@ -39,12 +39,13 @@ static int	ft_cd_util(t_command **pipe, char *pwd, t_shell *proc)
 			return (free(tmp), proc->x);
 		}
 		ft_putstr_fd("cd: error retrieving current directory: getcwd: \
-		cannot access parent directories: No such file or directory\n", 2);
+		cannot access parent directories: No such file or directory\n",
+						2);
 		return (1);
 	}
 	else
-		return (write(1, (*pipe)->args->array[1], \
-		ft_strlen((*pipe)->args->array[1])), perror(" "), 1);
+		return (write(1, (*pipe)->args->array[1],
+				ft_strlen((*pipe)->args->array[1])), perror(" "), 1);
 	return (0);
 }
 
@@ -52,10 +53,10 @@ static int	ft_cd_util(t_command **pipe, char *pwd, t_shell *proc)
  * ft_cd_util_3: check if home is set and change the dir to home
  * and update oldpwd and pwd accordingly
  * @pipe: a struct containing the whole command
- * @pwd: string of the current pwd 
+ * @pwd: string of the current pwd
  * @proc: structure containing the whole variables
-*/
-static	int	ft_cd_util_3(char *pwd, t_shell *proc)
+ */
+static int	ft_cd_util_3(char *pwd, t_shell *proc)
 {
 	char	*tmp;
 
@@ -80,10 +81,10 @@ static	int	ft_cd_util_3(char *pwd, t_shell *proc)
  * ft_cd_util_2: check if home is set and change the dir to home
  * and update oldpwd and pwd accordingly
  * @pipe: a struct containing the whole command
- * @pwd: string of the current pwd 
+ * @pwd: string of the current pwd
  * @proc: structure containing the whole variables
-*/
-static	int	ft_cd_util_2(char *pwd, t_shell *proc)
+ */
+static int	ft_cd_util_2(char *pwd, t_shell *proc)
 {
 	char	*tmp;
 
@@ -107,20 +108,20 @@ static	int	ft_cd_util_2(char *pwd, t_shell *proc)
 /**
  * ft_cd: changed  the current working directory
  * @pipe: the struct that contains the whold command and instructions
-*/
+ */
 int	ft_cd(t_command **pipe, t_shell *proc)
 {
 	char	*pwd;
 
-	pwd = getcwd(proc->pwd, 1024); //get directory
-	proc->x = 0; //this is temporary exit status
+	pwd = getcwd(proc->pwd, 1024);
+	proc->x = 0;
 	if (pipe[proc->scommand_index]->args->array[1])
-		proc->x = ft_cd_util(&pipe[proc->scommand_index], pwd, proc); //check if theres argument after cd
+		proc->x = ft_cd_util(&pipe[proc->scommand_index], pwd, proc);
 	else if (pipe[proc->scommand_index]->args->array[1] == NULL)
-		proc->x = ft_cd_util_2(pwd, proc); //if nothing then go to home directory
-	if ((*pipe)->cmd_len > 1) //if more than 1 command free everything
+		proc->x = ft_cd_util_2(pwd, proc);
+	if ((*pipe)->cmd_len > 1)
 	{
-		garbage_collector(&proc);
+		parsing_garbage_collector(&proc);
 	}
-	return (proc->x); // then return exit status
+	return (proc->x);
 }

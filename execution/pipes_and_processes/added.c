@@ -3,40 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   added.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 07:03:17 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/30 18:36:32 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/02 21:09:17 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
-/**
- * free_array: a function that free 2d array
- * @args: 2d array to be freed
-*/
-// void	free_array(char **args)
-// {
-// 	int	size;
-// 	int	i;
-
-// 	i = 0;
-// 	size = 0;
-// 	while (args[size])
-// 		size++;
-// 	while (i < size)
-// 		if (args[i])
-// 			safe_free(args[i++]);
-// 	if (args)
-// 		safe_free(args);
-// }
 
 /**
  * exit_with_code: a function that exit with the status
-*/
+ */
 void	exit_with_code(t_command **av, t_shell *proc)
 {
-	if (av[proc->scommand_index]->cmd[ft_strlen(av[proc->scommand_index]->cmd) - 1] == '/')
+	if (av[proc->scommand_index]->cmd[ft_strlen(av[proc->scommand_index]->cmd)
+		- 1] == '/')
 	{
 		ft_putstr_fd(": is a directory\n", 2);
 		garbage_collector(&proc);
@@ -68,13 +50,14 @@ void	exit_with_code(t_command **av, t_shell *proc)
 /**
  * free_func_one_cmd: a function that free 2d array
  * @args: 2d array to be freed
-*/
-void	free_func_one_cmd(t_command **av, t_shell *proc) //function to free everything
+ */
+void	free_func_one_cmd(t_command **av, t_shell *proc)
 {
-	if (av[proc->scommand_index]->cmd && av[proc->scommand_index]->cmd[0] != '\0')
+	if (av[proc->scommand_index]->cmd
+		&& av[proc->scommand_index]->cmd[0] != '\0')
 	{
-		ft_putstr_fd("bash: ", 2); 
-		ft_putstr_fd(av[proc->scommand_index]->cmd, 2); 
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(av[proc->scommand_index]->cmd, 2);
 		exit_with_code(av, proc);
 	}
 	garbage_collector(&proc);
@@ -82,12 +65,11 @@ void	free_func_one_cmd(t_command **av, t_shell *proc) //function to free everyth
 }
 
 /**
- * terminate: a function that print error 
- *	@m: the string to dispplay before 
-*/
-//very important function that we call our free_shell to do a kind of garbage collection were we go through every data structure and free everything;
+ * terminate: a function that print error
+ *	@m: the string to dispplay before
+ */
 
-void	terminate(char *display, t_shell *bash)//m is the error name, then free everything and exit;
+void	terminate(char *display, t_shell *bash)
 {
 	if (access(display, W_OK) == -1 || access(display, R_OK) == -1)
 		perror(display);
@@ -99,9 +81,10 @@ void	terminate(char *display, t_shell *bash)//m is the error name, then free eve
 }
 
 /**
- * cmd_not_found: a function that prints command not found and exit with 127 code
+
+	* cmd_not_found: a function that prints command not found and exit with 127 code
  * @res: a 2d array which contains the string name to be printed
-*/
+ */
 void	cmd_not_found(t_command **av, t_shell *proc, int counter)
 {
 	write(2, av[counter]->cmd, ft_strlen(av[counter]->cmd));

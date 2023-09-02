@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:07:03 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/30 17:08:39 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/02 19:57:30 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * and return the values
  * @head: the head of the linked list
  * @str: the variable name
-*/
+ */
 
 char	*ft_getenv(t_list *head, char *str)
 {
@@ -25,7 +25,7 @@ char	*ft_getenv(t_list *head, char *str)
 	char	*tmp_val;
 
 	tmp = head;
-	if(str)
+	if (str)
 		tmp_val = ft_strjoin(str, "=");
 	while (tmp)
 	{
@@ -33,7 +33,7 @@ char	*ft_getenv(t_list *head, char *str)
 			return (safe_free(tmp_val), tmp->value);
 		tmp = tmp->next;
 	}
-	if(tmp_val)
+	if (tmp_val)
 		safe_free(tmp_val);
 	return (NULL);
 }
@@ -41,7 +41,7 @@ char	*ft_getenv(t_list *head, char *str)
 /**
  * get_next_line: simple function to get a line from STDIN
  * @fd: the file discriptor to read from
-*/
+ */
 char	*get_next_line(int fd)
 {
 	char	*copy;

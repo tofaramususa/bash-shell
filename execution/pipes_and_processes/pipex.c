@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 12:21:08 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/31 20:16:07 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/02 21:39:16 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ void	close_pipes(t_shell *proc)
 int	pipex_two_cmd(t_command **av, t_shell *proc, char **envp)
 {
 	signal(SIGINT, SIG_IGN);
-	proc->pid1 = first_process(proc, av, envp); //return process id, perform execution
-	proc->pid2 = last_process(proc, av, envp); //return process id, per
+	proc->pid1 = first_process(proc, av, envp);
+	proc->pid2 = last_process(proc, av, envp);
 	close_pipes(proc);
 	waitpid(proc->pid2, &proc->error_no, 0);
 	waitpid(proc->pid1, 0, 0);
@@ -120,8 +120,7 @@ int	pipex(int ac, t_command **scommand, t_shell *bash)
 	int		ret;
 
 	ret = 0;
-	// write_to_funcfile("pipex called");
-	bash->env_vars = linked_to_array(bash->env_list); //needs fixing //convert the env to an array for use in the env variable
+	bash->env_vars = linked_to_array(bash->env_list);
 	bash->middle_scommand = ac - 2;
 	bash->total_pipes = ac - 1;
 	bash->counter = 0;
@@ -130,7 +129,7 @@ int	pipex(int ac, t_command **scommand, t_shell *bash)
 		while (++counter < ac - 1)
 			pipe(bash->fd[counter]);
 	if (ac == 1)
-		ret = pipex_one_cmd(scommand, bash, bash->env_vars->array); //we no longer just terminate now
+		ret = pipex_one_cmd(scommand, bash, bash->env_vars->array);
 	else if (ac == 2)
 	{
 			ret = pipex_two_cmd(scommand, bash, bash->env_vars->array);
@@ -139,6 +138,7 @@ int	pipex(int ac, t_command **scommand, t_shell *bash)
 		ret = pipex_three_cmd(scommand, bash, bash->env_vars->array);
 	else
 		printf("Error : no command input\n");
-	//change here, we no longer just terminate and exit
+	if (bash->env_vars)
+		free_t_char(&bash->env_vars);
 	return (ret);
 }

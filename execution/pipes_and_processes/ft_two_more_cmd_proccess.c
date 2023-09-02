@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   ft_two_more_cmd_proccess.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 13:07:19 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/30 16:23:38 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/02 21:53:45 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
 /**
- * check_built_ins_and_exexute: check if the command is one of the built ins 
+ * check_built_ins_and_exexute: check if the command is one of the built ins
  * and execute
  * @proc: struct that have all the variables i use
  * @av: structure of the commands
- * @envp: 2d array conataining the environment variables 
-*/
+ * @envp: 2d array conataining the environment variables
+ */
 void	check_built_ins_and_exexute(t_shell *proc, t_command **av, char **envp)
 {
 	int	ret;
 
 	ret = 0;
-	(void) envp;
+	(void)envp;
 	if (proc->check == 1)
 		ft_exit(av, proc);
 	else if (proc->check == 2)
@@ -46,15 +46,15 @@ void	check_built_ins_and_exexute(t_shell *proc, t_command **av, char **envp)
  * first_process: executing the first command
  * @proc: struct that have all the variables i use
  * @av: structure of the commands
- * @envp: 2d array conataining the environment variables 
-*/
+ * @envp: 2d array conataining the environment variables
+ */
 int	first_process(t_shell *proc, t_command **av, char **envp)
 {
 	proc->scommand_index = 0;
 	proc->flag = 0;
 	proc->process_id = fork();
 	if (proc->process_id < 0)
-		terminate("fork", proc); //return (process_id);
+		terminate("fork", proc);
 	if (proc->process_id == 0)
 	{
 		signal(SIGINT, SIG_DFL);
@@ -78,18 +78,19 @@ int	first_process(t_shell *proc, t_command **av, char **envp)
  * middle_proc_execute: execution of the middle command util
  * @proc: struct that have all the variables i use
  * @av: structure of the commands
- * @envp: 2d array conataining the environment variables 
-*/
-void	middle_proc_execute(t_shell *proc, t_command **av, char **envp, int counter)
+ * @envp: 2d array conataining the environment variables
+ */
+void	middle_proc_execute(t_shell *proc, t_command **av, char **envp,
+		int counter)
 {
 	char	*tmp;
 
-	tmp = get_command(proc, envp, av[counter]->cmd); //possible area of error;
+	tmp = get_command(proc, envp, av[counter]->cmd);
 	if (av[counter]->cmd && tmp && av[counter]->cmd[0])
 	{
 		proc->scommand_index = counter;
 		execve(tmp, av[counter]->args->array, envp);
-		safe_free(tmp); //safe_free
+		safe_free(tmp);
 		free_func_one_cmd(av, proc);
 	}
 	else
@@ -100,8 +101,8 @@ void	middle_proc_execute(t_shell *proc, t_command **av, char **envp, int counter
  * middl_process: execution of the middle command
  * @proc: struct that have all the variables i use
  * @av: structure of the commands
- * @envp: 2d array conataining the environment variables 
-*/
+ * @envp: 2d array conataining the environment variables
+ */
 void	middl_process(t_shell *proc, t_command **av, char **envp, int counter)
 {
 	proc->scommand_index = counter;
@@ -135,15 +136,15 @@ void	middl_process(t_shell *proc, t_command **av, char **envp, int counter)
  * last_process: execution of last command
  * @proc: struct that have all the variables i use
  * @av: structure of the commands
- * @envp: 2d array conataining the environment variables 
-*/
+ * @envp: 2d array conataining the environment variables
+ */
 int	last_process(t_shell *proc, t_command **av, char **envp)
 {
 	proc->scommand_index = (*av)->cmd_len - 1;
 	proc->flag = 0;
-	proc->process_id1 = fork(); //fork id
+	proc->process_id1 = fork();
 	if (proc->process_id1 < 0)
-		terminate("fork", proc); //free everything and print error
+		terminate("fork", proc);
 	if (proc->process_id1 == 0)
 	{
 		if (av[(*av)->cmd_len - 1]->total_redirs > 0)
@@ -151,15 +152,15 @@ int	last_process(t_shell *proc, t_command **av, char **envp)
 		if (proc->flag == 0)
 			dup2(proc->fd[proc->counter][0], STDIN_FILENO);
 		close_pipes(proc);
-		if (av[(*av)->cmd_len - 1]->cmd == NULL) //means no commands
+		if (av[(*av)->cmd_len - 1]->cmd == NULL)
 		{
 			garbage_collector(&proc);
 			exit(0);
 		}
-		proc->check = ft_check_builtin(av[(*av)->cmd_len - 1]->cmd); //check for builtins
-		if (proc->check > 0) //if there then execute
+		proc->check = ft_check_builtin(av[(*av)->cmd_len - 1]->cmd);
+		if (proc->check > 0)
 			check_built_ins_and_exexute(proc, av, envp);
-		last_process_util(proc, av, envp); //call execve
+		last_process_util(proc, av, envp);
 	}
-	return (proc->process_id1); //return fork id
+	return (proc->process_id1);
 }

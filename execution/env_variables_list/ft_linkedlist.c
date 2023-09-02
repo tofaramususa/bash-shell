@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_linkedlist.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:54:06 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/08/30 17:53:10 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/02 19:57:37 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /**
  * sort_list: is a function that sort linked list
  * @head: the head of linked lists
-*/
+ */
 
 void	sort_list(t_list *head)
 {
@@ -48,7 +48,7 @@ void	sort_list(t_list *head)
 /**
  * re_index: is a function that gives the index for the linked list
  * @head: pointer pointing to head of the linked list
-*/
+ */
 void	re_index(t_list *head)
 {
 	t_list	*prev;
@@ -67,7 +67,7 @@ void	re_index(t_list *head)
  * first_element: remove element at index 0
  * @head: the linked list which contains the env
  * @index: index of list to be removed from the linked list
-*/
+ */
 static void	first_element(t_list **head)
 {
 	t_list	*current;
@@ -82,7 +82,7 @@ static void	first_element(t_list **head)
  * form the linked list
  * @head: the linked list which contains the env
  * @index: index of list to be removed from the linked list
-*/
+ */
 int	remove_element(t_list **head, int index)
 {
 	t_list	*current;
@@ -114,18 +114,18 @@ int	remove_element(t_list **head, int index)
 /**
  * linked_to_array: is a function that converts
  * @head: the head of the linked list
-*/
-t_char *linked_to_array(t_list *head)
+ */
+t_char	*linked_to_array(t_list *head)
 {
 	t_list	*tmp;
-	t_char *env_vars;
+	t_char	*env_vars;
 	int		len;
 	int		x;
 
 	len = ft_lstsize(head);
 	tmp = head;
-	env_vars = (t_char *) malloc(sizeof(t_char));
-	env_vars->array = (char **) malloc(sizeof(char *) * (len + 1));
+	env_vars = (t_char *)malloc(sizeof(t_char));
+	env_vars->array = (char **)malloc(sizeof(char *) * (len + 1));
 	env_vars->isfreed = false;
 	x = 0;
 	while (tmp)
