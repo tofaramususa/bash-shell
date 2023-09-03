@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:48:25 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/02 22:15:48 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/03 17:18:37 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ t_token *create_token_list(char **tokens)
 	{
 		if(array_strchr(tokens[i], '*'))
 		{
+			// if(tokens[i] == NULL)
+			// 	continue;
 			if (filename_expansion(tokenlist, tokens[i]))
 				continue ;	
 		}

@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:12:17 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/02 20:08:04 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/03 20:49:28 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,20 @@ static bool	parens_sytnax(t_token *headtoken)
 	{
 		if (temp->type == OPEN_PAREN && !(temp->next->type == WORD
 				|| temp->next->type == REDIR || temp->next->type == OPEN_PAREN))
-			return (printf("Bash: Parse error near %s\n", temp->value), false);
+			return (printf("Bash: syntax error near unexpected token %s\n",
+					temp->value), false);
 		if (temp->type == CLOSE_PAREN && (temp->next->type == OPEN_PAREN
 				|| temp->next->type == WORD || temp->next->type == PIPE
 				|| temp->next->type == REDIR))
-			return (printf("Bash: Parse error near %s\n", temp->value), false);
+			return (printf("Bash: syntax error near unexpected token %s\n",
+					temp->value), false);
 		if (temp->type == PIPE && (temp->next->type == OPEN_PAREN
 				|| temp->next->type == CLOSE_PAREN))
-			return (printf("Bash: Parse error near `%s'\n", temp->value),
-					false);
+			return (printf("Bash: syntax error near unexpected token `%s'\n",
+					temp->value), false);
 		if ((temp->type == WORD && temp->next->type == OPEN_PAREN))
-			return (printf("Bash: Parse error near `%s'\n", temp->value),
-					false);
+			return (printf("Bash: syntax error near unexpected token `%s'\n",
+					temp->value), false);
 		temp = temp->next;
 	}
 	return (true);
@@ -95,24 +97,26 @@ static bool	check_sytnax(t_token *headtoken)
 	temp = headtoken;
 	if (temp && (temp->type == PIPE || temp->type == AND || temp->type == OR))
 	{
-		return (false);
+		return (printf("Bash: syntax error near unexpected token `%s'\n",
+				temp->value), false);
 	}
 	while (temp && temp->next != NULL)
 	{
 		if (temp->type == REDIR && temp->next->type != WORD)
-			return (printf("Bash: Parse error near `%c'\n", temp->value[0]),
-					false);
+			return (printf("Bash: syntax error near unexpected token `%s'\n",
+					temp->value), false);
 		if ((temp->type == PIPE || temp->type == AND || temp->type == OR)
 			&& !(temp->next->type == WORD || temp->next->type == REDIR
 				|| temp->next->type == OPEN_PAREN))
-			return (printf("Bash: Parse error near `%s'\n", temp->value),
-					false);
+			return (printf("Bash: syntax error near unexpected token `%s'\n",
+					temp->value), false);
 		temp = temp->next;
 	}
 	if (temp->next == NULL)
 	{
 		if (temp->type != WORD && temp->type != CLOSE_PAREN)
-			return (printf("Bash: Parse error near `\\n'\n"), false);
+			return (printf("Bash: syntax error near unexpected token `newline'\n"),
+					false);
 	}
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 12:52:10 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/02 19:56:59 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/03 19:22:56 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_print_echo(t_command **pipe, int x)
 			|| !(*pipe)->args->array[x])
 			continue ;
 		if ((*pipe)->args->array[x + 1] == NULL)
-			printf("%s ", (*pipe)->args->array[x]);
+			printf("%s", (*pipe)->args->array[x]);
 		else
 			printf("%s ", (*pipe)->args->array[x]);
 		flag = 1;

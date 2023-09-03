@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 07:03:17 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/02 21:09:17 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/03 19:25:29 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	exit_with_code(t_command **av, t_shell *proc)
 	if (av[proc->scommand_index]->cmd[ft_strlen(av[proc->scommand_index]->cmd)
 		- 1] == '/')
 	{
-		ft_putstr_fd(": is a directory\n", 2);
+		ft_putstr_fd(": Is a directory\n", 2);
 		garbage_collector(&proc);
 		exit(126);
 	}
@@ -41,7 +41,7 @@ void	exit_with_code(t_command **av, t_shell *proc)
 	}
 	else
 	{
-		ft_putstr_fd(": is a directory\n", 2);
+		ft_putstr_fd(": Is a directory\n", 2);
 		garbage_collector(&proc);
 		exit(126);
 	}

@@ -1,0 +1,53 @@
+Requirements:
+If metacharacter is coming from env list then treat as word
+replace line not compiling in MacOS shell
+
+
+declare -x a="      ls         -la    "
+bash-3.2$ echo $a
+ls -la
+bash-3.2$ 
+
+
+
+
+ < ">"
+
+
+
+
+
+  🏀/home/vscode/src [THEBASH]$ echo $ahello word
+ word 
+
+
+
+
+
+ pwd |    "" | pwd
+: command not found
+
+
+
+
+
+ << l cat | cat < $Asd
+hello
+l 
+
+l
+
+ls '*'
+ls: cannot access '*': No such file or directory
+
+To turn in bonuses to your project, you must include a rule bonus to your Makefile, which will add all the various headers, librairies or functions that are forbidden on the main part of the project. Bonuses must be in a different file _bonus.{c/h} if the subject does not specify anything else. 
+Mandatory and bonus part evaluation is done separately.
+
+Syntax: | no error for this
+
+Your project must be written in accordance with the Norm. If you have bonus files/functions, 
+they are included in the norm check and you will receive a 0 if there is a norm error inside.
+
+We encourage you to create test programs for your project even though this work won’t have to be submitted and won’t be graded. It will give you a chance to easily test your work and your peers’ work. You will find those tests especially useful during your defence. Indeed, during defence, you are free to use your tests and/or the tests of the peer you are evaluating.
+
+Put bonus seperately

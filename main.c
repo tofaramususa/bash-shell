@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:34:02 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/02 21:10:02 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/03 19:47:02 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ int	main(int ac, char **av, char **envp)
 		{
 			execute(bash);
 		}
+		else
+			g_error_status = 2;
 		parsing_garbage_collector(&bash);
 	}
 	free_env_list(&bash->env_list);

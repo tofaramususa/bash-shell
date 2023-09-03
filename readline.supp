@@ -19,3 +19,9 @@
     ...
     fun:__libc_start_main
 }
+
+{
+    leak_below_main
+    Memcheck:Leak
+    fun:main
+}

@@ -75,7 +75,7 @@ char	**ft_space(char *s)
 	char	**array;
 	char	*delimiters;
 
-	delimiters = "\t  \n\r\v\f\b";
+	delimiters = "\t  \n\v\f\b";
 	if (!s)
 		return (NULL);
 	array = (char **)malloc(sizeof(char *) * (num_words(s, delimiters) + 1));

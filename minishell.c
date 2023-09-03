@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 20:34:14 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/02 21:57:16 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/03 19:20:55 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,18 +81,18 @@ void	line_prompt(t_shell *bash)
 
 	prompt = NULL;
 	temp_str = NULL;
-	if (g_error_status == 0)
-	{
+	// if (g_error_status == 0)
+	// {
 		temp_str = ft_strjoin("\x1b[38;5;190m 🏀", getcwd(bash->pwd, 1024));
 		prompt = ft_strjoin(temp_str, "\x1b[38;5;122m [THEBASH]$ \x1b[0m");
 		bash->line = readline(prompt);
-	}
-	else
-	{
-		temp_str = ft_strjoin("\x1b[38;5;190m 🗑️ ", getcwd(bash->pwd, 1024));
-		prompt = ft_strjoin(temp_str, "\x1b[38;5;122m [THEBASH]$ \x1b[0m");
-		bash->line = readline(prompt);
-	}
+	// }
+	// else
+	// {
+	// 	temp_str = ft_strjoin("\x1b[38;5;190m 🗑️ ", getcwd(bash->pwd, 1024));
+	// 	prompt = ft_strjoin(temp_str, "\x1b[38;5;122m [THEBASH]$ \x1b[0m");
+	// 	bash->line = readline(prompt);
+	// }
 	if (prompt)
 		safe_free(prompt);
 	if (temp_str)

@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 16:59:07 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/02 22:09:57 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/03 16:07:11 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,9 @@ char	**ft_split_on_delims(char *str)
 t_token	*ft_tokenise(t_shell *bash, char **str_tokens)
 {
 	t_token	*tokenlist;
-	t_char	*expanded_str;
 
-	expanded_str = (t_char *) malloc(t_char);
-	expanded_str->array = expand_array(bash, str_tokens);
-	tokenlist = create_token_list(expanded_str);
+	str_tokens = expand_array(bash, str_tokens);
+	tokenlist = create_token_list(str_tokens);
 	if (tokenlist == NULL)
 		return (tokenlist);
 	if (token_syntax_check(tokenlist) == false)
@@ -80,7 +78,6 @@ t_token	*ft_tokenise(t_shell *bash, char **str_tokens)
 	}
 	token_quote_removal(tokenlist);
 	free_array(str_tokens);
-	free_t_char(expanded_str);
 	return (tokenlist);
 }
 
