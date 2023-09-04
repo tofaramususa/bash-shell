@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_methods.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:48:25 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/03 17:18:37 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/04 11:06:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,23 +106,27 @@ void free_token_list(t_token **tokenlist)
 }
 
 //essentially main function to turn every word and operator to a token
-t_token *create_token_list(char **tokens)
+t_token *create_token_list(char **tokens, t_shell *bash)
 {
     t_token	*tokenlist; //pointer to the head
-	
 	int	i;
 
 	tokenlist = NULL;
 	i = -1;
 	while (tokens[++i])
 	{
+		if(needs_expansion(tokens[i]) == true)
+		{
+			expand_token(&tokenlist, tokens[i], bash);
+			continue;
+		}
 		if(array_strchr(tokens[i], '*'))
 		{
-			// if(tokens[i] == NULL)
-			// 	continue;
-			if (filename_expansion(tokenlist, tokens[i]))
+			if (filename_expansion(&tokenlist, tokens[i]))
 				continue ;	
 		}
+		if(ft_strcmp("",tokens[i]) == 0)
+			continue;
 		add_token_node(&tokenlist, new_token_node(tokens[i])); //this is essentially add to back and we are creating a node from every token we have
 	}
     return(tokenlist);

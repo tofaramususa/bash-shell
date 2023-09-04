@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:05:52 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/02 20:06:26 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/04 11:06:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,24 +82,41 @@ char	*final_expanded_str(t_shell *bash, char *str)
 		final_str = ft_strdup(expand_temp);
 		safe_free(expand_temp);
 	}
+	safe_free(str);
 	return (final_str);
 }
 
-char	**expand_array(t_shell *bash, char **str)
+static t_token	*expand_new_token_node(char *arg)
 {
-	char	**expanded_str;
-	int		i;
+	t_token	*node;
 
-	i = 0;
-	expanded_str = (char **)malloc(sizeof(char *) * (ft_array_len(str) + 1));
-	if (!expanded_str)
-		return (NULL);
-	while (i < ft_array_len(str))
+	node = (t_token *) malloc(sizeof(t_token));
+	if (node)
 	{
-		expanded_str[i] = final_expanded_str(bash, str[i]);
-		i++;
+		node->value = ft_strdup(arg);
+		node->type = WORD;
+		node->isfreed = false;
+		node->next = NULL;
 	}
-	expanded_str[i] = NULL;
-	free_array(str);
-	return (expanded_str);
+	return (node);
+}
+
+void expand_token(t_token **tokenlist, char *str, t_shell *bash)
+{
+	char **temp;
+	int index;
+	char *expanded_str;
+
+	expanded_str = ft_strdup(str);
+	expanded_str = final_expanded_str(bash, expanded_str);
+	temp = ft_space(expanded_str);
+	index = -1;
+	while(temp[++index])
+	{
+		if(ft_strcmp("",temp[index]) == 0)
+				continue;
+		add_token_node(tokenlist, expand_new_token_node(temp[index]));
+	}
+	free_array(temp);
+	safe_free(expanded_str);
 }

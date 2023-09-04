@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 16:59:07 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/03 16:07:11 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/04 09:57:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	check_line(char *str)
 	}
 	while (str[++i])
 	{
-		if (!array_strchr("\t  \n\r\v\f\b", str[i]))
+		if (!array_strchr("\t  \n\v\f\b", str[i]))
 			break ;
 	}
 	if (str[i] == '\0')
@@ -62,26 +62,24 @@ char	**ft_split_on_delims(char *str)
 	return (free_array(temp_tokens), final_tokens);
 }
 
-t_token	*ft_tokenise(t_shell *bash, char **str_tokens)
+bool	ft_tokenise(t_shell *bash, char **str_tokens)
 {
-	t_token	*tokenlist;
 
-	str_tokens = expand_array(bash, str_tokens);
-	tokenlist = create_token_list(str_tokens);
-	if (tokenlist == NULL)
-		return (tokenlist);
-	if (token_syntax_check(tokenlist) == false)
+	// str_tokens = expand_array(bash, str_tokens);
+	bash->tokenlist = create_token_list(str_tokens, bash);
+	free_array(str_tokens);
+	if (bash->tokenlist == NULL)
+		return (bash->tokenlist);
+	if (token_syntax_check(bash->tokenlist) == false)
 	{
 		g_error_status = 127;
-		free_array(str_tokens);
-		return (NULL);
+		return (false);
 	}
-	token_quote_removal(tokenlist);
-	free_array(str_tokens);
-	return (tokenlist);
+	token_quote_removal(bash->tokenlist);
+	return (true);
 }
 
-int	count_commands(t_token *start, t_token *end)
+int	count_pipes(t_token *start, t_token *end)
 {
 	int		i;
 	t_token	*temp;
@@ -97,7 +95,7 @@ int	count_commands(t_token *start, t_token *end)
 	return (i);
 }
 
-t_compound	*create_compound_node(t_token *start, t_token *end)
+t_compound	*create_compound_node(t_token *start, t_token *end, t_shell *bash)
 {
 	t_token		*temp;
 	t_token		*temp_end;
@@ -108,26 +106,27 @@ t_compound	*create_compound_node(t_token *start, t_token *end)
 	if (!node)
 		exit(printf("memory allocation failure"));
 	node->s_commands = (t_command **)malloc(sizeof(t_command *)
-		* (count_commands(start, end) + 1));
+		* (count_pipes(start, end) + 1));
 	if (!node)
 		exit(printf("memory allocation failure"));
 	temp = start;
 	i = -1;
-	while (++i < count_commands(start, end))
+	while (++i < count_pipes(start, end))
 	{
 		temp_end = temp;
 		while (temp_end->next != NULL && temp_end->next != end->next
 			&& temp_end->next->type != PIPE)
 			temp_end = temp_end->next;
 		node->s_commands[i] = create_scmnd_node(temp, temp_end);
-		node->s_commands[i]->cmd_len = count_commands(start, end);
 		node->s_commands[i]->isfreed = false;
+		node->s_commands[i]->cmd_len = count_pipes(start, end);
 		if (temp_end->next != NULL && temp_end->next != end->next)
 			temp = temp_end->next->next;
 		else
 			temp = NULL;
 	}
 	node->s_commands[i] = NULL;
-	node->cmd_len = count_commands(start, end);
+	bash->cmd_len = count_pipes(start, end);
+	node->cmd_len = count_pipes(start, end);
 	return (node);
 }

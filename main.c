@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:34:02 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/03 19:47:02 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/03 22:45:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,33 @@ void	execute(t_shell *bash)
 bool	parse(t_shell *bash)
 {
 	char	**final_result;
+	bool	syntax;
 
 	if (!check_line(bash->line))
 	{
+		g_error_status = 0;
 		return (false);
 	}
 	add_history(bash->line);
 	final_result = ft_split_on_delims(bash->line);
+	// g_error_status = 2;
 	if (!final_result)
+	{
+		return(false);
+	}
+	syntax = ft_tokenise(bash, final_result);
+	if (syntax == false)
 	{
 		return (false);
 	}
-	bash->tokenlist = ft_tokenise(bash, final_result);
-	if (!bash->tokenlist)
-		return (false);
 	create_compound_array(bash, bash->tokenlist);
-	if (!bash->cmpd_node || !bash->cmpd_node[0])
+	if (!bash->cmpd_node)
+	{
+		free_token_list(&bash->tokenlist);
 		return (false);
+	}
+	free_token_list(&bash->tokenlist);
+	g_error_status = 0;
 	return (true);
 }
 
@@ -90,8 +100,6 @@ int	main(int ac, char **av, char **envp)
 		{
 			execute(bash);
 		}
-		else
-			g_error_status = 2;
 		parsing_garbage_collector(&bash);
 	}
 	free_env_list(&bash->env_list);

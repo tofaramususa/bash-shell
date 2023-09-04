@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   added.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 07:03:17 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/03 19:25:29 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/04 11:16:46 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	terminate(char *display, t_shell *bash)
  */
 void	cmd_not_found(t_command **av, t_shell *proc, int counter)
 {
+	ft_putstr_fd("bash: ", 2);
 	write(2, av[counter]->cmd, ft_strlen(av[counter]->cmd));
 	ft_putstr_fd(": command not found\n", 2);
 	garbage_collector(&proc);

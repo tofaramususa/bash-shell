@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit_helper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 21:42:07 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/02 19:56:01 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/03 23:19:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-static void	atoi_utl_with_exit(char *str, int x, t_shell *proc)
+static int atoi_utl_with_exit(char *str, int x, t_shell *proc)
 {
 	unsigned long long	res;
 
@@ -21,14 +21,16 @@ static void	atoi_utl_with_exit(char *str, int x, t_shell *proc)
 	while (str[x] >= '0' && str[x] <= '9')
 	{
 		proc->copy = res;
-		res = (res * 10) + (str[x++] - '0');
+		res = (res * 10) + (str[x] - '0');
 		if (proc->copy > res)
 		{
 			ft_putstr_fd(": numeric argument required\n", 2);
 			garbage_collector(&proc);
 			exit(255);
 		}
+		x++;
 	}
+	return(res);
 }
 
 int	ft_exit_helper(const char *str, t_shell *proc)
@@ -41,7 +43,7 @@ int	ft_exit_helper(const char *str, t_shell *proc)
 	res = 0;
 	sign = 1;
 	x++;
-	while (array_strchr("\t \v\f\r\n", str[x]))
+	while (array_strchr("\t \v\f\n", str[x]))
 		x++;
 	if (str[x] == '-' || str[x] == '+')
 	{
@@ -49,6 +51,6 @@ int	ft_exit_helper(const char *str, t_shell *proc)
 			sign = -1;
 		x++;
 	}
-	atoi_utl_with_exit((char *)str, x, proc);
+	res = atoi_utl_with_exit((char *)str, x, proc);
 	return (res * sign);
 }

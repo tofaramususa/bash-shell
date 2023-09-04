@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:42:18 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/03 16:31:37 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/03 22:32:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,20 @@ int	replace_heredocs_util(t_redir *redir, t_heredoc_var *var)
 int	replace_heredocs(t_redir *redir, t_shell *bash)
 {
 	t_heredoc_var	var;
+	char *temp_str;
 
 	var.file1 = open(".tmp", O_RDWR | O_CREAT | O_APPEND | O_TRUNC, 0777);
 	if (var.file1 == -1)
 		terminate(redir->filename, bash);
+	temp_str = ft_strdup(redir->filename);
 	while (1)
 	{
 		signal(SIGINT, SIG_IGN);
 		var.tmp = get_next_line(0);
 		if (var.tmp == NULL)
 			return (close(var.file1), 1);
-		if (!array_strchr(redir->filename, '"')
-				|| !array_strchr(redir->filename, '\''))
+		if (!array_strchr(temp_str, '"')
+				&& !array_strchr(temp_str, '\''))
 		{
 			var.tmp = final_expanded_str(bash, var.tmp);
 		}
@@ -73,6 +75,7 @@ int	replace_heredocs(t_redir *redir, t_shell *bash)
 		write(var.file1, var.tmp, ft_strlen(var.tmp));
 		safe_free(var.tmp);
 	}
+	safe_free(temp_str);
 	return (0);
 }
 
@@ -87,7 +90,7 @@ int	check_and_update_heredoc(t_command **s_commands, t_shell *bash)
 	t_redir	*temp;
 
 	index = 0;
-	while (index < s_commands[0]->cmd_len)
+	while (index < bash->cmd_len)
 	{
 		temp = s_commands[index]->redirs;
 		while (temp != NULL)

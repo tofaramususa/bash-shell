@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filename_expansion.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 20:06:48 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/02 20:06:59 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/04 11:03:58 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	wildcard_match(const char *pattern, const char *d_name, t_quote quotes)
 	return (*d_name == *pattern);
 }
 
-bool	filename_expansion(t_token *tokenlist, char *str_token)
+bool	filename_expansion(t_token **tokenlist, char *str_token)
 {
 	char			*cwd;
 	struct dirent	*entry;
@@ -74,7 +74,7 @@ bool	filename_expansion(t_token *tokenlist, char *str_token)
 				expanded_token = ft_strdup(entry->d_name);
 				if (expanded_token)
 				{
-					add_token_node(&tokenlist, new_token_node(expanded_token));
+					add_token_node(tokenlist, new_token_node(expanded_token));
 					match_found = true;
 					free(expanded_token);
 				}

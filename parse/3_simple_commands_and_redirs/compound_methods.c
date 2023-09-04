@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   compound_methods.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 20:20:34 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/02 20:08:40 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/03 21:12:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	create_compound_array(t_shell *bash, t_token *headtoken)
 				paren = BEFORE_CLOSE_PAREN;
 			end = end->next;
 		}
-		bash->cmpd_node[i] = create_compound_node(temp, end);
+		bash->cmpd_node[i] = create_compound_node(temp, end, bash);
 		bash->cmpd_node[i]->split_on = split_on;
 		if (end && end->next && end->next->type == OR)
 			split_on = OR;
@@ -69,6 +69,6 @@ void	create_compound_array(t_shell *bash, t_token *headtoken)
 		bash->cmpd_node[i]->isfreed = false;
 		temp = end;
 	}
-	// exit(0);
+	
 	bash->cmpd_node[i] = NULL;
 }

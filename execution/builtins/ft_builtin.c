@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 12:52:10 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/03 19:22:56 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/04 00:02:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,10 +125,10 @@ void	ft_exit(t_command **pipe, t_shell *proc)
 			ft_strlen(pipe[proc->scommand_index]->cmd));
 		ft_putstr_fd(": numeric argument required\n", 2);
 		garbage_collector(&proc);
-		exit(255);
+		exit(2);
 	}
 	if (pipe[proc->scommand_index]->args->array[1])
-		proc->x = (unsigned char)ft_exit_helper(pipe[proc->scommand_index]->args->array[1],
+		proc->x = ft_exit_helper(pipe[proc->scommand_index]->args->array[1],
 			proc);
 	garbage_collector(&proc);
 	exit(proc->x);

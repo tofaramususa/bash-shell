@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:29:12 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/02 22:16:23 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/04 11:04:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ typedef struct s_shell
 	int					dont;
 	unsigned long long	copy;
 	bool				isfreed;
+	int					cmd_len;
 }						t_shell;
 
 typedef struct s_heredoc_var
@@ -187,8 +188,8 @@ void					token_quote_removal(t_token *tokenlist);
 char					**ft_space(char *s);
 char					**ft_strtok(char *s);
 char					**ft_split_on_delims(char *str);
-t_token					*ft_tokenise(t_shell *bash, char **tokens);
-t_token					*create_token_list(char **tokens);
+bool	ft_tokenise(t_shell *bash, char **str_tokens);
+t_token					*create_token_list(char **tokens, t_shell *bash);
 void					free_token_list(t_token **tokenlist);
 
 /*Syntax Check and Expansion*/
@@ -199,14 +200,14 @@ int						get_search_var_end(char *str, int start);
 int						get_end_index_expan(char *str, int start);
 char					*strjoin_new_var(char *temp_str, char *expanded_str,
 							int count);
-char					**expand_array(t_shell *bash, char **str);
+void expand_token(t_token **tokenlist, char *str, t_shell *bash);
 t_token					*new_token_node(char *arg);
 void					add_token_node(t_token **tokenlist, t_token *tokenNode);
-bool					filename_expansion(t_token *tokenlist, char *str_token);
+bool	filename_expansion(t_token **tokenlist, char *str_token);
 
 /*Simple Commands and Redirections*/
 t_command				*create_scmnd_node(t_token *start, t_token *end);
-t_compound				*create_compound_node(t_token *start, t_token *end);
+t_compound				*create_compound_node(t_token *start, t_token *end, t_shell *bash);
 void					fill_scmnd(t_command *scommand, t_token *start,
 							t_token *end);
 void					fill_redirs(t_command *scommand, t_token *redir,
