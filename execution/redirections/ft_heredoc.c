@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:42:18 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/03 22:32:29 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/05 13:49:48 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	replace_heredocs(t_redir *redir, t_shell *bash)
 		if (var.tmp == NULL)
 			return (close(var.file1), 1);
 		if (!array_strchr(temp_str, '"')
-				&& !array_strchr(temp_str, '\''))
+				&& !array_strchr(temp_str, '\'') && !needs_expansion(temp_str))
 		{
 			var.tmp = final_expanded_str(bash, var.tmp);
 		}

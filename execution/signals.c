@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:51:00 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/03 17:21:03 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/05 13:47:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	sig_handler(int num)
 		rl_redisplay();
 		ft_putstr_fd("  \n", 2);
 		rl_on_new_line();
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 		g_error_status = 1;
 	}

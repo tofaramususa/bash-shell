@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:48:17 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/03 23:04:31 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/05 14:45:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	ft_env_print_linked(t_shell *proc)
 
 int	ft_export_to_linked(t_command **pipe, t_shell *prc)
 {
+	prc->x = 0;
 	while ((*pipe)->args->array[++prc->x])
 	{
 		if (ft_validate_export((*pipe)->args->array[prc->x]) == 1)
@@ -53,13 +54,15 @@ int	ft_export_to_linked(t_command **pipe, t_shell *prc)
 
 int	ft_export_print_linked(t_command **pipe, t_shell *prc)
 {
+	int x;
+
 	sort_list(prc->env_list);
 	re_index(prc->env_list);
 	prc->flag = 0;
 	prc->temp_list = prc->env_list;
-	prc->x = 0;
+	x = 0;
 	if ((*pipe)->args->array[1])
-		prc->x = ft_export_to_linked(pipe, prc);
+		x = ft_export_to_linked(pipe, prc);
 	else
 	{
 		prc->temp_list = prc->env_list;
@@ -75,7 +78,7 @@ int	ft_export_print_linked(t_command **pipe, t_shell *prc)
 	}
 	if ((*pipe)->cmd_len > 1)
 		garbage_collector(&prc);
-	return (prc->x);
+	return (x);
 }
 
 /**

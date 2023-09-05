@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 11:45:06 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/03 23:25:24 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/05 14:37:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,19 +112,21 @@ static int	ft_cd_util_2(char *pwd, t_shell *proc)
 int	ft_cd(t_command **pipe, t_shell *proc)
 {
 	char	*pwd;
+	int x;
 	pwd = getcwd(proc->pwd, 1024);
-	proc->x = 0;
+	x = 0;
 	if (pipe[proc->scommand_index]->args->array[1])
-		proc->x = ft_cd_util(&pipe[proc->scommand_index], pwd, proc);
+		x = ft_cd_util(&pipe[proc->scommand_index], pwd, proc);
 	else if (pipe[proc->scommand_index]->args->array[1] == NULL)
 	{
-		proc->x = ft_cd_util_2(pwd, proc);
+		x = ft_cd_util_2(pwd, proc);
 	}
-	if ((*pipe)->args_len > 2)
+	if ((*pipe)->cmd_len > 1)
 	{
-		ft_putstr_fd("bash: cd: too many arguments\n", 2);
-		parsing_garbage_collector(&proc);
-		proc->x = 1;
+		if((*pipe)->args_len > 2)
+			ft_putstr_fd("bash: cd: too many arguments\n", 2);
+		garbage_collector(&proc);
+		x = 1;
 	}
-	return (proc->x);
+	return (x);
 }

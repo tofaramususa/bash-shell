@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:48:25 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/04 11:06:10 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/05 13:45:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,24 +110,29 @@ t_token *create_token_list(char **tokens, t_shell *bash)
 {
     t_token	*tokenlist; //pointer to the head
 	int	i;
+	bool heredoc;
 
 	tokenlist = NULL;
 	i = -1;
+	heredoc = false;
 	while (tokens[++i])
 	{
-		if(needs_expansion(tokens[i]) == true)
+		if(needs_expansion(tokens[i]) == true && heredoc == false)
 		{
 			expand_token(&tokenlist, tokens[i], bash);
 			continue;
 		}
-		if(array_strchr(tokens[i], '*'))
+		heredoc = false;
+		if(tokens[i] && array_strchr(tokens[i], '*'))
 		{
 			if (filename_expansion(&tokenlist, tokens[i]))
 				continue ;	
 		}
-		if(ft_strcmp("",tokens[i]) == 0)
+		if(tokens[i] && ft_strcmp("",tokens[i]) == 0)
 			continue;
 		add_token_node(&tokenlist, new_token_node(tokens[i])); //this is essentially add to back and we are creating a node from every token we have
+		if(ft_strcmp("<<", tokens[i]) == 0)
+			heredoc = true;
 	}
     return(tokenlist);
 }
