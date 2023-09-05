@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 12:21:08 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/02 21:39:16 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/05 18:20:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,11 @@ int	pipex(int ac, t_command **scommand, t_shell *bash)
 
 	ret = 0;
 	bash->env_vars = linked_to_array(bash->env_list);
+	if(!bash->env_vars)
+	{
+		garbage_collector(&bash);
+		exit(printf("Error: No environment variables found\n"));
+	}
 	bash->middle_scommand = ac - 2;
 	bash->total_pipes = ac - 1;
 	bash->counter = 0;

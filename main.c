@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:34:02 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/03 22:45:33 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/05 18:14:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ bool	parse(t_shell *bash)
 		return (false);
 	}
 	free_token_list(&bash->tokenlist);
-	g_error_status = 0;
 	return (true);
 }
 
@@ -83,12 +82,12 @@ int	main(int ac, char **av, char **envp)
 	t_shell	*bash;
 
 	if (envp[0] == NULL)
-		exit(printf("Error: No environment variables found"));
+		exit(printf("Error: No environment variables found\n"));
 	if (ac > 1 || ft_array_len(av) > 1)
-		exit(printf("To start x1b[38;5;122mTheBash\x1b[0m enter: ./minishell"));
+		exit(printf("To start x1b[38;5;122mTheBash\x1b[0m enter: ./minishell\n"));
 	bash = (t_shell *)malloc(sizeof(t_shell));
 	if (!bash)
-		exit(printf("Memory allocation failure"));
+		exit(printf("Memory allocation failure\n"));
 	signal(SIGQUIT, SIG_IGN);
 	create_envlist(bash, envp);
 	while (1)

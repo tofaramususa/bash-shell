@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_linkedlist.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:54:06 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/02 19:57:37 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/05 18:24:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ static void	first_element(t_list **head)
 
 	current = *head;
 	*head = current->next;
+	safe_free(current->key);
+	safe_free(current->value);
 	safe_free(current);
 }
 
@@ -123,6 +125,8 @@ t_char	*linked_to_array(t_list *head)
 	int		x;
 
 	len = ft_lstsize(head);
+	if(len == 0)
+		return(NULL);
 	tmp = head;
 	env_vars = (t_char *)malloc(sizeof(t_char));
 	env_vars->array = (char **)malloc(sizeof(char *) * (len + 1));
