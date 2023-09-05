@@ -50,3 +50,7 @@ they are included in the norm check and you will receive a 0 if there is a norm 
 We encourage you to create test programs for your project even though this work won’t have to be submitted and won’t be graded. It will give you a chance to easily test your work and your peers’ work. You will find those tests especially useful during your defence. Indeed, during defence, you are free to use your tests and/or the tests of the peer you are evaluating.
 
 Put bonus seperately
+
+
+ctrl-\ in a prompt after you wrote some stuff should not do anything.
+exit | exit | ckuvfrdku | exit 66

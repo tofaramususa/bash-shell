@@ -24,7 +24,7 @@ void	sig_handler(int num)
 		rl_redisplay();
 		ft_putstr_fd("  \n", 2);
 		rl_on_new_line();
-		rl_replace_line("", 0);
+		// rl_replace_line("", 0);
 		rl_redisplay();
 		g_error_status = 1;
 	}

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 12:52:10 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/04 00:02:26 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/05 16:25:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,9 @@ int	scan_exit_codes(t_command **pipe)
  */
 void	ft_exit(t_command **pipe, t_shell *proc)
 {
-	proc->x = 0;
+	int x;
+	
+	x = 0;
 	if (pipe[proc->scommand_index]->args->array[1] == NULL)
 	{
 		garbage_collector(&proc);
@@ -128,8 +130,8 @@ void	ft_exit(t_command **pipe, t_shell *proc)
 		exit(2);
 	}
 	if (pipe[proc->scommand_index]->args->array[1])
-		proc->x = ft_exit_helper(pipe[proc->scommand_index]->args->array[1],
+		x = ft_exit_helper(pipe[proc->scommand_index]->args->array[1],
 			proc);
 	garbage_collector(&proc);
-	exit(proc->x);
+	exit(x);
 }
