@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:33:48 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/02 21:03:36 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/06 20:35:48 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ void	garbage_collector(t_shell **bash)
 				free_token_list(&((*bash)->tokenlist));
 			if	((*bash)->env_list)
 				free_env_list(&(*bash)->env_list);
+			if ((*bash)->result)
+				safe_free((*bash)->result);
 		}
 		free(*bash);
 	}

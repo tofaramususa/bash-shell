@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:29:12 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/04 11:04:59 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/06 19:54:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,11 @@ typedef struct s_shell
 	unsigned long long	copy;
 	bool				isfreed;
 	int					cmd_len;
+	unsigned long long	*res_atoi;
+	unsigned long long	*copy_atoi;
+	char 				*path;
+	char				*result;
+	char				**path_split;
 }						t_shell;
 
 typedef struct s_heredoc_var

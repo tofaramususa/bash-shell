@@ -1,0 +1,9 @@
+exit 42 world 
+cat minishell.h | grep ");"$ 
+grep hi "<infile" <         ./test_files/infile 
+cat <"1""2""3""4""5" 
+cat <missing
+ls >./outfiles/outfile01 >./test_files/invalid_permission
+echo hi | echo bye >./test_files/invalid_permission
+ls >./test_files/invalid_permission >"./outfiles/outfile01" >./test_files/invalid_permission 
+echo hi | >./outfiles/outfile01 echo bye >./test_files/invalid_permission 

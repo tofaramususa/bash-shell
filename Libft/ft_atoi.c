@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 14:16:16 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/02 20:04:04 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/06 16:32:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,3 @@ int	ft_atoi(const char *str)
 	}
 	return (rs * sg);
 }
-
-// int main()
-// {
-// 	printf("%d\n", ft_atoi("+-54"));
-// 	printf("%d\n", atoi("+-54"));
-// }

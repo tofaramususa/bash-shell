@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:34:02 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/05 18:14:44 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/06 20:37:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,10 @@ bool	parse(t_shell *bash)
 
 	if (!check_line(bash->line))
 	{
-		g_error_status = 0;
 		return (false);
 	}
 	add_history(bash->line);
 	final_result = ft_split_on_delims(bash->line);
-	// g_error_status = 2;
 	if (!final_result)
 	{
 		return(false);
@@ -54,6 +52,7 @@ bool	parse(t_shell *bash)
 	syntax = ft_tokenise(bash, final_result);
 	if (syntax == false)
 	{
+		g_error_status = 2;
 		return (false);
 	}
 	create_compound_array(bash, bash->tokenlist);
@@ -75,6 +74,7 @@ void	init_bash(t_shell *bash)
 	bash->line = NULL;
 	bash->tokenlist = NULL;
 	bash->isfreed = false;
+	bash->result = NULL;
 }
 
 int	main(int ac, char **av, char **envp)
