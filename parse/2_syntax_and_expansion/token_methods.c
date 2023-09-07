@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:48:25 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/05 13:45:30 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/07 19:31:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,12 @@ t_token	*new_token_node(char *arg)
 	return (node);
 }
 
-//free everything
 void free_token_list(t_token **tokenlist)
 {
     t_token *next_node;
 	t_token	*current;
 	
 	current = *tokenlist;
-	// write_to_funcfile("Garbage_collector_called");
 	if(current)
 	{
 		while(current)
@@ -105,7 +103,7 @@ void free_token_list(t_token **tokenlist)
 	}
 }
 
-//essentially main function to turn every word and operator to a token
+
 t_token *create_token_list(char **tokens, t_shell *bash)
 {
     t_token	*tokenlist; //pointer to the head
@@ -130,7 +128,7 @@ t_token *create_token_list(char **tokens, t_shell *bash)
 		}
 		if(tokens[i] && ft_strcmp("",tokens[i]) == 0)
 			continue;
-		add_token_node(&tokenlist, new_token_node(tokens[i])); //this is essentially add to back and we are creating a node from every token we have
+		add_token_node(&tokenlist, new_token_node(tokens[i]));
 		if(ft_strcmp("<<", tokens[i]) == 0)
 			heredoc = true;
 	}

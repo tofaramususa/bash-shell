@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:29:12 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/06 19:54:57 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/07 17:58:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <stdbool.h>
-# include <stddef.h>
-# include <stdint.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
 # include <sys/wait.h>
-# include <time.h>
-# include <unistd.h>
 
 /*Quotes Struct*/
 typedef struct s_quote
@@ -219,11 +211,6 @@ void					fill_redirs(t_command *scommand, t_token *redir,
 							t_token *filename);
 void					free_redirs_list(t_redir **redirlist);
 
-/*Debugging*/
-// void				print_array(char **str);
-// void			print_tokens(t_token *tokens);
-// void print_scommands(t_command **simpleCmnds);
-
 /*EXECUTION*/
 int						pipex(int ac, t_command **scommand, t_shell *bash);
 void					garbage_collector(t_shell **bash);
@@ -313,5 +300,5 @@ int						process_parens(t_compound **nodes, int start,
 							t_shell *bash);
 bool					start_execution(t_compound *cpmd_node, t_shell *bash);
 bool					should_execute(t_compound *node);
-void	free_compoundlist(t_compound ***nodes);
+void					free_compoundlist(t_compound ***nodes);
 #endif

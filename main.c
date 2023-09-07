@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:34:02 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/06 20:37:09 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/07 18:05:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,6 @@ bool	parse(t_shell *bash)
 	}
 	add_history(bash->line);
 	final_result = ft_split_on_delims(bash->line);
-	if (!final_result)
-	{
-		return(false);
-	}
 	syntax = ft_tokenise(bash, final_result);
 	if (syntax == false)
 	{
@@ -80,7 +76,7 @@ void	init_bash(t_shell *bash)
 int	main(int ac, char **av, char **envp)
 {
 	t_shell	*bash;
-
+	signal(SIGQUIT, SIG_IGN);
 	if (envp[0] == NULL)
 		exit(printf("Error: No environment variables found\n"));
 	if (ac > 1 || ft_array_len(av) > 1)
@@ -88,7 +84,6 @@ int	main(int ac, char **av, char **envp)
 	bash = (t_shell *)malloc(sizeof(t_shell));
 	if (!bash)
 		exit(printf("Memory allocation failure\n"));
-	signal(SIGQUIT, SIG_IGN);
 	create_envlist(bash, envp);
 	while (1)
 	{

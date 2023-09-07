@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 16:59:07 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/04 09:57:11 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/07 18:03:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ char	**ft_split_on_delims(char *str)
 bool	ft_tokenise(t_shell *bash, char **str_tokens)
 {
 
-	// str_tokens = expand_array(bash, str_tokens);
+	if(!str_tokens)
+		return(false);
 	bash->tokenlist = create_token_list(str_tokens, bash);
 	free_array(str_tokens);
 	if (bash->tokenlist == NULL)
