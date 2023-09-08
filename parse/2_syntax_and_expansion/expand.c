@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:05:52 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 17:50:45 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 22:03:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char	*new_expanded_str(t_shell *bash, char *str)
 	temp_str = NULL;
 	while (str[i] && ++count)
 	{
-		if (str[i] == '$' && !array_strchr("\" /~%^{}:;''\0'", str[i + 1]))
+		if (str[i] == '$' && !array_strchr("\" '/~+=%^{}:\t\v\f\n; '\0'", str[i + 1]))
 		{
 			temp_str = get_env_var(bash, str, i);
 			i = get_search_var_end(str, i) + 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:42:18 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/08 19:35:34 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 22:27:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,15 +93,15 @@ int	replace_heredocs(t_redir *redir, t_shell *bash)
  * @av:
  * @proc:
  */
-int	check_and_update_heredoc(t_command **s_commands, t_shell *bash)
+int	check_and_update_heredoc(t_compound *cpmd_node, t_shell *bash)
 {
 	int		index;
 	t_redir	*temp;
 
 	index = 0;
-	while (index < bash->cmd_len)
+	while (index < cpmd_node->cmd_len)
 	{
-		temp = s_commands[index]->redirs;
+		temp = cpmd_node->s_commands[index]->redirs;
 		while (temp != NULL)
 		{
 			if (temp->type == HEREDOC)

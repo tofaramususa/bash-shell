@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:29:12 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 19:26:05 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 22:27:03 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,8 +269,7 @@ void					sig_handler(int num);
 void					init_signals(void);
 
 /*REDIRECTIONS*/
-int						check_and_update_heredoc(t_command **s_commands,
-							t_shell *bash);
+int	check_and_update_heredoc(t_compound *cpmd_node, t_shell *bash);
 void					red_one_cmd(t_command **av, t_shell *proc);
 void					red_first_proc(t_command **av, int *flag,
 							t_shell *proc);

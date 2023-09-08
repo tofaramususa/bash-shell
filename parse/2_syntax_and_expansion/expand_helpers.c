@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:05:52 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 14:21:31 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 22:48:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	needs_expansion(char *str)
 	{
 		set_quote_flag(&quotes, str[start]);
 		if (str[start] == '$' && !quotes.single_q
-			&& !array_strchr("\" '/~%^{}:; '\0'", str[start + 1]))
+			&& !array_strchr("\" '/~+=%^{}:\t\v\f\n; '\0'", str[start + 1]))
 			return (true);
 		start++;
 	}
@@ -38,7 +38,7 @@ int	get_search_var_end(char *str, int start)
 	start++;
 	while (str[start])
 	{
-		if (array_strchr("\"' /~%^{}:;$'\0'", str[start + 1]))
+		if (array_strchr("\" '/~+=$%^{}:\t\v\f\n; '\0'", str[start + 1]))
 			break ;
 		start++;
 	}
@@ -55,7 +55,7 @@ int	get_end_index_expan(char *str, int start)
 	{
 		set_quote_flag(&quotes, str[start]);
 		if (str[start] == '$' && !quotes.single_q
-			&& !array_strchr("\" '/~%^{}:;'\0'", str[start + 1]))
+			&& !array_strchr("\" '/~+=%^{}:\t\v\f\n; '\0'", str[start + 1]))
 			break ;
 		start++;
 	}

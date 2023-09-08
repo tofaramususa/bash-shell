@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 20:34:14 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 17:54:06 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 22:25:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	start_execution(t_compound *cpmd_node, t_shell *bash)
 		g_error_status = 1;
 		return (false);
 	}
-	if (check_and_update_heredoc(cpmd_node->s_commands, bash) == 1)
+	if (check_and_update_heredoc(cpmd_node, bash) == 1)
 	{
 		garbage_collector(&bash);
 		exit(1);
