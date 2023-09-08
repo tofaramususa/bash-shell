@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:51:00 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/08 13:58:08 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 19:43:09 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	sig_handler(int num)
 		rl_redisplay();
 		ft_putstr_fd("  \n", 2);
 		rl_on_new_line();
-		rl_replace_line("", 0);
+		// rl_replace_line("", 0);
 		rl_redisplay();
 		g_error_status = 1;
 	}

@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:34:02 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 16:37:22 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 19:57:19 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,22 @@ bool	parse(t_shell *bash)
 
 	if (!check_line(bash->line))
 	{
-		return (false);
+		return (g_error_status = 0, false);
 	}
 	add_history(bash->line);
 	final_result = ft_split_on_delims(bash->line);
 	syntax = ft_tokenise(bash, final_result);
 	if (syntax == false)
 	{
-		g_error_status = 2;
+		if(!bash->tokenlist)
+			g_error_status = 0;
+		else
+			g_error_status = 2;
 		return (false);
 	}
 	create_compound_array(bash, bash->tokenlist);
 	if (!bash->cmpd_node)
-	{
-		free_token_list(&bash->tokenlist);
-		return (false);
-	}
+		return (free_token_list(&bash->tokenlist), false);
 	free_token_list(&bash->tokenlist);
 	return (true);
 }

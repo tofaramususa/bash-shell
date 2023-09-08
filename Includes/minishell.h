@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:29:12 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 16:53:16 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 19:26:05 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ t_char					*linked_to_array(t_list *head);
 /*Quote Methods*/
 bool					check_unmatched_quotes(char *str);
 void					set_quote_flag(t_quote *value, char c);
-char					*remove_quotes(char *str);
+char					*remove_quotes(char *str, int i);
 void					token_quote_removal(t_token *tokenlist);
 
 /*Words and Operators*/

@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 20:07:06 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 17:59:41 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 19:27:40 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	count_chars(char *str)
 	return (count);
 }
 
-char	*remove_quotes(char *str)
+char	*remove_quotes(char *str, int in)
 {
 	char	*new_str;
 	int		i;
@@ -54,7 +54,8 @@ char	*remove_quotes(char *str)
 		new_str[j++] = str[i];
 	}
 	new_str[j] = '\0';
-	safe_free(str);
+	if(in == 1)
+		safe_free(str);
 	return (new_str);
 }
 
@@ -72,7 +73,7 @@ void	token_quote_removal(t_token *tokenlist)
 			continue ;
 		}
 		if (temp->type == WORD)
-			temp->value = remove_quotes(temp->value);
+			temp->value = remove_quotes(temp->value, 1);
 		temp = temp->next;
 	}
 }
