@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:35:57 by tmususa           #+#    #+#             */
-/*   Updated: 2023/01/29 13:50:58 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 13:57:02 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	num_words(const char *s, char seperator)
 		{
 			count++;
 			while (s[i] && s[i] != seperator)
-					i++;
+				i++;
 		}
 		else
 			i++;
@@ -44,7 +44,7 @@ char	**ft_split(char const *s, char seperator)
 	start = 0;
 	if (!s)
 		return (NULL);
-	array = (char **) malloc(sizeof(char *) * (num_words(s, seperator) + 1));
+	array = (char **)malloc(sizeof(char *) * (num_words(s, seperator) + 1));
 	if (array == NULL)
 		return (NULL);
 	while (i < num_words(s, seperator))

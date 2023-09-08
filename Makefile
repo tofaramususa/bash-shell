@@ -18,6 +18,7 @@ PARSE_SRCS = parse/1_words_and_operators/ft_space.c\
 			parse/3_commands_and_redirs/smnd_methods.c\
 			parse/array_methods/append_array.c\
 			parse/array_methods/array_methods.c\
+			parse/array_methods/free_methods.c\
 			parse/Pipeline.c \
 
 EXECUTION_SRCS = execution/builtins/ft_builtin.c\

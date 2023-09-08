@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 12:21:08 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/05 18:20:30 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:59:12 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /**
  * ft_check_builtin: check if the command is one of the built-in
  * @cmd: the command to check
-*/
+ */
 int	ft_check_builtin(char *cmd)
 {
 	if (ft_strcmp(cmd, "exit") == 0)
@@ -36,27 +36,11 @@ int	ft_check_builtin(char *cmd)
 }
 
 /**
- * close all pipes
- * @proc: struct that have all the variables i use
-*/
-void	close_pipes(t_shell *proc)
-{
-	int	x;
-
-	x = -1;
-	while (++x < proc->total_pipes)
-	{
-		close(proc->fd[x][0]);
-		close(proc->fd[x][1]);
-	}
-}
-
-/**
  * pipex_two_cmd: execute and return err_code for two cmd
  * @av: a structure that contains the whole variables
  * @proc: a struture which contains the command and redirection
  * @envp: the environment variable
-*/
+ */
 int	pipex_two_cmd(t_command **av, t_shell *proc, char **envp)
 {
 	signal(SIGINT, SIG_IGN);
@@ -78,7 +62,7 @@ int	pipex_two_cmd(t_command **av, t_shell *proc, char **envp)
  * @av: a structure that contains the whole variables
  * @proc: a struture which contains the command and redirection
  * @envp: the environment variable
-*/
+ */
 int	pipex_three_cmd(t_command **av, t_shell *proc, char **envp)
 {
 	proc->x = 0;
@@ -107,29 +91,34 @@ int	pipex_three_cmd(t_command **av, t_shell *proc, char **envp)
 }
 
 /**
- * pipex: where the main execution is happening, 
+ * pipex: where the main execution is happening,
  * it will execute one two and three cmds
  * @av: a structure that contains the whole variables
  * @ac: number of commands
  * @proc: a struture which contains the command and redirection
  * @envp: the environment variable
-*/
-int	pipex(int ac, t_command **scommand, t_shell *bash)
+ */
+void	init_bash_exec(int ac, t_shell *bash)
 {
-	int		counter;
-	int		ret;
-
-	ret = 0;
+	bash->middle_scommand = ac - 2;
+	bash->total_pipes = ac - 1;
+	bash->counter = 0;
 	bash->env_vars = linked_to_array(bash->env_list);
-	if(!bash->env_vars)
+	if (!bash->env_vars)
 	{
 		garbage_collector(&bash);
 		exit(printf("Error: No environment variables found\n"));
 	}
-	bash->middle_scommand = ac - 2;
-	bash->total_pipes = ac - 1;
-	bash->counter = 0;
+}
+
+int	pipex(int ac, t_command **scommand, t_shell *bash)
+{
+	int	counter;
+	int	ret;
+
+	ret = 0;
 	counter = -1;
+	init_bash_exec(ac, bash);
 	if (ac > 1)
 		while (++counter < ac - 1)
 			pipe(bash->fd[counter]);
@@ -137,7 +126,7 @@ int	pipex(int ac, t_command **scommand, t_shell *bash)
 		ret = pipex_one_cmd(scommand, bash, bash->env_vars->array);
 	else if (ac == 2)
 	{
-			ret = pipex_two_cmd(scommand, bash, bash->env_vars->array);
+		ret = pipex_two_cmd(scommand, bash, bash->env_vars->array);
 	}
 	else if (ac > 2)
 		ret = pipex_three_cmd(scommand, bash, bash->env_vars->array);

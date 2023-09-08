@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   added.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 07:03:17 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/06 20:29:13 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:58:29 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,19 @@
  */
 void	exit_with_code(t_command **av, t_shell *proc)
 {
-	if (av[proc->scommand_index]->cmd[ft_strlen(av[proc->scommand_index]->cmd)
-		- 1] == '/')
+	if (av[proc->index]->cmd[ft_strlen(av[proc->index]->cmd) - 1] == '/')
 	{
 		ft_putstr_fd(": Is a directory\n", 2);
 		garbage_collector(&proc);
 		exit(126);
 	}
-	if (access(av[proc->scommand_index]->cmd, F_OK) == -1)
+	if (access(av[proc->index]->cmd, F_OK) == -1)
 	{
 		ft_putstr_fd(": No such file or directory\n", 2);
 		garbage_collector(&proc);
 		exit(127);
 	}
-	else if (access(av[proc->scommand_index]->cmd, X_OK) == -1)
+	else if (access(av[proc->index]->cmd, X_OK) == -1)
 	{
 		ft_putstr_fd(": Permission denied\n", 2);
 		garbage_collector(&proc);
@@ -50,11 +49,10 @@ void	exit_with_code(t_command **av, t_shell *proc)
  */
 void	free_func_one_cmd(t_command **av, t_shell *proc)
 {
-	if (av[proc->scommand_index]->cmd
-		&& av[proc->scommand_index]->cmd[0] != '\0')
+	if (av[proc->index]->cmd && av[proc->index]->cmd[0] != '\0')
 	{
 		ft_putstr_fd("bash: ", 2);
-		ft_putstr_fd(av[proc->scommand_index]->cmd, 2);
+		ft_putstr_fd(av[proc->index]->cmd, 2);
 		exit_with_code(av, proc);
 	}
 	garbage_collector(&proc);
@@ -89,4 +87,20 @@ void	cmd_not_found(t_command **av, t_shell *proc, int counter)
 	ft_putstr_fd(": command not found\n", 2);
 	garbage_collector(&proc);
 	exit(127);
+}
+
+/**
+ * close all pipes
+ * @proc: struct that have all the variables i use
+ */
+void	close_pipes(t_shell *proc)
+{
+	int	x;
+
+	x = -1;
+	while (++x < proc->total_pipes)
+	{
+		close(proc->fd[x][0]);
+		close(proc->fd[x][1]);
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:34:02 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/07 18:05:23 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 16:37:22 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,13 @@ void	init_bash(t_shell *bash)
 	bash->tokenlist = NULL;
 	bash->isfreed = false;
 	bash->result = NULL;
+	bash->split_on = PIPE;
 }
 
 int	main(int ac, char **av, char **envp)
 {
 	t_shell	*bash;
+
 	signal(SIGQUIT, SIG_IGN);
 	if (envp[0] == NULL)
 		exit(printf("Error: No environment variables found\n"));

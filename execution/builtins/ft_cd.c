@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 11:45:06 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/06 18:37:06 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 15:21:59 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	ft_cd_util(t_command **pipe, char *pwd, t_shell *proc)
 		}
 		ft_putstr_fd("cd: error retrieving current directory: getcwd: \
 		cannot access parent directories: No such file or directory\n",
-						2);
+			2);
 		return (1);
 	}
 	else
@@ -112,14 +112,15 @@ static int	ft_cd_util_2(char *pwd, t_shell *proc)
 int	ft_cd(t_command **pipe, t_shell *proc)
 {
 	char	*pwd;
-	int x;
+	int		x;
+
 	pwd = getcwd(proc->pwd, 1024);
 	x = 0;
-	if(pipe[proc->scommand_index]->args_len > 2)
+	if (pipe[proc->index]->args_len > 2)
 		ft_putstr_fd("bash: cd: too many arguments\n", 2);
-	else if (pipe[proc->scommand_index]->args->array[1])
-		x = ft_cd_util(&pipe[proc->scommand_index], pwd, proc);
-	else if (pipe[proc->scommand_index]->args->array[1] == NULL)
+	else if (pipe[proc->index]->args->array[1])
+		x = ft_cd_util(&pipe[proc->index], pwd, proc);
+	else if (pipe[proc->index]->args->array[1] == NULL)
 	{
 		x = ft_cd_util_2(pwd, proc);
 	}

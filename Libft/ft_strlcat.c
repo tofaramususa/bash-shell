@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 13:39:19 by tmususa           #+#    #+#             */
-/*   Updated: 2023/02/01 17:27:56 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 13:57:28 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	size_t	src_length;
 
 	if (!dstsize)
-		return (ft_strlen((char *) src));
+		return (ft_strlen((char *)src));
 	dst_length = ft_strlen(dst);
-	src_length = ft_strlen((char *) src);
+	src_length = ft_strlen((char *)src);
 	j = dst_length;
 	i = 0;
 	if (dst_length >= dstsize)
@@ -31,9 +31,9 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	{
 		while (src[i] && dst_length + i < dstsize - 1)
 		{
-				dst[j] = src[i];
-				i++;
-				j++;
+			dst[j] = src[i];
+			i++;
+			j++;
 		}
 		dst[j] = '\0';
 	}

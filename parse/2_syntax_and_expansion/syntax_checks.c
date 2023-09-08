@@ -6,32 +6,26 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:12:17 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/03 20:49:28 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 14:51:04 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-static bool	is_close_paren_first(t_token *headtoken)
-{
-	t_token	*temp2;
-
-	temp2 = headtoken;
-	while (temp2)
-	{
-		if (temp2->type == CLOSE_PAREN)
-			return (false);
-		if (temp2->type == OPEN_PAREN)
-			break ;
-		temp2 = temp2->next;
-	}
-	return (true);
-}
 static bool	check_parens_match(t_token *headtoken)
 {
 	t_token	*temp;
 	int		stack;
 
+	temp = headtoken;
+	while (temp)
+	{
+		if (temp->type == CLOSE_PAREN)
+			return (false);
+		if (temp->type == OPEN_PAREN)
+			break ;
+		temp = temp->next;
+	}
 	temp = headtoken;
 	stack = 0;
 	while (temp)
@@ -95,11 +89,6 @@ static bool	check_sytnax(t_token *headtoken)
 	t_token	*temp;
 
 	temp = headtoken;
-	if (temp && (temp->type == PIPE || temp->type == AND || temp->type == OR))
-	{
-		return (printf("Bash: syntax error near unexpected token `%s'\n",
-				temp->value), false);
-	}
 	while (temp && temp->next != NULL)
 	{
 		if (temp->type == REDIR && temp->next->type != WORD)
@@ -115,18 +104,22 @@ static bool	check_sytnax(t_token *headtoken)
 	if (temp->next == NULL)
 	{
 		if (temp->type != WORD && temp->type != CLOSE_PAREN)
-			return (printf("Bash: syntax error near unexpected token `newline'\n"),
-					false);
+			return (printf("Bash: syntax error near token `newline'\n"), false);
 	}
 	return (true);
 }
 
 bool	token_syntax_check(t_token *headtoken)
 {
+	if (headtoken && (headtoken->type == PIPE || headtoken->type == AND
+			|| headtoken->type == OR))
+	{
+		return (printf("Bash: syntax error near unexpected token `%s'\n",
+				headtoken->value), false);
+	}
 	if (!headtoken)
 		return (false);
-	if (is_close_paren_first(headtoken) == false
-		|| check_parens_match(headtoken) == false
+	if (check_parens_match(headtoken) == false
 		|| check_for_background(headtoken) == false
 		|| parens_sytnax(headtoken) == false)
 		return (false);

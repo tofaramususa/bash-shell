@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:48:17 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/05 17:21:57 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 14:13:09 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	ft_export_to_linked(t_command **pipe, t_shell *prc)
 
 int	ft_export_print_linked(t_command **pipe, t_shell *prc)
 {
-	int x;
+	int	x;
 
 	sort_list(prc->env_list);
 	re_index(prc->env_list);
@@ -130,7 +130,7 @@ int	ft_unset(t_command **pipe, t_shell *proc)
 	if ((*pipe)->args->array[1])
 		while ((*pipe)->args->array[++x])
 			res = ft_unset_check_and_unset(&proc->env_list,
-				&(*pipe)->args->array[x]);
+					&(*pipe)->args->array[x]);
 	if ((*pipe)->cmd_len > 1)
 		garbage_collector(&proc);
 	return (res);

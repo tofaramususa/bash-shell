@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:05:52 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/07 20:47:16 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 14:21:31 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	get_search_var_end(char *str, int start)
 	}
 	return (start);
 }
+
 int	get_end_index_expan(char *str, int start)
 {
 	t_quote	quotes;

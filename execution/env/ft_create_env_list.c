@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 11:55:07 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/02 19:57:23 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 14:08:30 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	create_envlist_util_2(t_exp_var *var, t_list *head, t_shell *proc,
 	{
 		var->flag_shlvl = 1;
 		tmp_2 = ft_substr(env[var->x], var->y + 1, ft_strlen(env[var->x])
-			- var->y);
+				- var->y);
 		ft_lstadd_back(&head, ft_lstnew(ft_substr(env[var->x], 0, var->y + 1),
 				ft_itoa(ft_atoi(tmp_2) + 1), var->x, var->x));
 		safe_free(tmp_2);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_one_cmd_proccess.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 13:03:36 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/06 20:41:07 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 15:21:59 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,26 +83,6 @@ void	one_cmd_process(t_shell *proc, t_command **av, char **envp)
 }
 
 /**
- * set_signal_exe: set the singal and execute for one cmd
- * @proc: struct that have all the variables i use
- * @av: structure of the commands
- * @envp: 2d array conataining the environment variables
- */
-int	set_signal_exe(t_command **av, t_shell *proc, char **envp)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGINT, child_sig_handler);
-	signal(SIGQUIT, child_sig_handler);
-	one_cmd_process(proc, av, envp);
-	waitpid(-1, &proc->error_no, 0);
-	if (WIFEXITED(proc->error_no))
-		return (WEXITSTATUS(proc->error_no));
-	else if (WIFSIGNALED(proc->error_no))
-		return (WTERMSIG(proc->error_no) + 128);
-	return (0);
-}
-
-/**
  * pipex_one_cmd: execute and return err_code for one cmd
  * @av: a structure that contains the whole variables
  * @proc: a struture which contains the command and redirection
@@ -110,7 +90,7 @@ int	set_signal_exe(t_command **av, t_shell *proc, char **envp)
  */
 int	pipex_one_cmd(t_command **av, t_shell *proc, char **envp)
 {
-	proc->scommand_index = 0;
+	proc->index = 0;
 	if (av[0]->cmd && ft_strcmp(av[0]->cmd, "cd") == 0)
 		return (do_operation(proc, av), ft_cd(av, proc));
 	else if (av[0]->cmd && ft_strcmp(av[0]->cmd, "exit") == 0)
@@ -128,38 +108,14 @@ int	pipex_one_cmd(t_command **av, t_shell *proc, char **envp)
 	return (0);
 }
 
-void	init_parsing(t_shell *proc)
-{
-	proc->x = -1;
-	proc->temp_list = proc->env_list;
-	proc->path = NULL;
-	proc->result = NULL;
-}
-
-void	free_short(char *path, char **path_split)
-{
-	safe_free(path);
-	free_array(path_split);
-}
-
-int	search(char **envp)
-{
-	int	x;
-
-	x = -1;
-	while (envp[++x])
-		if (ft_strnstr(envp[x], "PATH=", 5))
-			return (1);
-	return (0);
-}
 /**
  * pars and check validity of command
-*/
+ */
 char	*get_command(t_shell *proc, char **envp, char *s)
 {
 	init_parsing(proc);
-	if (ft_strnstr(s, "/", ft_strlen(s)) || \
-	ft_strcmp(s, ".") == 0 || ft_strcmp(s, "..") == 0 || s[0] == '\0')
+	if (ft_strnstr(s, "/", ft_strlen(s)) || ft_strcmp(s, ".") == 0
+		|| ft_strcmp(s, "..") == 0 || s[0] == '\0')
 		return (s);
 	if (search(envp) == 0)
 		return (NULL);

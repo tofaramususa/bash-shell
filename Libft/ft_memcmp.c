@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:10:03 by tmususa           #+#    #+#             */
-/*   Updated: 2023/02/01 17:26:54 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 13:56:36 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	const unsigned char	*first = s1;
-	const unsigned char	*second = s2;
+	const unsigned char	*first;
+	const unsigned char	*second;
 
+	first = s1;
+	second = s2;
 	while (n--)
 	{
 		if (*first != *second)
 			return (*first - *second);
-	first++;
-	second++;
+		first++;
+		second++;
 	}
 	return (0);
 }

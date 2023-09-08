@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:27:36 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/02 20:11:25 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 14:01:41 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ static char	**ft_joinarray(char **final, char **s1, char **s2)
 
 char	**append_array(char **s1, char **s2)
 {
-	int s1_rows;
-	int s2_rows;
-	char **final;
+	int		s1_rows;
+	int		s2_rows;
+	char	**final;
 
 	s1_rows = 0;
 	s2_rows = 0;

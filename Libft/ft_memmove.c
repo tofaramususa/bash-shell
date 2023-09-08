@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 14:39:23 by tmususa           #+#    #+#             */
-/*   Updated: 2023/02/01 17:27:00 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 13:56:46 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 	unsigned char	*s;
 	size_t			i;
 
-	d = (unsigned char *) dst;
-	s = (unsigned char *) src;
+	d = (unsigned char *)dst;
+	s = (unsigned char *)src;
 	i = 0;
 	if (!dst && !src)
 		return (NULL);
 	if (d > s)
 	{
 		while (len--)
-		d[len] = s[len];
+			d[len] = s[len];
 	}
 	if (d < s)
 	{
@@ -36,5 +36,5 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 			i++;
 		}
 	}
-	return ((void *) d);
+	return ((void *)d);
 }

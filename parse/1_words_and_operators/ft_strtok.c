@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:30:23 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/02 20:04:21 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 14:15:16 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static char	**split_on_delim(char *s, char **array, char *delimiters)
 		}
 		else
 			array[i++] = ft_substr(s, start, get_end_index(s, delimiters, start)
-				- start);
+					- start);
 		start = get_end_index(s, delimiters, start);
 	}
 	array[i] = NULL;

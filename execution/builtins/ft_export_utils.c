@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 11:51:43 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/02 19:55:58 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 14:09:01 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	check_and_replace_util(t_exp_var *var, char *replace)
 				safe_free(var->tmp_list->value);
 				var->tmp_list->key = ft_substr(replace, 0, var->y + 1);
 				var->tmp_list->value = ft_substr(replace, var->y + 1,
-					ft_strlen(replace) - var->y);
+						ft_strlen(replace) - var->y);
 			}
 			var->flag = 1;
 			return (1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:05:52 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/04 11:06:13 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:50:45 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*get_env_var(t_shell *bash, char *str, int start)
 
 	env_var = NULL;
 	search_var = ft_substr(str, start + 1, get_search_var_end(str, start)
-		- start);
+			- start);
 	if (search_var && search_var[0] == '?' && search_var[1] == '\0')
 	{
 		env_var = ft_itoa(g_error_status);
@@ -40,29 +40,26 @@ static char	*get_env_var(t_shell *bash, char *str, int start)
 
 static char	*new_expanded_str(t_shell *bash, char *str)
 {
-	int start;
-	char *expanded_str;
-	char *temp_str;
-	int count;
+	int		i;
+	char	*expanded_str;
+	char	*temp_str;
+	int		count;
 
-	start = 0;
+	i = 0;
 	count = 0;
 	expanded_str = NULL;
 	temp_str = NULL;
-
-	while (str[start] && ++count)
+	while (str[i] && ++count)
 	{
-		if (str[start] == '$' && !array_strchr("\" /~%^{}:;''\0'", str[start
-				+ 1]))
+		if (str[i] == '$' && !array_strchr("\" /~%^{}:;''\0'", str[i + 1]))
 		{
-			temp_str = get_env_var(bash, str, start);
-			start = get_search_var_end(str, start) + 1;
+			temp_str = get_env_var(bash, str, i);
+			i = get_search_var_end(str, i) + 1;
 		}
 		else
 		{
-			temp_str = ft_substr(str, start, get_end_index_expan(str, start)
-				- start);
-			start = get_end_index_expan(str, start);
+			temp_str = ft_substr(str, i, get_end_index_expan(str, i) - i);
+			i = get_end_index_expan(str, i);
 		}
 		expanded_str = strjoin_new_var(temp_str, expanded_str, count);
 	}
@@ -90,7 +87,7 @@ static t_token	*expand_new_token_node(char *arg)
 {
 	t_token	*node;
 
-	node = (t_token *) malloc(sizeof(t_token));
+	node = (t_token *)malloc(sizeof(t_token));
 	if (node)
 	{
 		node->value = ft_strdup(arg);
@@ -101,20 +98,20 @@ static t_token	*expand_new_token_node(char *arg)
 	return (node);
 }
 
-void expand_token(t_token **tokenlist, char *str, t_shell *bash)
+void	expand_token(t_token **tokenlist, char *str, t_shell *bash)
 {
-	char **temp;
-	int index;
-	char *expanded_str;
+	char	**temp;
+	int		index;
+	char	*expanded_str;
 
 	expanded_str = ft_strdup(str);
 	expanded_str = final_expanded_str(bash, expanded_str);
 	temp = ft_space(expanded_str);
 	index = -1;
-	while(temp[++index])
+	while (temp[++index])
 	{
-		if(ft_strcmp("",temp[index]) == 0)
-				continue;
+		if (ft_strcmp("", temp[index]) == 0)
+			continue ;
 		add_token_node(tokenlist, expand_new_token_node(temp[index]));
 	}
 	free_array(temp);

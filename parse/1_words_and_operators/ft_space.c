@@ -63,7 +63,7 @@ static char	**remove_spaces(char *s, char **array, char *delimiters)
 		while (s[start] && (array_strchr(delimiters, s[start])))
 			start++;
 		array[i++] = ft_substr(s, start, (get_end_index_sp(s, delimiters, start)
-				- start));
+					- start));
 		start = get_end_index_sp(s, delimiters, start);
 	}
 	array[i] = NULL;

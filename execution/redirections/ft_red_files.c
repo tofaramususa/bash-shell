@@ -42,7 +42,7 @@ void	red_one_cmd(t_command **av, t_shell *proc)
 {
 	t_redir	*temp;
 
-	temp = av[proc->scommand_index]->redirs;
+	temp = av[proc->index]->redirs;
 	while (temp)
 	{
 		if (temp->type == OUTPUT)
@@ -65,7 +65,7 @@ void	red_middle(t_command **av, int *flag_out, int *flag_in, t_shell *proc)
 {
 	t_redir	*temp;
 
-	temp = av[proc->scommand_index]->redirs;
+	temp = av[proc->index]->redirs;
 	while (temp)
 	{
 		if (temp->type == OUTPUT)
@@ -88,10 +88,10 @@ void	red_last_proc(t_command **av, int *flag, t_shell *proc)
 {
 	t_redir	*temp;
 
-	temp = av[proc->scommand_index]->redirs;
+	temp = av[proc->index]->redirs;
 	while (temp)
 	{
-		proc->scommand_index = (*av)->cmd_len - 1;
+		proc->index = (*av)->cmd_len - 1;
 		if (temp->type == OUTPUT)
 			red_output(temp, proc);
 		else if (temp->type == INPUT)

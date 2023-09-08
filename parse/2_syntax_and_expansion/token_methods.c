@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   token_methods.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:48:25 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/07 19:31:36 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 14:49:48 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-static t_token *get_to_last(t_token *lst)
+static t_token	*get_to_last(t_token *lst)
 {
 	t_token	*to_last;
 
@@ -25,7 +25,7 @@ static t_token *get_to_last(t_token *lst)
 void	add_token_node(t_token **tokenlist, t_token *tokenNode)
 {
 	t_token	*to_last;
-	//need to handle when either are NULL, not only the tokenlist
+
 	if (*tokenlist)
 	{
 		to_last = get_to_last(*tokenlist);
@@ -37,100 +37,74 @@ void	add_token_node(t_token **tokenlist, t_token *tokenNode)
 		*tokenlist = tokenNode;
 	}
 }
- 
-static token_type	assign_token_type(char *arg)
-{
-    token_type type;
 
-    if (ft_strcmp(arg, "<") == 0)
-        type = REDIR;
-    else if (ft_strcmp(arg, ">") == 0)
-        type = REDIR;
-    else if (ft_strcmp(arg, ">>") == 0)
-        type = REDIR;
-    else if (ft_strcmp(arg, "<<") == 0)
-        type = REDIR;
-    else if (ft_strcmp(arg, "|") == 0)
-        type = PIPE;
-    else if(ft_strcmp(arg, "&&") == 0)
+static t_token_type	assign_t_token_type(char *arg)
+{
+	t_token_type	type;
+
+	if (ft_strcmp(arg, "<") == 0)
+		type = REDIR;
+	else if (ft_strcmp(arg, ">") == 0)
+		type = REDIR;
+	else if (ft_strcmp(arg, ">>") == 0)
+		type = REDIR;
+	else if (ft_strcmp(arg, "<<") == 0)
+		type = REDIR;
+	else if (ft_strcmp(arg, "|") == 0)
+		type = PIPE;
+	else if (ft_strcmp(arg, "&&") == 0)
 		type = AND;
-    else if(ft_strcmp(arg, "||") == 0)
+	else if (ft_strcmp(arg, "||") == 0)
 		type = OR;
-    else if(ft_strcmp(arg, "(") == 0)
+	else if (ft_strcmp(arg, "(") == 0)
 		type = OPEN_PAREN;
-    else if(ft_strcmp(arg, ")") == 0)
+	else if (ft_strcmp(arg, ")") == 0)
 		type = CLOSE_PAREN;
-    else
+	else
 		type = WORD;
-    return (type);
+	return (type);
 }
 
 t_token	*new_token_node(char *arg)
 {
 	t_token	*node;
 
-	node = (t_token *) malloc(sizeof(t_token));
+	node = (t_token *)malloc(sizeof(t_token));
 	if (node)
 	{
 		node->value = ft_strdup(arg);
-		node->type = assign_token_type(arg);
+		node->type = assign_t_token_type(arg);
 		node->isfreed = false;
 		node->next = NULL;
 	}
 	return (node);
 }
 
-void free_token_list(t_token **tokenlist)
+t_token	*create_token_list(char **tokens, t_shell *bash)
 {
-    t_token *next_node;
-	t_token	*current;
-	
-	current = *tokenlist;
-	if(current)
-	{
-		while(current)
-		{
-			next_node = current->next;
-			if (current && current->isfreed == false)
-			{
-				current->isfreed = true;
-				free(current->value);
-				free(current);
-			}
-			current = next_node;
-		}
-		*tokenlist = NULL;
-	}
-}
-
-
-t_token *create_token_list(char **tokens, t_shell *bash)
-{
-    t_token	*tokenlist; //pointer to the head
-	int	i;
-	bool heredoc;
+	t_token	*tokenlist;
+	int		i;
 
 	tokenlist = NULL;
 	i = -1;
-	heredoc = false;
+	bash->is_heredoc = false;
 	while (tokens[++i])
 	{
-		if(needs_expansion(tokens[i]) == true && heredoc == false)
+		if (needs_expansion(tokens[i]) == true && bash->is_heredoc == false)
 		{
 			expand_token(&tokenlist, tokens[i], bash);
-			continue;
+			continue ;
 		}
-		heredoc = false;
-		if(tokens[i] && array_strchr(tokens[i], '*'))
+		bash->is_heredoc = false;
+		if (tokens[i] && array_strchr(tokens[i], '*'))
 		{
 			if (filename_expansion(&tokenlist, tokens[i]))
-				continue ;	
+				continue ;
 		}
-		if(tokens[i] && ft_strcmp("",tokens[i]) == 0)
-			continue;
-		add_token_node(&tokenlist, new_token_node(tokens[i]));
-		if(ft_strcmp("<<", tokens[i]) == 0)
-			heredoc = true;
+		if (tokens[i] && ft_strcmp("", tokens[i]) != 0)
+			add_token_node(&tokenlist, new_token_node(tokens[i]));
+		if (ft_strcmp("<<", tokens[i]) == 0)
+			bash->is_heredoc = true;
 	}
-    return(tokenlist);
+	return (tokenlist);
 }

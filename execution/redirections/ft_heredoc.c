@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:42:18 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/06 17:44:35 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:51:34 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,34 +39,40 @@ int	replace_heredocs_util(t_redir *redir, t_heredoc_var *var)
 	return (0);
 }
 
+void	replace_heredocs_helper(char *temp_str, t_redir *redir, t_shell *bash,
+		t_heredoc_var *var)
+{
+	if (!array_strchr(temp_str, '"') && !array_strchr(temp_str, '\'')
+		&& !array_strchr(temp_str, '$'))
+	{
+		var->tmp = final_expanded_str(bash, var->tmp);
+	}
+	redir->filename = remove_quotes(redir->filename);
+	var->delimiter = ft_strjoin(redir->filename, "\n");
+	var->ret = replace_heredocs_util(redir, var);
+}
+
 /**
  * replace_heredocs: replace the << with tmp file
  * @av:
  * @proc:
  */
-int	replace_heredocs(t_redir *redir, t_shell *bash)
+int	replace_heredocs(t_redir *redir, t_shell *bash, char *temp_str)
 {
 	t_heredoc_var	var;
-	char *temp_str;
 
+	var.ret = 0;
+	var.delimiter = NULL;
 	var.file1 = open(".tmp", O_RDWR | O_CREAT | O_APPEND | O_TRUNC, 0777);
 	if (var.file1 == -1)
 		terminate(redir->filename, bash);
-	temp_str = ft_strdup(redir->filename);
 	while (1)
 	{
 		signal(SIGINT, SIG_IGN);
 		var.tmp = get_next_line(0);
 		if (var.tmp == NULL)
 			return (close(var.file1), 1);
-		if (!array_strchr(temp_str, '"')
-				&& !array_strchr(temp_str, '\'') && !array_strchr(temp_str, '$'))
-		{
-			var.tmp = final_expanded_str(bash, var.tmp);
-		}
-		redir->filename = remove_quotes(redir->filename);
-		var.delimiter = ft_strjoin(redir->filename, "\n");
-		var.ret = replace_heredocs_util(redir, &var);
+		replace_heredocs_helper(temp_str, redir, bash, &var);
 		if (var.ret == 1)
 			return (1);
 		if (var.ret == 2)
@@ -75,7 +81,6 @@ int	replace_heredocs(t_redir *redir, t_shell *bash)
 		write(var.file1, var.tmp, ft_strlen(var.tmp));
 		safe_free(var.tmp);
 	}
-	safe_free(temp_str);
 	return (0);
 }
 
@@ -88,8 +93,10 @@ int	check_and_update_heredoc(t_command **s_commands, t_shell *bash)
 {
 	int		index;
 	t_redir	*temp;
+	char	*temp_str;
 
 	index = 0;
+	temp_str = NULL;
 	while (index < bash->cmd_len)
 	{
 		temp = s_commands[index]->redirs;
@@ -97,9 +104,13 @@ int	check_and_update_heredoc(t_command **s_commands, t_shell *bash)
 		{
 			if (temp->type == HEREDOC)
 			{
-				if (replace_heredocs(temp, bash) == 1)
+				temp_str = ft_strdup(temp->filename);
+				if (replace_heredocs(temp, bash, temp_str) == 1)
 					return (1);
 			}
+			if (temp_str)
+				safe_free(temp_str);
+			temp_str = NULL;
 			temp = temp->next;
 		}
 		index++;

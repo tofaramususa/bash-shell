@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 13:07:19 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/02 21:53:45 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 15:21:59 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * and execute
  * @proc: struct that have all the variables i use
  * @av: structure of the commands
- * @envp: 2d array conataining the environment variables
+ * @envp: 2d array conataining the environment vasriables
  */
 void	check_built_ins_and_exexute(t_shell *proc, t_command **av, char **envp)
 {
@@ -50,7 +50,7 @@ void	check_built_ins_and_exexute(t_shell *proc, t_command **av, char **envp)
  */
 int	first_process(t_shell *proc, t_command **av, char **envp)
 {
-	proc->scommand_index = 0;
+	proc->index = 0;
 	proc->flag = 0;
 	proc->process_id = fork();
 	if (proc->process_id < 0)
@@ -88,7 +88,7 @@ void	middle_proc_execute(t_shell *proc, t_command **av, char **envp,
 	tmp = get_command(proc, envp, av[counter]->cmd);
 	if (av[counter]->cmd && tmp && av[counter]->cmd[0])
 	{
-		proc->scommand_index = counter;
+		proc->index = counter;
 		execve(tmp, av[counter]->args->array, envp);
 		safe_free(tmp);
 		free_func_one_cmd(av, proc);
@@ -105,7 +105,7 @@ void	middle_proc_execute(t_shell *proc, t_command **av, char **envp,
  */
 void	middl_process(t_shell *proc, t_command **av, char **envp, int counter)
 {
-	proc->scommand_index = counter;
+	proc->index = counter;
 	proc->flag_out = 0;
 	proc->flag_in = 0;
 	proc->process_id = fork();
@@ -140,7 +140,7 @@ void	middl_process(t_shell *proc, t_command **av, char **envp, int counter)
  */
 int	last_process(t_shell *proc, t_command **av, char **envp)
 {
-	proc->scommand_index = (*av)->cmd_len - 1;
+	proc->index = (*av)->cmd_len - 1;
 	proc->flag = 0;
 	proc->process_id1 = fork();
 	if (proc->process_id1 < 0)

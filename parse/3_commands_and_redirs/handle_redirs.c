@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 17:55:49 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/02 20:09:17 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 14:01:59 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static t_redir_type	assign_redir_type(char *arg)
 
 void	fill_redirs(t_command *scommand, t_token *redir, t_token *filename)
 {
-	t_redir *new_redir;
+	t_redir	*new_redir;
 
 	new_redir = (t_redir *)malloc(sizeof(t_redir));
 	new_redir->type = assign_redir_type(redir->value);

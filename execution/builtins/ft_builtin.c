@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 12:52:10 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/07 17:44:09 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:52:42 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,19 @@ void	ft_print_echo(t_command **pipe, int x)
  */
 void	ft_echo(t_command **pipe, t_shell *proc)
 {
-	if (pipe[proc->scommand_index]->args_len == 1)
+	if (pipe[proc->index]->args_len == 1)
 	{
 		printf("\n");
 		garbage_collector(&proc);
 	}
-	else if (check_nns(pipe[proc->scommand_index]->args->array[1]) == 0)
+	else if (check_nns(pipe[proc->index]->args->array[1]) == 0)
 	{
-		ft_print_echo(&pipe[proc->scommand_index], 1);
+		ft_print_echo(&pipe[proc->index], 1);
 		garbage_collector(&proc);
 	}
 	else
 	{
-		ft_print_echo(&pipe[proc->scommand_index], 0);
+		ft_print_echo(&pipe[proc->index], 0);
 		printf("\n");
 		garbage_collector(&proc);
 	}
@@ -92,7 +92,7 @@ int	scan_exit_codes(t_command **pipe)
 	while ((*pipe)->args->array[1][++j])
 	{
 		if (j == 0 && ((*pipe)->args->array[1][j] == '+'
-				|| (*pipe)->args->array[1][j] == '-'))
+			|| (*pipe)->args->array[1][j] == '-'))
 			continue ;
 		if (ft_isdigit((*pipe)->args->array[1][j]) == 0)
 			return (1);
@@ -106,32 +106,29 @@ int	scan_exit_codes(t_command **pipe)
  */
 void	ft_exit(t_command **pipe, t_shell *proc)
 {
-	int x;
+	int	x;
 
 	x = 0;
-	if (pipe[proc->scommand_index]->args->array[1] == NULL)
+	if (pipe[proc->index]->args->array[1] == NULL)
 	{
 		garbage_collector(&proc);
 		exit(g_error_status);
 	}
-	if (pipe[proc->scommand_index]->args->array[2])
+	if (pipe[proc->index]->args->array[2])
 	{
-		write(2, pipe[proc->scommand_index]->cmd,
-			ft_strlen(pipe[proc->scommand_index]->cmd));
+		write(2, pipe[proc->index]->cmd, ft_strlen(pipe[proc->index]->cmd));
 		ft_putstr_fd(": too many arguments\n", 2);
 		return ;
 	}
-	if (scan_exit_codes(&pipe[proc->scommand_index]) == 1)
+	if (scan_exit_codes(&pipe[proc->index]) == 1)
 	{
-		write(2, pipe[proc->scommand_index]->cmd,
-			ft_strlen(pipe[proc->scommand_index]->cmd));
+		write(2, pipe[proc->index]->cmd, ft_strlen(pipe[proc->index]->cmd));
 		ft_putstr_fd(": numeric argument required\n", 2);
 		garbage_collector(&proc);
 		exit(2);
 	}
-	if (pipe[proc->scommand_index]->args->array[1])
-		x = ft_exit_helper(pipe[proc->scommand_index]->args->array[1],
-			proc);
+	if (pipe[proc->index]->args->array[1])
+		x = ft_exit_helper(pipe[proc->index]->args->array[1], proc);
 	garbage_collector(&proc);
 	exit(x);
 }

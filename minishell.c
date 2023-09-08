@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 20:34:14 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/07 17:52:13 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:54:06 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,7 @@ int	process_parens(t_compound **nodes, int start, t_shell *bash)
 	{
 		if (nodes[end]->paren == AFTER_OPEN_PAREN && bash->counter == 0)
 			start_execution(nodes[end], bash);
-		else if (nodes[end]->paren == AFTER_OPEN_PAREN)
-		{
-			end = process_parens(nodes, end, bash);
-			continue ;
-		}
-		else
+		else if (nodes[end]->paren != AFTER_OPEN_PAREN)
 		{
 			if (should_execute(nodes[end]))
 				start_execution(nodes[end], bash);
@@ -68,6 +63,8 @@ int	process_parens(t_compound **nodes, int start, t_shell *bash)
 				break ;
 			}
 		}
+		else
+			end = process_parens(nodes, end, bash);
 		end++;
 		bash->counter++;
 	}
@@ -98,9 +95,7 @@ void	line_prompt(t_shell *bash)
 	if (temp_str)
 		safe_free(temp_str);
 	if (bash->line == NULL)
-	{
-		exit(g_error_status);
-	}
+		collect_and_exit(bash, "line_not_read");
 }
 
 void	parsing_garbage_collector(t_shell **bash)

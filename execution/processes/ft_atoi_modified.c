@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi_modified.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 21:42:07 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/06 20:15:38 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 13:51:45 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
 void	ft_util(unsigned long long res, int sign, t_shell *proc)
 {
-	(void) proc;
+	(void)proc;
 	if (sign == -1)
 	{
 		if ((res - 1) > LLONG_MAX)
@@ -36,7 +35,6 @@ void	ft_util(unsigned long long res, int sign, t_shell *proc)
 	}
 }
 
-
 void	atoi_utl_with_exit(char *str, int x, t_shell *proc)
 {
 	while (str[x] && str[x] >= '0' && str[x] <= '9')
@@ -54,10 +52,10 @@ void	atoi_utl_with_exit(char *str, int x, t_shell *proc)
 
 int	ft_exit_helper(const char *str, t_shell *proc)
 {
-	int						x;
-	int						sign;
-	unsigned long long		res;
-	unsigned long long		copy;
+	int					x;
+	int					sign;
+	unsigned long long	res;
+	unsigned long long	copy;
 
 	x = 0;
 	res = 0;

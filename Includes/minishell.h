@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:29:12 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/07 17:58:42 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 16:53:16 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_quote
 }						t_quote;
 
 /*Tokens Struct*/
-typedef enum
+typedef enum s_token_type
 {
 	WORD,
 	REDIR,
@@ -39,9 +39,9 @@ typedef enum
 	OR,
 	OPEN_PAREN,
 	CLOSE_PAREN,
-}						token_type;
+}						t_token_type;
 
-typedef enum
+typedef enum s_redir_type
 {
 	INPUT,
 	OUTPUT,
@@ -58,7 +58,7 @@ typedef struct s_char
 
 typedef struct s_token
 {
-	token_type			type;
+	t_token_type		type;
 	char				*value;
 	bool				isfreed;
 	struct s_token		*next;
@@ -84,18 +84,17 @@ typedef struct s_command
 	bool				isfreed;
 }						t_command;
 
-typedef enum
+typedef enum s_paren_type
 {
 	AFTER_OPEN_PAREN,
 	BEFORE_CLOSE_PAREN,
 	NOT_PAREN,
-
 }						t_paren_type;
 
 typedef struct s_compound
 {
 	t_command			**s_commands;
-	token_type			split_on;
+	t_token_type		split_on;
 	int					cmd_len;
 	t_paren_type		paren;
 	bool				isfreed;
@@ -113,7 +112,7 @@ typedef struct s_shell
 	int					pid1;
 	int					pid2;
 	int					middle_scommand;
-	int					scommand_index;
+	int					index;
 	int					counter;
 	int					process_id;
 	int					process_id1;
@@ -131,9 +130,13 @@ typedef struct s_shell
 	int					cmd_len;
 	unsigned long long	*res_atoi;
 	unsigned long long	*copy_atoi;
-	char 				*path;
+	char				*path;
 	char				*result;
 	char				**path_split;
+	bool				is_heredoc;
+	int					i;
+	t_token_type		split_on;
+	t_paren_type		paren;
 }						t_shell;
 
 typedef struct s_heredoc_var
@@ -185,7 +188,7 @@ void					token_quote_removal(t_token *tokenlist);
 char					**ft_space(char *s);
 char					**ft_strtok(char *s);
 char					**ft_split_on_delims(char *str);
-bool	ft_tokenise(t_shell *bash, char **str_tokens);
+bool					ft_tokenise(t_shell *bash, char **str_tokens);
 t_token					*create_token_list(char **tokens, t_shell *bash);
 void					free_token_list(t_token **tokenlist);
 
@@ -197,19 +200,23 @@ int						get_search_var_end(char *str, int start);
 int						get_end_index_expan(char *str, int start);
 char					*strjoin_new_var(char *temp_str, char *expanded_str,
 							int count);
-void expand_token(t_token **tokenlist, char *str, t_shell *bash);
+void					expand_token(t_token **tokenlist, char *str,
+							t_shell *bash);
 t_token					*new_token_node(char *arg);
 void					add_token_node(t_token **tokenlist, t_token *tokenNode);
-bool	filename_expansion(t_token **tokenlist, char *str_token);
+bool					filename_expansion(t_token **tokenlist,
+							char *str_token);
 
 /*Simple Commands and Redirections*/
 t_command				*create_scmnd_node(t_token *start, t_token *end);
-t_compound				*create_compound_node(t_token *start, t_token *end, t_shell *bash);
+void					create_compound_node(t_token *start, t_token *end,
+							t_shell *bash, t_compound *node);
 void					fill_scmnd(t_command *scommand, t_token *start,
 							t_token *end);
 void					fill_redirs(t_command *scommand, t_token *redir,
 							t_token *filename);
 void					free_redirs_list(t_redir **redirlist);
+int						count_pipes(t_token *start, t_token *end);
 
 /*EXECUTION*/
 int						pipex(int ac, t_command **scommand, t_shell *bash);
@@ -219,6 +226,13 @@ int						check_nns(char *str);
 char					*get_command(t_shell *proc, char **envp, char *s);
 void					cmd_not_found(t_command **av, t_shell *proc,
 							int counter);
+int						search(char **envp);
+void					free_short(char *path, char **path_split);
+void					init_parsing(t_shell *proc);
+int						set_signal_exe(t_command **av, t_shell *proc,
+							char **envp);
+void					one_cmd_process(t_shell *proc, t_command **av,
+							char **envp);
 
 /*BUILTINS*/
 void					ft_echo(t_command **pipe, t_shell *proc);
@@ -288,6 +302,7 @@ void					terminate(char *display, t_shell *bash);
 void					close_pipes(t_shell *proc);
 void					free_env_list(t_list **head);
 void					parsing_garbage_collector(t_shell **bash);
+void					collect_and_exit(t_shell *bash, char *message);
 
 /*BONUS*/
 void					create_compound_array(t_shell *bash,

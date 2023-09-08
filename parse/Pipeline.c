@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 16:59:07 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/07 18:03:00 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:59:28 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,8 @@ char	**ft_split_on_delims(char *str)
 
 bool	ft_tokenise(t_shell *bash, char **str_tokens)
 {
-
-	if(!str_tokens)
-		return(false);
+	if (!str_tokens)
+		return (false);
 	bash->tokenlist = create_token_list(str_tokens, bash);
 	free_array(str_tokens);
 	if (bash->tokenlist == NULL)
@@ -96,20 +95,17 @@ int	count_pipes(t_token *start, t_token *end)
 	return (i);
 }
 
-t_compound	*create_compound_node(t_token *start, t_token *end, t_shell *bash)
+void	create_compound_node(t_token *start, t_token *end, t_shell *bash,
+		t_compound *node)
 {
-	t_token		*temp;
-	t_token		*temp_end;
-	t_compound	*node;
-	int			i;
+	t_token	*temp;
+	t_token	*temp_end;
+	int		i;
 
-	node = (t_compound *)malloc(sizeof(t_compound));
-	if (!node)
-		exit(printf("memory allocation failure"));
 	node->s_commands = (t_command **)malloc(sizeof(t_command *)
-		* (count_pipes(start, end) + 1));
-	if (!node)
-		exit(printf("memory allocation failure"));
+			* (count_pipes(start, end) + 1));
+	if (!node->s_commands)
+		collect_and_exit(bash, "memory allocation failure");
 	temp = start;
 	i = -1;
 	while (++i < count_pipes(start, end))
@@ -119,7 +115,6 @@ t_compound	*create_compound_node(t_token *start, t_token *end, t_shell *bash)
 			&& temp_end->next->type != PIPE)
 			temp_end = temp_end->next;
 		node->s_commands[i] = create_scmnd_node(temp, temp_end);
-		node->s_commands[i]->isfreed = false;
 		node->s_commands[i]->cmd_len = count_pipes(start, end);
 		if (temp_end->next != NULL && temp_end->next != end->next)
 			temp = temp_end->next->next;
@@ -127,7 +122,4 @@ t_compound	*create_compound_node(t_token *start, t_token *end, t_shell *bash)
 			temp = NULL;
 	}
 	node->s_commands[i] = NULL;
-	bash->cmd_len = count_pipes(start, end);
-	node->cmd_len = count_pipes(start, end);
-	return (node);
 }
