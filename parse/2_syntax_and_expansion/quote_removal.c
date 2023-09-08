@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 20:07:06 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 19:27:40 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 20:16:57 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*remove_quotes(char *str, int in)
 		new_str[j++] = str[i];
 	}
 	new_str[j] = '\0';
-	if(in == 1)
+	if (in == 1)
 		safe_free(str);
 	return (new_str);
 }

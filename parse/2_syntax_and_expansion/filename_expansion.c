@@ -6,13 +6,14 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 20:06:48 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 18:01:36 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 20:17:03 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Includes/minishell.h"
+#include "../../Includes/minishell.h"
 
-static bool	wildcard_match(const char *pattern, const char *d_name, t_quote quotes)
+static bool	wildcard_match(const char *pattern, const char *d_name,
+		t_quote quotes)
 {
 	while (*pattern && *d_name)
 	{
@@ -90,7 +91,8 @@ bool	filename_expansion(t_token **tokenlist, char *str_token)
 	}
 	if (str_token != NULL && array_strchr(str_token, '*'))
 	{
-		match_found = add_wildcard_tokens(dir, str_token, tokenlist, expanded_token);
+		match_found = add_wildcard_tokens(dir, str_token, tokenlist,
+				expanded_token);
 	}
 	closedir(dir);
 	if (cwd)

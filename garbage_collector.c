@@ -6,11 +6,11 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:33:48 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 13:53:42 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 20:16:34 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "Includes/minishell.h"
 
 void	free_env_list(t_list **head)
 {

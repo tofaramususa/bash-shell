@@ -6,11 +6,11 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 21:42:07 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/08 13:51:45 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 20:17:27 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
 void	ft_util(unsigned long long res, int sign, t_shell *proc)
 {

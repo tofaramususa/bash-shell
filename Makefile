@@ -41,7 +41,7 @@ EXECUTION_SRCS = execution/builtins/ft_builtin.c\
 				execution/signals.c\
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -IIncludes
+CFLAGS = -Wall -Werror -Wextra
 LDFLAGS = -Llibft -lft
 
 OBJ = $(SRCS:.c=.o) $(PARSE_SRCS:.c=.o) $(EXECUTION_SRCS:.c=.o)

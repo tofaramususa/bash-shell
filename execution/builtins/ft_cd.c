@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 11:45:06 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/08 15:21:59 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 20:13:39 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,7 @@ int	ft_cd(t_command **pipe, t_shell *proc)
 
 	pwd = getcwd(proc->pwd, 1024);
 	x = 0;
-	if (pipe[proc->index]->args_len > 2)
-		ft_putstr_fd("bash: cd: too many arguments\n", 2);
-	else if (pipe[proc->index]->args->array[1])
+	if (pipe[proc->index]->args->array[1])
 		x = ft_cd_util(&pipe[proc->index], pwd, proc);
 	else if (pipe[proc->index]->args->array[1] == NULL)
 	{

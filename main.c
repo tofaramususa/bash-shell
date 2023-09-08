@@ -6,11 +6,11 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:34:02 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 19:57:19 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/08 20:16:18 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "Includes/minishell.h"
 
 int		g_error_status = 0;
 
@@ -48,7 +48,7 @@ bool	parse(t_shell *bash)
 	syntax = ft_tokenise(bash, final_result);
 	if (syntax == false)
 	{
-		if(!bash->tokenlist)
+		if (!bash->tokenlist)
 			g_error_status = 0;
 		else
 			g_error_status = 2;
