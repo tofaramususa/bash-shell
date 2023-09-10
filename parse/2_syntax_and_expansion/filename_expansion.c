@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 20:06:48 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 20:17:03 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/10 17:10:37 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,13 @@ bool	filename_expansion(t_token **tokenlist, char *str_token)
 	expanded_token = NULL;
 	cwd = getcwd(NULL, 0);
 	match_found = false;
+	if (!cwd)
+		return (match_found);
 	dir = opendir(cwd);
 	if (!dir)
 	{
 		perror("opendir");
-		if (cwd)
-			safe_free(cwd);
+		safe_free(cwd);
 		return (match_found);
 	}
 	if (str_token != NULL && array_strchr(str_token, '*'))
@@ -95,7 +96,6 @@ bool	filename_expansion(t_token **tokenlist, char *str_token)
 				expanded_token);
 	}
 	closedir(dir);
-	if (cwd)
-		safe_free(cwd);
+	safe_free(cwd);
 	return (match_found);
 }
