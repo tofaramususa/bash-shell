@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:34:02 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 22:23:49 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/09 22:11:21 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bool	parse(t_shell *bash)
 		if (!bash->tokenlist)
 			g_error_status = 0;
 		else
-			g_error_status = 2;
+			g_error_status = 258;
 		return (false);
 	}
 	create_compound_array(bash, bash->tokenlist);
@@ -79,7 +79,7 @@ int	main(int ac, char **av, char **envp)
 	t_shell	*bash;
 
 	signal(SIGQUIT, SIG_IGN);
-	if (envp[0] == NULL)
+	if (!envp || envp[0] == NULL)
 		exit(printf("Error: No environment variables found\n"));
 	if (ac > 1 || ft_array_len(av) > 1)
 		exit(printf("To start x1b[38;5;122mTheBash\x1b[0m enter: ./minishell\n"));

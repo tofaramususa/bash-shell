@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:54:06 by yonamog2          #+#    #+#             */
-/*   Updated: 2023/09/08 13:51:35 by tmususa          ###   ########.fr       */
+/*   Updated: 2023/09/10 16:51:28 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	sort_list(t_list *head)
 	char	*temp_value;
 
 	current = head;
-	while (current->next != NULL)
+	while (current && current->next != NULL)
 	{
 		compare = current->next;
 		while (compare != NULL)

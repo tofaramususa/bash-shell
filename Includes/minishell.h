@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 14:29:12 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 22:27:03 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/09 21:58:01 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ char					**ft_split_on_delims(char *str);
 bool					ft_tokenise(t_shell *bash, char **str_tokens);
 t_token					*create_token_list(char **tokens, t_shell *bash);
 void					free_token_list(t_token **tokenlist);
+void					get_display_line(t_shell *bash, char **prompt);
 
 /*Syntax Check and Expansion*/
 bool					token_syntax_check(t_token *headToken);
@@ -269,7 +270,8 @@ void					sig_handler(int num);
 void					init_signals(void);
 
 /*REDIRECTIONS*/
-int	check_and_update_heredoc(t_compound *cpmd_node, t_shell *bash);
+int						check_and_update_heredoc(t_compound *cpmd_node,
+							t_shell *bash);
 void					red_one_cmd(t_command **av, t_shell *proc);
 void					red_first_proc(t_command **av, int *flag,
 							t_shell *proc);

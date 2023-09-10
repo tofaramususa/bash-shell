@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_checks.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:12:17 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 22:38:37 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/09 20:03:36 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static bool	check_parens_match(t_token *headtoken)
 	while (temp)
 	{
 		if (temp->type == CLOSE_PAREN)
-			return (printf("Bash: syntax error near unexpected token ')'\n"),false);
+			return (printf("Bash: syntax error near ')'\n"), false);
 		if (temp->type == OPEN_PAREN)
 			break ;
 		temp = temp->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 20:34:14 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 22:25:24 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/10 16:50:17 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,29 +73,15 @@ int	process_parens(t_compound **nodes, int start, t_shell *bash)
 
 void	line_prompt(t_shell *bash)
 {
-	char	*temp_str;
 	char	*prompt;
 
 	prompt = NULL;
-	temp_str = NULL;
-	if (g_error_status == 0)
-	{
-		temp_str = ft_strjoin("\x1b[38;5;190m 🏀", getcwd(bash->pwd, 1024));
-		prompt = ft_strjoin(temp_str, "\x1b[38;5;122m [THEBASH]$ \x1b[0m");
-		bash->line = readline(prompt);
-	}
-	else
-	{
-		temp_str = ft_strjoin("\x1b[38;5;190m 🗑️ ", getcwd(bash->pwd, 1024));
-		prompt = ft_strjoin(temp_str, "\x1b[38;5;122m [THEBASH]$ \x1b[0m");
-		bash->line = readline(prompt);
-	}
+	get_display_line(bash, &prompt);
+	bash->line = readline(prompt);
 	if (prompt)
 		safe_free(prompt);
-	if (temp_str)
-		safe_free(temp_str);
-	if (bash->line == NULL)
-		collect_and_exit(bash, "line_not_read");
+	if (!bash->line)
+		collect_and_exit(bash, "\nExiting....\n");
 }
 
 void	parsing_garbage_collector(t_shell **bash)

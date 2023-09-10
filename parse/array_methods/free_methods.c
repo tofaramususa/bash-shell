@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_methods.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 17:57:48 by tmususa           #+#    #+#             */
-/*   Updated: 2023/09/08 22:02:04 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/10 16:36:04 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,31 @@ void	free_token_list(t_token **tokenlist)
 		}
 		*tokenlist = NULL;
 	}
+}
+
+void	get_display_line(t_shell *bash, char **prompt)
+{
+	char	*temp_str;
+
+	temp_str = NULL;
+	if (g_error_status == 0)
+	{
+		temp_str = ft_strjoin("\x1b[38;5;190m 🏀", getcwd(bash->pwd, 1024));
+		if (temp_str)
+			*prompt = ft_strjoin(temp_str, "\x1b[38;5;122m [THEBASH]$ \x1b[0m");
+		else
+			*prompt = ft_strjoin("\x1b[38;5;190m 🏀",
+					"\x1b[38;5;122m [THEBASH]$ \x1b[0m");
+	}
+	else
+	{
+		temp_str = ft_strjoin("\x1b[38;5;190m 🗑️ ", getcwd(bash->pwd, 1024));
+		if (temp_str)
+			*prompt = ft_strjoin(temp_str, "\x1b[38;5;122m [THEBASH]$ \x1b[0m");
+		else
+			*prompt = ft_strjoin("\x1b[38;5;190m 🗑️ ",
+					"\x1b[38;5;122m [THEBASH]$ \x1b[0m");
+	}
+	if (temp_str)
+		safe_free(temp_str);
 }
