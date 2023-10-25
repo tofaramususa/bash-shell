@@ -41,8 +41,8 @@ EXECUTION_SRCS = execution/builtins/ft_builtin.c\
 				execution/signals.c\
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
-LDFLAGS = -Llibft -lft -lreadline
+CFLAGS = -Wall -Werror -Wextra -I/usr/local/Cellar/readline/8.2.1/include
+LDFLAGS = -Llibft -lft -L/usr/local/Cellar/readline/8.2.1/lib -lreadline
 
 OBJ = $(SRCS:.c=.o) $(PARSE_SRCS:.c=.o) $(EXECUTION_SRCS:.c=.o)
 
