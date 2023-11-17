@@ -38,11 +38,11 @@ Preliminary check on the line:
 
 We have a struct that contains to boolean values for the single quote and double quote. This is used to manage whether we are inside single quotes or double quotes as we pass through the string given
 
-`typedef  struct  s_quote
-{ 	bool  single_q;
-	bool  double_q;
-} 
-t_quote;`
+`typedef  struct  s_quote`
+`{ 	bool  single_q;`
+`	bool  double_q;`
+`}` 
+`t_quote;`
 
 FROM BASH MANUAL: **Breaks the input into words and operators, obeying the quoting rules described in Quoting. These tokens are separated by meta-characters. Alias expansion is performed by this step (see Aliases).**
 
@@ -59,12 +59,12 @@ FROM BASH MANUAL: *Performs the various shell expansions (see Shell Expansions),
 
 **Create a token linked list out of the array we have.**  Free the arrays created in PART 1 after creating the list. The use of linked list comes when we need metadata (extra information about the data we have). In this case we want to know the type of token, either **PIPE, REDIR or WORD.** 
 
-`typedef  struct  s_token
-{
-t_token_type  type;
-char  *value;
-struct  s_token  *next;
-} t_token;`
+`typedef  struct  s_token`
+`{`
+	`t_token_type  type;`
+	`char  *value;`
+	`struct  s_token  *next;`
+`} t_token;`
 
 FROM BASH MANUAL: _It's necessary to **perform the expansion before creating the linked list of tokens** because we want any output we get from the environment variables to be assigned the type _WORD_ and treated as a _WORD_ even if it may be a meta-character we retrieve from the env_vars._
 
@@ -84,16 +84,16 @@ This is based on the number of type **PIPE** tokens we have in the **token list.
 
 `typedef  struct  s_command`
 `{`
-`char  *cmd;`
-`char  **args;`
-`t_redir  *redirs;`
+	`char  *cmd;`
+	`char  **args;`
+	`t_redir  *redirs;`
 `} t_command;`
 
 `typedef  struct  s_redir`
 `{`
-     `t_redir_type  type;`
-`char  *filename;`
-`struct  s_redir  *next;`
+	`t_redir_type  type;`
+	`char  *filename;`
+	`struct  s_redir  *next;`
 `} t_redir;`
 
 `cmd` is the first word in the `args` to be passed to `execve`. l have omitted some metadata. l also have `args_len; redirection_len; cmd_len`. These are simple to add and useful at times. 
